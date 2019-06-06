@@ -24,7 +24,9 @@ add_message_files(FILES
                   SkeletonGroup.msg)
 
 # Generate added messages and services with any dependencies listed here
-generate_messages(DEPENDENCIES std_msgs geometry_msgs)
+generate_messages(DEPENDENCIES
+                  std_msgs
+                  geometry_msgs)
 
 # ##############################################################################
 # catkin specific configuration ##
@@ -35,18 +37,23 @@ generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 # that dependent projects also need CATKIN_DEPENDS: catkin_packages dependent
 # projects also need DEPENDS: system dependencies of this project that dependent
 # projects also need
-catkin_package(CATKIN_DEPENDS message_runtime std_msgs geometry_msgs)
+catkin_package(CATKIN_DEPENDS
+               message_runtime
+               std_msgs
+               geometry_msgs)
 
 # ##############################################################################
 # Build ##
 # ##############################################################################
 
 # Display additional files in qtcreator
-file(GLOB_RECURSE FILES_LIST "*.msg" "*.srv" "*.xml")
-add_custom_target(additional_files_${PROJECT_NAME}
-  SOURCES
-  ${FILES_LIST}
-)
+file(GLOB_RECURSE
+     FILES_LIST
+     "*.msg"
+     "*.srv"
+     "*.xml")
+
+add_custom_target(additional_files_${PROJECT_NAME} SOURCES ${FILES_LIST})
 
 # ##############################################################################
 # Install ##
