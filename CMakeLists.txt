@@ -8,7 +8,6 @@ add_compile_options(-std=c++11)
 # REQUIRED COMPONENTS xyz) is used, also find other catkin packages
 find_package(catkin REQUIRED
              COMPONENTS message_generation
-                        roscpp
                         std_msgs
                         geometry_msgs)
 
