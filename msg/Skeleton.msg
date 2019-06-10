@@ -1,3 +1,3 @@
 uint64 id
 
-KeypointGroup[] skeletonParts
+KeypointGroup[] skeleton_parts

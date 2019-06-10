@@ -112,13 +112,13 @@ namespace hiros {
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned& t_id,
                const double& t_confidence,
-               const std::vector<hiros::skeletons::types::Rectangle>& t_boundingBoxes,
+               const std::vector<hiros::skeletons::types::Rectangle>& t_bounding_boxes,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints)
       {
         hiros::skeletons::types::KeypointGroup kg;
         kg.id = t_id;
         kg.confidence = t_confidence;
-        kg.boundingBoxes = t_boundingBoxes;
+        kg.bounding_boxes = t_bounding_boxes;
         kg.keypoints = t_keypoints;
         return kg;
       }
@@ -128,9 +128,9 @@ namespace hiros {
         hiros::skeletons::types::KeypointGroup kg;
         kg.id = static_cast<unsigned>(t_kg.id);
         kg.confidence = t_kg.confidence;
-        kg.boundingBoxes.reserve(t_kg.boundingBoxes.size());
-        for (auto& bb : t_kg.boundingBoxes) {
-          kg.boundingBoxes.push_back(toStruct(bb));
+        kg.bounding_boxes.reserve(t_kg.bounding_boxes.size());
+        for (auto& bb : t_kg.bounding_boxes) {
+          kg.bounding_boxes.push_back(toStruct(bb));
         }
         kg.keypoints.reserve(t_kg.keypoints.size());
         for (auto& k : t_kg.keypoints) {
@@ -144,9 +144,9 @@ namespace hiros {
         skeleton_msgs::KeypointGroup kg;
         kg.id = t_kg.id;
         kg.confidence = t_kg.confidence;
-        kg.boundingBoxes.reserve(t_kg.boundingBoxes.size());
-        for (auto& bb : t_kg.boundingBoxes) {
-          kg.boundingBoxes.push_back(toMsg(bb));
+        kg.bounding_boxes.reserve(t_kg.bounding_boxes.size());
+        for (auto& bb : t_kg.bounding_boxes) {
+          kg.bounding_boxes.push_back(toMsg(bb));
         }
         kg.keypoints.reserve(t_kg.keypoints.size());
         for (auto& k : t_kg.keypoints) {
@@ -158,11 +158,11 @@ namespace hiros {
       // Skeleton
       hiros::skeletons::types::Skeleton
       toStruct(const unsigned& t_id,
-               const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeletonParts)
+               const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts)
       {
         hiros::skeletons::types::Skeleton s;
         s.id = t_id;
-        s.skeletonParts = t_skeletonParts;
+        s.skeleton_parts = t_skeleton_parts;
         return s;
       }
 
@@ -170,9 +170,9 @@ namespace hiros {
       {
         hiros::skeletons::types::Skeleton s;
         s.id = static_cast<unsigned>(t_s.id);
-        s.skeletonParts.reserve(t_s.skeletonParts.size());
-        for (auto& sp : t_s.skeletonParts) {
-          s.skeletonParts.push_back(toStruct(sp));
+        s.skeleton_parts.reserve(t_s.skeleton_parts.size());
+        for (auto& sp : t_s.skeleton_parts) {
+          s.skeleton_parts.push_back(toStruct(sp));
         }
         return s;
       }
@@ -181,9 +181,9 @@ namespace hiros {
       {
         skeleton_msgs::Skeleton s;
         s.id = t_s.id;
-        s.skeletonParts.reserve(t_s.skeletonParts.size());
-        for (auto& sp : t_s.skeletonParts) {
-          s.skeletonParts.push_back(toMsg(sp));
+        s.skeleton_parts.reserve(t_s.skeleton_parts.size());
+        for (auto& sp : t_s.skeleton_parts) {
+          s.skeleton_parts.push_back(toMsg(sp));
         }
         return s;
       }
@@ -220,14 +220,14 @@ namespace hiros {
       skeleton_msgs::SkeletonGroup toMsg(const unsigned& t_seq,
                                          const ros::Time& t_stamp,
                                          const std::string& t_frame_id,
-                                         const ros::Time& t_srcTime,
+                                         const ros::Time& t_src_time,
                                          const hiros::skeletons::types::SkeletonGroup& t_sg)
       {
         skeleton_msgs::SkeletonGroup sg;
         sg.header.seq = t_seq;
         sg.header.stamp = t_stamp;
         sg.header.frame_id = t_frame_id;
-        sg.srcTime = t_srcTime;
+        sg.src_time = t_src_time;
         sg.skeletons.reserve(t_sg.skeletons.size());
         for (auto& s : t_sg.skeletons) {
           sg.skeletons.push_back(toMsg(s));

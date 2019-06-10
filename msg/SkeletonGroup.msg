@@ -1,4 +1,4 @@
 Header header
-time srcTime
+time src_time
 
 Skeleton[] skeletons

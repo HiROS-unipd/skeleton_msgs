@@ -53,7 +53,7 @@ namespace hiros {
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned& t_id,
                const double& t_confidence,
-               const std::vector<hiros::skeletons::types::Rectangle>& t_boundingBoxes,
+               const std::vector<hiros::skeletons::types::Rectangle>& t_bounding_boxes,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
 
       hiros::skeletons::types::KeypointGroup toStruct(const skeleton_msgs::KeypointGroup& t_kg);
@@ -63,7 +63,7 @@ namespace hiros {
       // Skeleton
       hiros::skeletons::types::Skeleton
       toStruct(const unsigned& t_id,
-               const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeletonParts);
+               const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts);
 
       hiros::skeletons::types::Skeleton toStruct(const skeleton_msgs::Skeleton& t_s);
 
@@ -80,7 +80,7 @@ namespace hiros {
       skeleton_msgs::SkeletonGroup toMsg(const unsigned& t_seq,
                                          const ros::Time& t_stamp,
                                          const std::string& t_frame_id,
-                                         const ros::Time& t_srcTime,
+                                         const ros::Time& t_src_time,
                                          const hiros::skeletons::types::SkeletonGroup& t_sg);
 
     } // namespace utils

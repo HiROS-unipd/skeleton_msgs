@@ -58,19 +58,19 @@ namespace hiros {
       KeypointGroup::KeypointGroup(const unsigned& t_id,
                                    const double& t_confidence,
                                    const std::vector<Keypoint>& t_keypoints,
-                                   const std::vector<Rectangle>& t_boundingBoxes)
+                                   const std::vector<Rectangle>& t_bounding_boxes)
         : id(t_id)
         , confidence(t_confidence)
-        , boundingBoxes(t_boundingBoxes)
+        , bounding_boxes(t_bounding_boxes)
         , keypoints(t_keypoints)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
       {
         t_os << "KeypointGroup_id: " << t_kg.id << " KeypointGroup_confidence: " << t_kg.confidence;
-        if (!t_kg.boundingBoxes.empty()) {
-          t_os << " KeypointGroup_boundingBoxes:";
-          for (auto bb : t_kg.boundingBoxes) {
+        if (!t_kg.bounding_boxes.empty()) {
+          t_os << " KeypointGroup_bounding_boxes:";
+          for (auto bb : t_kg.bounding_boxes) {
             t_os << " " << bb;
           }
         }
@@ -82,15 +82,15 @@ namespace hiros {
       }
 
       // Skeleton
-      Skeleton::Skeleton(const unsigned& t_id, const std::vector<KeypointGroup>& t_skeletonParts)
+      Skeleton::Skeleton(const unsigned& t_id, const std::vector<KeypointGroup>& t_skeleton_parts)
         : id(t_id)
-        , skeletonParts(t_skeletonParts)
+        , skeleton_parts(t_skeleton_parts)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s)
       {
-        t_os << "Skeleton_id: " << t_s.id << " Skeleton_skeletonParts:";
-        for (auto sp : t_s.skeletonParts) {
+        t_os << "Skeleton_id: " << t_s.id << " Skeleton_skeleton_parts:";
+        for (auto sp : t_s.skeleton_parts) {
           t_os << " " << sp;
         }
         return t_os;
