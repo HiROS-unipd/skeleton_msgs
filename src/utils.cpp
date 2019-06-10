@@ -1,4 +1,4 @@
-#include "skeleton_msgs/utils.h"
+#include "skeletons/utils.h"
 
 namespace hiros {
     namespace skeletons {

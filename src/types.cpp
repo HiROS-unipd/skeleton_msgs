@@ -1,9 +1,6 @@
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <vector>
+#include "skeletons/types.h"
 
-#include "skeleton_msgs/types.h"
+#include <cmath>
 
 namespace hiros {
     namespace skeletons {

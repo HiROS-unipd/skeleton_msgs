@@ -1,9 +1,8 @@
-#ifndef hiros_skeleton_msgs_types_h
-#define hiros_skeleton_msgs_types_h
+#ifndef hiros_skeletons_types_h
+#define hiros_skeletons_types_h
 
 #include <iostream>
 #include <limits>
-#include <string>
 #include <vector>
 
 namespace hiros {

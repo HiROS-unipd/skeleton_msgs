@@ -49,8 +49,8 @@ catkin_package(CATKIN_DEPENDS
 # Build ##
 # ##############################################################################
 set(${PROJECT_NAME}_HEADERS
-    include/skeleton_msgs/types.h
-    include/skeleton_msgs/utils.h)
+    include/skeletons/types.h
+    include/skeletons/utils.h)
 
 set(${PROJECT_NAME}_SOURCES
     src/types.cpp

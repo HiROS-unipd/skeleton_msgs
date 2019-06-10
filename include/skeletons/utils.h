@@ -1,16 +1,15 @@
 #ifndef hiros_skeletons_utils_h
 #define hiros_skeletons_utils_h
 
+#include <geometry_msgs/Point.h>
+
 #include "skeleton_msgs/Keypoint.h"
 #include "skeleton_msgs/KeypointGroup.h"
 #include "skeleton_msgs/Rectangle.h"
 #include "skeleton_msgs/Skeleton.h"
 #include "skeleton_msgs/SkeletonGroup.h"
-#include "skeleton_msgs/types.h"
 
-#include <geometry_msgs/Point.h>
-#include <limits>
-#include <ros/ros.h>
+#include "skeletons/types.h"
 
 namespace hiros {
     namespace skeletons {
