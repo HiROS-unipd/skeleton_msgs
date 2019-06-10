@@ -34,13 +34,6 @@ namespace hiros {
       skeleton_msgs::Rectangle toMsg(const hiros::skeletons::types::Rectangle& t_r);
 
       // Keypoint
-      hiros::skeletons::types::Keypoint
-      toStruct(const unsigned int& t_id,
-               const double& t_confidence,
-               const double& t_x,
-               const double& t_y,
-               const double& t_z = std::numeric_limits<double>::quiet_NaN());
-
       hiros::skeletons::types::Keypoint toStruct(const unsigned int& t_id,
                                                  const double& t_confidence,
                                                  const hiros::skeletons::types::Point& t_point);

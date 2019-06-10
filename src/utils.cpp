@@ -68,19 +68,6 @@ namespace hiros {
       // Keypoint
       hiros::skeletons::types::Keypoint toStruct(const unsigned int& t_id,
                                                  const double& t_confidence,
-                                                 const double& t_x,
-                                                 const double& t_y,
-                                                 const double& t_z)
-      {
-        hiros::skeletons::types::Keypoint k;
-        k.id = t_id;
-        k.confidence = t_confidence;
-        k.point = toStruct(t_x, t_y, t_z);
-        return k;
-      }
-
-      hiros::skeletons::types::Keypoint toStruct(const unsigned int& t_id,
-                                                 const double& t_confidence,
                                                  const hiros::skeletons::types::Point& t_point)
       {
         hiros::skeletons::types::Keypoint k;
