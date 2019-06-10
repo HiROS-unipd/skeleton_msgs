@@ -35,13 +35,13 @@ namespace hiros {
 
       // Keypoint
       hiros::skeletons::types::Keypoint
-      toStruct(const unsigned& t_id,
+      toStruct(const unsigned int& t_id,
                const double& t_confidence,
                const double& t_x,
                const double& t_y,
                const double& t_z = std::numeric_limits<double>::quiet_NaN());
 
-      hiros::skeletons::types::Keypoint toStruct(const unsigned& t_id,
+      hiros::skeletons::types::Keypoint toStruct(const unsigned int& t_id,
                                                  const double& t_confidence,
                                                  const hiros::skeletons::types::Point& t_point);
 
@@ -51,7 +51,7 @@ namespace hiros {
 
       // keypointGroup
       hiros::skeletons::types::KeypointGroup
-      toStruct(const unsigned& t_id,
+      toStruct(const unsigned int& t_id,
                const double& t_confidence,
                const std::vector<hiros::skeletons::types::Rectangle>& t_bounding_boxes,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
@@ -62,7 +62,7 @@ namespace hiros {
 
       // Skeleton
       hiros::skeletons::types::Skeleton
-      toStruct(const unsigned& t_id,
+      toStruct(const unsigned int& t_id,
                const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts);
 
       hiros::skeletons::types::Skeleton toStruct(const skeleton_msgs::Skeleton& t_s);
@@ -77,7 +77,7 @@ namespace hiros {
 
       skeleton_msgs::SkeletonGroup toMsg(const hiros::skeletons::types::SkeletonGroup& t_sg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const unsigned& t_seq,
+      skeleton_msgs::SkeletonGroup toMsg(const unsigned int& t_seq,
                                          const ros::Time& t_stamp,
                                          const std::string& t_frame_id,
                                          const ros::Time& t_src_time,

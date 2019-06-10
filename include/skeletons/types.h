@@ -37,13 +37,13 @@ namespace hiros {
       // Keypoint
       struct Keypoint
       {
-        Keypoint(const unsigned& t_id = std::numeric_limits<unsigned>::quiet_NaN(),
+        Keypoint(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
                  const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                  const Point& t_point = Point());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Keypoint& t_k);
 
-        unsigned id;
+        unsigned int id;
         double confidence;
         Point point;
       };
@@ -51,14 +51,14 @@ namespace hiros {
       // KeypointGroup
       struct KeypointGroup
       {
-        KeypointGroup(const unsigned& t_id = std::numeric_limits<unsigned>::quiet_NaN(),
+        KeypointGroup(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
                       const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                       const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>(),
                       const std::vector<Rectangle>& t_bounding_boxes = std::vector<Rectangle>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg);
 
-        unsigned id;
+        unsigned int id;
         double confidence;
         std::vector<Rectangle> bounding_boxes;
         std::vector<Keypoint> keypoints;
@@ -67,12 +67,12 @@ namespace hiros {
       // Skeleton
       struct Skeleton
       {
-        Skeleton(const unsigned& t_id = std::numeric_limits<unsigned>::quiet_NaN(),
+        Skeleton(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
                  const std::vector<KeypointGroup>& t_skeleton_parts = std::vector<KeypointGroup>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
 
-        unsigned id;
+        unsigned int id;
         std::vector<KeypointGroup> skeleton_parts;
       };
 
