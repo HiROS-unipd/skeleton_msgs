@@ -42,22 +42,21 @@ catkin_package(CATKIN_DEPENDS
                std_msgs
                geometry_msgs)
 
-catkin_package(LIBRARIES ${PROJECT_NAME}_types
-               INCLUDE_DIRS include)
+catkin_package(LIBRARIES
+               ${PROJECT_NAME}_types
+               INCLUDE_DIRS
+               include)
 
 # ##############################################################################
 # Build ##
 # ##############################################################################
-set(${PROJECT_NAME}_SOURCES
-    src/types.cpp
-    src/utils.cpp)
+set(${PROJECT_NAME}_SOURCES src/types.cpp src/utils.cpp)
 
 add_library(${PROJECT_NAME}_types SHARED ${${PROJECT_NAME}_SOURCES})
 
 # Specify additional locations of header files
-target_include_directories(${PROJECT_NAME}_types PUBLIC
-    include
-    ${catkin_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME}_types
+                           PUBLIC include ${catkin_INCLUDE_DIRS})
 
 # Display additional files in qtcreator
 file(GLOB_RECURSE
