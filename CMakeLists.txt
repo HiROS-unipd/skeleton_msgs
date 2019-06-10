@@ -42,24 +42,22 @@ catkin_package(CATKIN_DEPENDS
                std_msgs
                geometry_msgs)
 
-           catkin_package(LIBRARIES ${PROJECT_NAME}_types
+catkin_package(LIBRARIES ${PROJECT_NAME}_types
                INCLUDE_DIRS include)
 
 # ##############################################################################
 # Build ##
 # ##############################################################################
-set(${PROJECT_NAME}_HEADERS
-    include/skeletons/types.h
-    include/skeletons/utils.h)
-
 set(${PROJECT_NAME}_SOURCES
     src/types.cpp
     src/utils.cpp)
 
+add_library(${PROJECT_NAME}_types SHARED ${${PROJECT_NAME}_SOURCES})
+
 # Specify additional locations of header files
-include_directories(
-    ${catkin_INCLUDE_DIRS}
-    ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME}_types PUBLIC
+    include
+    ${catkin_INCLUDE_DIRS})
 
 # Display additional files in qtcreator
 file(GLOB_RECURSE
@@ -94,6 +92,3 @@ add_custom_target(additional_files_${PROJECT_NAME} SOURCES ${FILES_LIST})
 # Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES # myfile1 # myfile2 DESTINATION
 # ${CATKIN_PACKAGE_SHARE_DESTINATION} )
-
-add_library(${PROJECT_NAME}_types SHARED ${${PROJECT_NAME}_SOURCES})
-target_include_directories(${PROJECT_NAME}_types INTERFACE include)
