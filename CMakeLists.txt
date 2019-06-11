@@ -58,7 +58,12 @@ add_library(${PROJECT_NAME}_types SHARED ${${PROJECT_NAME}_SOURCES})
 target_include_directories(${PROJECT_NAME}_types
                            PUBLIC include ${catkin_INCLUDE_DIRS})
 
-# Display additional files in qtcreator
+add_dependencies(${PROJECT_NAME}_types skeleton_msgs_generate_messages_cpp)
+
+# ##############################################################################
+# Create fake target for common ROS file extensions
+# ##############################################################################
+
 file(GLOB_RECURSE
      FILES_LIST
      "*.msg"
