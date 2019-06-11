@@ -15,9 +15,9 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Point& t_p)
       {
-        t_os << "Point_x: " << t_p.x << " Point_y: " << t_p.y;
+        t_os << "        - x: " << t_p.x << std::endl << "          y: " << t_p.y;
         if (!std::isnan(t_p.z)) {
-          t_os << " Point_z: " << t_p.z;
+          t_os << std::endl << "          z: " << t_p.z;
         }
         return t_os;
       }
@@ -35,8 +35,10 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Rectangle& t_r)
       {
-        t_os << "Rectangle_x: " << t_r.x << " Rectangle_y: " << t_r.y
-             << " Rectangle_width: " << t_r.width << " Rectangle_height: " << t_r.height;
+        t_os << "      - x: " << t_r.x << std::endl
+             << "        y: " << t_r.y << std::endl
+             << "        width: " << t_r.width << std::endl
+             << "        height: " << t_r.height;
         return t_os;
       }
 
@@ -49,8 +51,10 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Keypoint& t_k)
       {
-        t_os << "Keypoint_id: " << t_k.id << " Keypoint_confidence: " << t_k.confidence
-             << " Keypoint_point: " << t_k.point;
+        t_os << "      - id: " << t_k.id << std::endl
+             << "        confidence: " << t_k.confidence << std::endl
+             << "        point: " << std::endl
+             << t_k.point;
         return t_os;
       }
 
@@ -67,16 +71,24 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
       {
-        t_os << "KeypointGroup_id: " << t_kg.id << " KeypointGroup_confidence: " << t_kg.confidence;
-        if (!t_kg.bounding_boxes.empty()) {
-          t_os << " KeypointGroup_bounding_boxes:";
+        t_os << "    - id: " << t_kg.id << std::endl << "      confidence: " << t_kg.confidence;
+        t_os << std::endl << "      bounding_boxes: ";
+        if (t_kg.bounding_boxes.empty()) {
+          t_os << "[]";
+        }
+        else {
           for (auto bb : t_kg.bounding_boxes) {
-            t_os << " " << bb;
+            t_os << std::endl << bb;
           }
         }
-        t_os << " KeypointGroup_keypoints:";
-        for (auto k : t_kg.keypoints) {
-          t_os << " " << k;
+        t_os << std::endl << "      keypoints: ";
+        if (t_kg.keypoints.empty()) {
+          t_os << "[]";
+        }
+        else {
+          for (auto k : t_kg.keypoints) {
+            t_os << std::endl << k;
+          }
         }
         return t_os;
       }
@@ -90,9 +102,14 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s)
       {
-        t_os << "Skeleton_id: " << t_s.id << " Skeleton_skeleton_parts:";
-        for (auto sp : t_s.skeleton_parts) {
-          t_os << " " << sp;
+        t_os << "  - id: " << t_s.id << std::endl << "    skeleton_parts: ";
+        if (t_s.skeleton_parts.empty()) {
+          t_os << "[]";
+        }
+        else {
+          for (auto sp : t_s.skeleton_parts) {
+            t_os << std::endl << sp;
+          }
         }
         return t_os;
       }
@@ -104,9 +121,14 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg)
       {
-        t_os << " SkeletonGroup_skeletons:";
-        for (auto s : t_sg.skeletons) {
-          t_os << " " << s;
+        t_os << "skeletons: ";
+        if (t_sg.skeletons.empty()) {
+          t_os << "[]";
+        }
+        else {
+          for (auto s : t_sg.skeletons) {
+            t_os << std::endl << s;
+          }
         }
         return t_os;
       }
