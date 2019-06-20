@@ -204,6 +204,20 @@ namespace hiros {
         return sg;
       }
 
+      skeleton_msgs::SkeletonGroup toMsg(const std_msgs::Header& t_header,
+                                         const ros::Time& t_src_time,
+                                         const hiros::skeletons::types::SkeletonGroup& t_sg)
+      {
+        skeleton_msgs::SkeletonGroup sg;
+        sg.header = t_header;
+        sg.src_time = t_src_time;
+        sg.skeletons.reserve(t_sg.skeletons.size());
+        for (auto& s : t_sg.skeletons) {
+          sg.skeletons.push_back(toMsg(s));
+        }
+        return sg;
+      }
+
       skeleton_msgs::SkeletonGroup toMsg(const unsigned int& t_seq,
                                          const ros::Time& t_stamp,
                                          const std::string& t_frame_id,

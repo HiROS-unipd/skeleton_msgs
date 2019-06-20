@@ -2,6 +2,7 @@
 #define hiros_skeletons_utils_h
 
 #include <geometry_msgs/Point.h>
+#include <std_msgs/Header.h>
 
 #include "skeleton_msgs/Keypoint.h"
 #include "skeleton_msgs/KeypointGroup.h"
@@ -69,6 +70,10 @@ namespace hiros {
       hiros::skeletons::types::SkeletonGroup toStruct(const skeleton_msgs::SkeletonGroup& t_sg);
 
       skeleton_msgs::SkeletonGroup toMsg(const hiros::skeletons::types::SkeletonGroup& t_sg);
+
+      skeleton_msgs::SkeletonGroup toMsg(const std_msgs::Header& t_header,
+                                         const ros::Time& t_src_time,
+                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
 
       skeleton_msgs::SkeletonGroup toMsg(const unsigned int& t_seq,
                                          const ros::Time& t_stamp,
