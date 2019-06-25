@@ -1,6 +1,7 @@
 #ifndef hiros_skeletons_types_h
 #define hiros_skeletons_types_h
 
+// Standard dependencies
 #include <iostream>
 #include <limits>
 #include <vector>

@@ -1,6 +1,8 @@
-#include "skeletons/types.h"
-
+// Standard dependencies
 #include <cmath>
+
+// Internal dependencies
+#include "skeletons/types.h"
 
 namespace hiros {
   namespace skeletons {

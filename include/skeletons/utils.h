@@ -1,15 +1,18 @@
 #ifndef hiros_skeletons_utils_h
 #define hiros_skeletons_utils_h
 
+// Ros Distributed Message dependencies
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
 
+// Custom Ros Message dependencies
 #include "skeleton_msgs/Box.h"
 #include "skeleton_msgs/Keypoint.h"
 #include "skeleton_msgs/KeypointGroup.h"
 #include "skeleton_msgs/Skeleton.h"
 #include "skeleton_msgs/SkeletonGroup.h"
 
+// Internal dependencies
 #include "skeletons/types.h"
 
 namespace hiros {
