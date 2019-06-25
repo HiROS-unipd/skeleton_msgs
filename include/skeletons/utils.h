@@ -19,6 +19,8 @@ namespace hiros {
   namespace skeletons {
     namespace utils {
 
+      const std::string padding(int t_n_pads);
+
       // Point
       hiros::skeletons::types::Point
       toStruct(const double& t_x,

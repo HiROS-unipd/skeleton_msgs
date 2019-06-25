@@ -3,6 +3,7 @@
 
 // Internal dependencies
 #include "skeletons/types.h"
+#include "skeletons/utils.h"
 
 namespace hiros {
   namespace skeletons {
@@ -17,9 +18,10 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Point& t_p)
       {
-        t_os << "        - x: " << t_p.x << std::endl << "          y: " << t_p.y;
+        t_os << utils::padding(4) << "- x: " << t_p.x << std::endl
+             << utils::padding(5) << "y: " << t_p.y;
         if (!std::isnan(t_p.z)) {
-          t_os << std::endl << "          z: " << t_p.z;
+          t_os << std::endl << utils::padding(5) << "z: " << t_p.z;
         }
         return t_os;
       }
@@ -41,15 +43,16 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Box& t_b)
       {
-        t_os << "      - x: " << t_b.x << std::endl << "        y: " << t_b.y;
+        t_os << utils::padding(3) << "- x: " << t_b.x << std::endl
+             << utils::padding(4) << "y: " << t_b.y;
         if (!std::isnan(t_b.z)) {
-          t_os << std::endl << "        z: " << t_b.z;
+          t_os << std::endl << utils::padding(4) << "z: " << t_b.z;
         }
         t_os << std::endl
-             << "        length: " << t_b.length << std::endl
-             << "        height: " << t_b.height;
+             << utils::padding(4) << "length: " << t_b.length << std::endl
+             << utils::padding(4) << "height: " << t_b.height;
         if (!std::isnan(t_b.width)) {
-          t_os << std::endl << "        width: " << t_b.width;
+          t_os << std::endl << utils::padding(4) << "width: " << t_b.width;
         }
         return t_os;
       }
@@ -63,9 +66,9 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Keypoint& t_k)
       {
-        t_os << "      - id: " << t_k.id << std::endl
-             << "        confidence: " << t_k.confidence << std::endl
-             << "        point: " << std::endl
+        t_os << utils::padding(3) << "- id: " << t_k.id << std::endl
+             << utils::padding(4) << "confidence: " << t_k.confidence << std::endl
+             << utils::padding(4) << "point: " << std::endl
              << t_k.point;
         return t_os;
       }
@@ -83,11 +86,11 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
       {
-        t_os << "    - id: " << t_kg.id << std::endl
-             << "      confidence: " << t_kg.confidence << std::endl
-             << "      bounding_box: " << std::endl
+        t_os << utils::padding(2) << "- id: " << t_kg.id << std::endl
+             << utils::padding(3) << "confidence: " << t_kg.confidence << std::endl
+             << utils::padding(3) << "bounding_box: " << std::endl
              << t_kg.bounding_box << std::endl
-             << "      keypoints: ";
+             << utils::padding(3) << "keypoints: ";
         if (t_kg.keypoints.empty()) {
           t_os << "[]";
         }
@@ -108,7 +111,8 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s)
       {
-        t_os << "  - id: " << t_s.id << std::endl << "    skeleton_parts: ";
+        t_os << utils::padding(1) << "- id: " << t_s.id << std::endl
+             << utils::padding(2) << "skeleton_parts: ";
         if (t_s.skeleton_parts.empty()) {
           t_os << "[]";
         }

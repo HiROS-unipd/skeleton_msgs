@@ -5,6 +5,17 @@ namespace hiros {
   namespace skeletons {
     namespace utils {
 
+      const std::string PAD = "  ";
+
+      const std::string padding(int t_n_pads)
+      {
+        std::string ret_str;
+        while (--t_n_pads >= 0) {
+          ret_str += PAD;
+        }
+        return ret_str;
+      }
+
       // Point
       hiros::skeletons::types::Point
       toStruct(const double& t_x, const double& t_y, const double& t_z)
