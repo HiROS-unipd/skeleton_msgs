@@ -4,9 +4,9 @@
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
 
+#include "skeleton_msgs/Box.h"
 #include "skeleton_msgs/Keypoint.h"
 #include "skeleton_msgs/KeypointGroup.h"
-#include "skeleton_msgs/Rectangle.h"
 #include "skeleton_msgs/Skeleton.h"
 #include "skeleton_msgs/SkeletonGroup.h"
 
@@ -26,13 +26,17 @@ namespace hiros {
 
       geometry_msgs::Point toMsg(const hiros::skeletons::types::Point& t_p);
 
-      // Rectangle
-      hiros::skeletons::types::Rectangle
-      toStruct(const double& t_x, const double& t_y, const double& t_width, const double& t_height);
+      // Box
+      hiros::skeletons::types::Box toStruct(const double& t_x,
+                                            const double& t_y,
+                                            const double& t_z,
+                                            const double& t_length,
+                                            const double& t_height,
+                                            const double& t_width);
 
-      hiros::skeletons::types::Rectangle toStruct(const skeleton_msgs::Rectangle& t_r);
+      hiros::skeletons::types::Box toStruct(const skeleton_msgs::Box& t_b);
 
-      skeleton_msgs::Rectangle toMsg(const hiros::skeletons::types::Rectangle& t_r);
+      skeleton_msgs::Box toMsg(const hiros::skeletons::types::Box& t_b);
 
       // Keypoint
       hiros::skeletons::types::Keypoint toStruct(const unsigned int& t_id,
@@ -47,7 +51,7 @@ namespace hiros {
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned int& t_id,
                const double& t_confidence,
-               const std::vector<hiros::skeletons::types::Rectangle>& t_bounding_boxes,
+               const hiros::skeletons::types::Box& t_bounding_box,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
 
       hiros::skeletons::types::KeypointGroup toStruct(const skeleton_msgs::KeypointGroup& t_kg);

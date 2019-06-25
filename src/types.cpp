@@ -22,23 +22,33 @@ namespace hiros {
         return t_os;
       }
 
-      // Rectangle
-      Rectangle::Rectangle(const double& t_x,
-                           const double& t_y,
-                           const double& t_width,
-                           const double& t_height)
+      // Box
+      Box::Box(const double& t_x,
+               const double& t_y,
+               const double& t_z,
+               const double& t_length,
+               const double& t_height,
+               const double& t_width)
         : x(t_x)
         , y(t_y)
-        , width(t_width)
+        , z(t_z)
+        , length(t_length)
         , height(t_height)
+        , width(t_width)
       {}
 
-      std::ostream& operator<<(std::ostream& t_os, const Rectangle& t_r)
+      std::ostream& operator<<(std::ostream& t_os, const Box& t_b)
       {
-        t_os << "      - x: " << t_r.x << std::endl
-             << "        y: " << t_r.y << std::endl
-             << "        width: " << t_r.width << std::endl
-             << "        height: " << t_r.height;
+        t_os << "      - x: " << t_b.x << std::endl << "        y: " << t_b.y;
+        if (!std::isnan(t_b.z)) {
+          t_os << std::endl << "        z: " << t_b.z;
+        }
+        t_os << std::endl
+             << "        length: " << t_b.length << std::endl
+             << "        height: " << t_b.height;
+        if (!std::isnan(t_b.width)) {
+          t_os << std::endl << "        width: " << t_b.width;
+        }
         return t_os;
       }
 
@@ -62,26 +72,19 @@ namespace hiros {
       KeypointGroup::KeypointGroup(const unsigned int& t_id,
                                    const double& t_confidence,
                                    const std::vector<Keypoint>& t_keypoints,
-                                   const std::vector<Rectangle>& t_bounding_boxes)
+                                   const Box& t_bounding_box)
         : id(t_id)
         , confidence(t_confidence)
-        , bounding_boxes(t_bounding_boxes)
+        , bounding_box(t_bounding_box)
         , keypoints(t_keypoints)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
       {
-        t_os << "    - id: " << t_kg.id << std::endl << "      confidence: " << t_kg.confidence;
-        t_os << std::endl << "      bounding_boxes: ";
-        if (t_kg.bounding_boxes.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto bb : t_kg.bounding_boxes) {
-            t_os << std::endl << bb;
-          }
-        }
-        t_os << std::endl << "      keypoints: ";
+        t_os << "    - id: " << t_kg.id << std::endl
+             << "      confidence: " << t_kg.confidence << std::endl
+             << "      bounding_box: " << t_kg.bounding_box << std::endl
+             << "      keypoints: ";
         if (t_kg.keypoints.empty()) {
           t_os << "[]";
         }

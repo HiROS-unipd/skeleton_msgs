@@ -33,36 +33,46 @@ namespace hiros {
         return p;
       }
 
-      // Rectangle
-      hiros::skeletons::types::Rectangle
-      toStruct(const double& t_x, const double& t_y, const double& t_width, const double& t_height)
+      // Box
+      hiros::skeletons::types::Box toStruct(const double& t_x,
+                                            const double& t_y,
+                                            const double& t_z,
+                                            const double& t_length,
+                                            const double& t_height,
+                                            const double& t_width)
       {
-        hiros::skeletons::types::Rectangle r;
-        r.x = t_x;
-        r.y = t_y;
-        r.width = t_width;
-        r.height = t_height;
-        return r;
+        hiros::skeletons::types::Box b;
+        b.x = t_x;
+        b.y = t_y;
+        b.z = t_z;
+        b.length = t_length;
+        b.height = t_height;
+        b.width = t_width;
+        return b;
       }
 
-      hiros::skeletons::types::Rectangle toStruct(const skeleton_msgs::Rectangle& t_r)
+      hiros::skeletons::types::Box toStruct(const skeleton_msgs::Box& t_b)
       {
-        hiros::skeletons::types::Rectangle r;
-        r.x = t_r.x;
-        r.y = t_r.y;
-        r.width = t_r.width;
-        r.height = t_r.height;
-        return r;
+        hiros::skeletons::types::Box b;
+        b.x = t_b.x;
+        b.y = t_b.y;
+        b.z = t_b.z;
+        b.length = t_b.length;
+        b.height = t_b.height;
+        b.width = t_b.width;
+        return b;
       }
 
-      skeleton_msgs::Rectangle toMsg(const hiros::skeletons::types::Rectangle& t_r)
+      skeleton_msgs::Box toMsg(const hiros::skeletons::types::Box& t_b)
       {
-        skeleton_msgs::Rectangle r;
-        r.x = t_r.x;
-        r.y = t_r.y;
-        r.width = t_r.width;
-        r.height = t_r.height;
-        return r;
+        skeleton_msgs::Box b;
+        b.x = t_b.x;
+        b.y = t_b.y;
+        b.z = t_b.z;
+        b.length = t_b.length;
+        b.height = t_b.height;
+        b.width = t_b.width;
+        return b;
       }
 
       // Keypoint
@@ -99,13 +109,13 @@ namespace hiros {
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned int& t_id,
                const double& t_confidence,
-               const std::vector<hiros::skeletons::types::Rectangle>& t_bounding_boxes,
+               const hiros::skeletons::types::Box& t_bounding_box,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints)
       {
         hiros::skeletons::types::KeypointGroup kg;
         kg.id = t_id;
         kg.confidence = t_confidence;
-        kg.bounding_boxes = t_bounding_boxes;
+        kg.bounding_box = t_bounding_box;
         kg.keypoints = t_keypoints;
         return kg;
       }
@@ -115,10 +125,7 @@ namespace hiros {
         hiros::skeletons::types::KeypointGroup kg;
         kg.id = static_cast<unsigned int>(t_kg.id);
         kg.confidence = t_kg.confidence;
-        kg.bounding_boxes.reserve(t_kg.bounding_boxes.size());
-        for (auto& bb : t_kg.bounding_boxes) {
-          kg.bounding_boxes.push_back(toStruct(bb));
-        }
+        kg.bounding_box = toStruct(t_kg.bounding_box);
         kg.keypoints.reserve(t_kg.keypoints.size());
         for (auto& k : t_kg.keypoints) {
           kg.keypoints.push_back(toStruct(k));
@@ -131,10 +138,7 @@ namespace hiros {
         skeleton_msgs::KeypointGroup kg;
         kg.id = t_kg.id;
         kg.confidence = t_kg.confidence;
-        kg.bounding_boxes.reserve(t_kg.bounding_boxes.size());
-        for (auto& bb : t_kg.bounding_boxes) {
-          kg.bounding_boxes.push_back(toMsg(bb));
-        }
+        kg.bounding_box = toMsg(t_kg.bounding_box);
         kg.keypoints.reserve(t_kg.keypoints.size());
         for (auto& k : t_kg.keypoints) {
           kg.keypoints.push_back(toMsg(k));

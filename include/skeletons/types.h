@@ -21,17 +21,19 @@ namespace hiros {
         double x, y, z;
       };
 
-      // Rectangle
-      struct Rectangle
+      // Box
+      struct Box
       {
-        Rectangle(const double& t_x = std::numeric_limits<double>::quiet_NaN(),
-                  const double& t_y = std::numeric_limits<double>::quiet_NaN(),
-                  const double& t_width = std::numeric_limits<double>::quiet_NaN(),
-                  const double& t_height = std::numeric_limits<double>::quiet_NaN());
+        Box(const double& t_x = std::numeric_limits<double>::quiet_NaN(),
+            const double& t_y = std::numeric_limits<double>::quiet_NaN(),
+            const double& t_z = std::numeric_limits<double>::quiet_NaN(),
+            const double& t_length = std::numeric_limits<double>::quiet_NaN(),
+            const double& t_height = std::numeric_limits<double>::quiet_NaN(),
+            const double& t_width = std::numeric_limits<double>::quiet_NaN());
 
-        friend std::ostream& operator<<(std::ostream& t_os, const Rectangle& t_r);
+        friend std::ostream& operator<<(std::ostream& t_os, const Box& t_b);
 
-        double x, y, width, height;
+        double x, y, z, length, height, width;
       };
 
       // Keypoint
@@ -54,13 +56,13 @@ namespace hiros {
         KeypointGroup(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
                       const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                       const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>(),
-                      const std::vector<Rectangle>& t_bounding_boxes = std::vector<Rectangle>());
+                      const Box& t_bounding_box = {});
 
         friend std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg);
 
         unsigned int id;
         double confidence;
-        std::vector<Rectangle> bounding_boxes;
+        Box bounding_box;
         std::vector<Keypoint> keypoints;
       };
 
