@@ -83,7 +83,8 @@ namespace hiros {
       {
         t_os << "    - id: " << t_kg.id << std::endl
              << "      confidence: " << t_kg.confidence << std::endl
-             << "      bounding_box: " << t_kg.bounding_box << std::endl
+             << "      bounding_box: " << std::endl
+             << t_kg.bounding_box << std::endl
              << "      keypoints: ";
         if (t_kg.keypoints.empty()) {
           t_os << "[]";
