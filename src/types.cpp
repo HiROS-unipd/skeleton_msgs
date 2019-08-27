@@ -26,33 +26,50 @@ namespace hiros {
         return t_os;
       }
 
-      // Box
-      Box::Box(const double& t_x,
-               const double& t_y,
-               const double& t_z,
-               const double& t_length,
-               const double& t_height,
-               const double& t_width)
+      // Quaternion
+      Quaternion::Quaternion(const double& t_x,
+                             const double& t_y,
+                             const double& t_z,
+                             const double& t_w)
         : x(t_x)
         , y(t_y)
         , z(t_z)
+        , w(t_w)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const Quaternion& t_p)
+      {
+        t_os << utils::padding(4) << "- x: " << t_p.x << std::endl
+             << utils::padding(5) << "y: " << t_p.y << std::endl
+             << utils::padding(5) << "z: " << t_p.y << std::endl
+             << utils::padding(5) << "w: " << t_p.z;
+        return t_os;
+      }
+
+      // Box
+      Box::Box(const Point& t_center,
+               const double& t_length,
+               const double& t_height,
+               const double& t_width,
+               const Quaternion& t_orientation)
+        : center(t_center)
         , length(t_length)
         , height(t_height)
         , width(t_width)
+        , orientation(t_orientation)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Box& t_b)
       {
-        t_os << utils::padding(3) << "- x: " << t_b.x << std::endl
-             << utils::padding(4) << "y: " << t_b.y;
-        if (!std::isnan(t_b.z)) {
-          t_os << std::endl << utils::padding(4) << "z: " << t_b.z;
-        }
-        t_os << std::endl
+        t_os << utils::padding(3) << "- center: " << std::endl
+             << t_b.center << std::endl
              << utils::padding(4) << "length: " << t_b.length << std::endl
              << utils::padding(4) << "height: " << t_b.height;
         if (!std::isnan(t_b.width)) {
           t_os << std::endl << utils::padding(4) << "width: " << t_b.width;
+        }
+        if (t_b.orientation.w != 1.0) {
+          t_os << std::endl << utils::padding(4) << "orientation: " << std::endl << t_b.orientation;
         }
         return t_os;
       }
@@ -76,8 +93,8 @@ namespace hiros {
       // KeypointGroup
       KeypointGroup::KeypointGroup(const unsigned int& t_id,
                                    const double& t_confidence,
-                                   const std::vector<Keypoint>& t_keypoints,
-                                   const Box& t_bounding_box)
+                                   const Box& t_bounding_box,
+                                   const std::vector<Keypoint>& t_keypoints)
         : id(t_id)
         , confidence(t_confidence)
         , bounding_box(t_bounding_box)

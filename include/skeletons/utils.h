@@ -31,13 +31,22 @@ namespace hiros {
 
       geometry_msgs::Point toMsg(const hiros::skeletons::types::Point& t_p);
 
+      // Quaternion
+      hiros::skeletons::types::Quaternion
+      toStruct(const double& t_x, const double& t_y, const double& t_z, const double& t_w);
+
+      hiros::skeletons::types::Quaternion toStruct(const geometry_msgs::Quaternion& t_q);
+
+      geometry_msgs::Quaternion toMsg(const hiros::skeletons::types::Quaternion& t_q);
+
       // Box
-      hiros::skeletons::types::Box toStruct(const double& t_x,
-                                            const double& t_y,
-                                            const double& t_z,
-                                            const double& t_length,
-                                            const double& t_height,
-                                            const double& t_width);
+      hiros::skeletons::types::Box
+      toStruct(const hiros::skeletons::types::Point& t_center,
+               const double& t_length,
+               const double& t_height,
+               const double& t_width = std::numeric_limits<double>::quiet_NaN(),
+               const hiros::skeletons::types::Quaternion& t_orientation =
+                 hiros::skeletons::types::Quaternion());
 
       hiros::skeletons::types::Box toStruct(const skeleton_msgs::Box& t_b);
 
@@ -53,6 +62,11 @@ namespace hiros {
       skeleton_msgs::Keypoint toMsg(const hiros::skeletons::types::Keypoint& t_k);
 
       // keypointGroup
+      hiros::skeletons::types::KeypointGroup
+      toStruct(const unsigned int& t_id,
+               const double& t_confidence,
+               const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
+
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned int& t_id,
                const double& t_confidence,

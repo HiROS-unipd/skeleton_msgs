@@ -22,19 +22,33 @@ namespace hiros {
         double x, y, z;
       };
 
+      // Quaternion
+      struct Quaternion
+      {
+        Quaternion(const double& t_x = 0.0,
+                   const double& t_y = 0.0,
+                   const double& t_z = 0.0,
+                   const double& t_w = 1.0);
+
+        friend std::ostream& operator<<(std::ostream& t_os, const Quaternion& t_q);
+
+        double x, y, z, w;
+      };
+
       // Box
       struct Box
       {
-        Box(const double& t_x = std::numeric_limits<double>::quiet_NaN(),
-            const double& t_y = std::numeric_limits<double>::quiet_NaN(),
-            const double& t_z = std::numeric_limits<double>::quiet_NaN(),
+        Box(const Point& t_center = Point(),
             const double& t_length = std::numeric_limits<double>::quiet_NaN(),
             const double& t_height = std::numeric_limits<double>::quiet_NaN(),
-            const double& t_width = std::numeric_limits<double>::quiet_NaN());
+            const double& t_width = std::numeric_limits<double>::quiet_NaN(),
+            const Quaternion& t_orientation = Quaternion());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Box& t_b);
 
-        double x, y, z, length, height, width;
+        Point center;
+        double length, height, width;
+        Quaternion orientation;
       };
 
       // Keypoint
@@ -56,8 +70,8 @@ namespace hiros {
       {
         KeypointGroup(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
                       const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                      const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>(),
-                      const Box& t_bounding_box = {});
+                      const Box& t_bounding_box = Box(),
+                      const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg);
 
