@@ -92,10 +92,12 @@ namespace hiros {
 
       // KeypointGroup
       KeypointGroup::KeypointGroup(const unsigned int& t_id,
+                                   const unsigned int& t_max_keypoints,
                                    const double& t_confidence,
                                    const Box& t_bounding_box,
                                    const std::vector<Keypoint>& t_keypoints)
         : id(t_id)
+        , max_keypoints(t_max_keypoints)
         , confidence(t_confidence)
         , bounding_box(t_bounding_box)
         , keypoints(t_keypoints)
@@ -104,6 +106,7 @@ namespace hiros {
       std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
       {
         t_os << utils::padding(2) << "- id: " << t_kg.id << std::endl
+             << utils::padding(3) << "max_keypoints: " << t_kg.max_keypoints << std::endl
              << utils::padding(3) << "confidence: " << t_kg.confidence << std::endl
              << utils::padding(3) << "bounding_box: " << std::endl
              << t_kg.bounding_box << std::endl

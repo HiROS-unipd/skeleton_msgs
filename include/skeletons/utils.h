@@ -64,11 +64,13 @@ namespace hiros {
       // keypointGroup
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned int& t_id,
+               const unsigned int& t_max_keypoints,
                const double& t_confidence,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
 
       hiros::skeletons::types::KeypointGroup
       toStruct(const unsigned int& t_id,
+               const unsigned int& t_max_keypoints,
                const double& t_confidence,
                const hiros::skeletons::types::Box& t_bounding_box,
                const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);

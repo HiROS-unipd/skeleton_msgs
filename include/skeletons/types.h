@@ -68,14 +68,16 @@ namespace hiros {
       // KeypointGroup
       struct KeypointGroup
       {
-        KeypointGroup(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
-                      const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                      const Box& t_bounding_box = Box(),
-                      const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>());
+        KeypointGroup(
+          const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
+          const unsigned int& t_max_keypoints = std::numeric_limits<unsigned int>::quiet_NaN(),
+          const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+          const Box& t_bounding_box = Box(),
+          const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg);
 
-        unsigned int id;
+        unsigned int id, max_keypoints;
         double confidence;
         Box bounding_box;
         std::vector<Keypoint> keypoints;
