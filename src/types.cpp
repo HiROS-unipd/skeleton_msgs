@@ -41,8 +41,8 @@ namespace hiros {
       {
         t_os << utils::padding(4) << "- x: " << t_p.x << std::endl
              << utils::padding(5) << "y: " << t_p.y << std::endl
-             << utils::padding(5) << "z: " << t_p.y << std::endl
-             << utils::padding(5) << "w: " << t_p.z;
+             << utils::padding(5) << "z: " << t_p.z << std::endl
+             << utils::padding(5) << "w: " << t_p.w;
         return t_os;
       }
 
