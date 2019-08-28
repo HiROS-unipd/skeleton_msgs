@@ -55,7 +55,7 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Quaternion& t_q)
   q.x = t_q.x;
   q.y = t_q.y;
   q.z = t_q.z;
-  q.z = t_q.w;
+  q.w = t_q.w;
   return q;
 }
 
