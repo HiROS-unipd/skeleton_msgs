@@ -1,4 +1,4 @@
-uint32 id
+int32 id
 uint32 max_keypoints
 float64 confidence
 

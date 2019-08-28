@@ -75,7 +75,7 @@ namespace hiros {
       }
 
       // Keypoint
-      Keypoint::Keypoint(const unsigned int& t_id, const double& t_confidence, const Point& t_point)
+      Keypoint::Keypoint(const int& t_id, const double& t_confidence, const Point& t_point)
         : id(t_id)
         , confidence(t_confidence)
         , point(t_point)
@@ -91,7 +91,7 @@ namespace hiros {
       }
 
       // KeypointGroup
-      KeypointGroup::KeypointGroup(const unsigned int& t_id,
+      KeypointGroup::KeypointGroup(const int& t_id,
                                    const unsigned int& t_max_keypoints,
                                    const double& t_confidence,
                                    const Box& t_bounding_box,
@@ -123,8 +123,7 @@ namespace hiros {
       }
 
       // Skeleton
-      Skeleton::Skeleton(const unsigned int& t_id,
-                         const std::vector<KeypointGroup>& t_skeleton_parts)
+      Skeleton::Skeleton(const int& t_id, const std::vector<KeypointGroup>& t_skeleton_parts)
         : id(t_id)
         , skeleton_parts(t_skeleton_parts)
       {}

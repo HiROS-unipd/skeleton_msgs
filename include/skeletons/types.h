@@ -54,13 +54,13 @@ namespace hiros {
       // Keypoint
       struct Keypoint
       {
-        Keypoint(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
+        Keypoint(const int& t_id = -1,
                  const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                  const Point& t_point = Point());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Keypoint& t_k);
 
-        unsigned int id;
+        int id;
         double confidence;
         Point point;
       };
@@ -68,16 +68,16 @@ namespace hiros {
       // KeypointGroup
       struct KeypointGroup
       {
-        KeypointGroup(
-          const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
-          const unsigned int& t_max_keypoints = std::numeric_limits<unsigned int>::quiet_NaN(),
-          const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-          const Box& t_bounding_box = Box(),
-          const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>());
+        KeypointGroup(const int& t_id = -1,
+                      const unsigned int& t_max_keypoints = 0,
+                      const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+                      const Box& t_bounding_box = Box(),
+                      const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg);
 
-        unsigned int id, max_keypoints;
+        int id;
+        unsigned int max_keypoints;
         double confidence;
         Box bounding_box;
         std::vector<Keypoint> keypoints;
@@ -86,12 +86,12 @@ namespace hiros {
       // Skeleton
       struct Skeleton
       {
-        Skeleton(const unsigned int& t_id = std::numeric_limits<unsigned int>::quiet_NaN(),
+        Skeleton(const int& t_id = -1,
                  const std::vector<KeypointGroup>& t_skeleton_parts = std::vector<KeypointGroup>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
 
-        unsigned int id;
+        int id;
         std::vector<KeypointGroup> skeleton_parts;
       };
 

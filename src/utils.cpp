@@ -89,7 +89,7 @@ skeleton_msgs::Box hiros::skeletons::utils::toMsg(const hiros::skeletons::types:
 
 // Keypoint
 hiros::skeletons::types::Keypoint
-hiros::skeletons::utils::toStruct(const unsigned int& t_id,
+hiros::skeletons::utils::toStruct(const int& t_id,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::Point& t_point)
 {
@@ -113,7 +113,7 @@ skeleton_msgs::Keypoint hiros::skeletons::utils::toMsg(const hiros::skeletons::t
 
 // keypointGroup
 hiros::skeletons::types::KeypointGroup
-hiros::skeletons::utils::toStruct(const unsigned int& t_id,
+hiros::skeletons::utils::toStruct(const int& t_id,
                                   const unsigned int& t_max_keypoints,
                                   const double& t_confidence,
                                   const std::vector<hiros::skeletons::types::Keypoint> t_keypoints)
@@ -123,7 +123,7 @@ hiros::skeletons::utils::toStruct(const unsigned int& t_id,
 }
 
 hiros::skeletons::types::KeypointGroup
-hiros::skeletons::utils::toStruct(const unsigned int& t_id,
+hiros::skeletons::utils::toStruct(const int& t_id,
                                   const unsigned int& t_max_keypoints,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::Box& t_bounding_box,
@@ -162,7 +162,7 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::KeypointGroup& t_k
 
 // Skeleton
 hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
-  const unsigned int& t_id,
+  const int& t_id,
   const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts)
 {
   return hiros::skeletons::types::Skeleton(t_id, t_skeleton_parts);
