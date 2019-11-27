@@ -42,7 +42,9 @@ catkin_package(CATKIN_DEPENDS
                message_runtime
                std_msgs
                LIBRARIES
-               ${PROJECT_NAME}_types)
+               ${PROJECT_NAME}_types
+               INCLUDE_DIRS
+               include)
 
 # ##############################################################################
 # Build ##
