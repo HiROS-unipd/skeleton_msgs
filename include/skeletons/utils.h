@@ -3,12 +3,14 @@
 
 // Ros Distributed Message dependencies
 #include <geometry_msgs/Point.h>
+#include <geometry_msgs/Vector3.h>
 #include <std_msgs/Header.h>
 
 // Custom Ros Message dependencies
 #include "skeleton_msgs/Box.h"
 #include "skeleton_msgs/Keypoint.h"
 #include "skeleton_msgs/KeypointGroup.h"
+#include "skeleton_msgs/Point.h"
 #include "skeleton_msgs/Skeleton.h"
 #include "skeleton_msgs/SkeletonGroup.h"
 
@@ -21,15 +23,27 @@ namespace hiros {
 
       const std::string padding(int t_n_pads);
 
-      // Point
-      hiros::skeletons::types::Point
+      // Vector
+      hiros::skeletons::types::Vector
       toStruct(const double& t_x,
                const double& t_y,
                const double& t_z = std::numeric_limits<double>::quiet_NaN());
 
-      hiros::skeletons::types::Point toStruct(const geometry_msgs::Point& t_p);
+      hiros::skeletons::types::Vector toStruct(const geometry_msgs::Point& t_p);
+      hiros::skeletons::types::Vector toStruct(const geometry_msgs::Vector3& t_v);
 
-      geometry_msgs::Point toMsg(const hiros::skeletons::types::Point& t_p);
+      geometry_msgs::Point toPointMsg(const hiros::skeletons::types::Vector& t_v);
+      geometry_msgs::Vector3 toVector3Msg(const hiros::skeletons::types::Vector& t_v);
+
+      // Point
+      hiros::skeletons::types::Point toStruct(
+        const hiros::skeletons::types::Position& t_p,
+        const hiros::skeletons::types::Velocity& t_v = hiros::skeletons::types::Velocity(),
+        const hiros::skeletons::types::Acceleration& t_a = hiros::skeletons::types::Acceleration());
+
+      hiros::skeletons::types::Point toStruct(const skeleton_msgs::Point& t_p);
+
+      skeleton_msgs::Point toMsg(const hiros::skeletons::types::Point& t_p);
 
       // Quaternion
       hiros::skeletons::types::Quaternion
@@ -56,6 +70,14 @@ namespace hiros {
       hiros::skeletons::types::Keypoint toStruct(const int& t_id,
                                                  const double& t_confidence,
                                                  const hiros::skeletons::types::Point& t_point);
+
+      hiros::skeletons::types::Keypoint toStruct(
+        const int& t_id,
+        const double& t_confidence,
+        const hiros::skeletons::types::Position& t_position,
+        const hiros::skeletons::types::Velocity& t_velocity = hiros::skeletons::types::Velocity(),
+        const hiros::skeletons::types::Acceleration& t_acceleration =
+          hiros::skeletons::types::Acceleration());
 
       hiros::skeletons::types::Keypoint toStruct(const skeleton_msgs::Keypoint& t_k);
 

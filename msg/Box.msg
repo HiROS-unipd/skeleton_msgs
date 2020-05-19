@@ -1,4 +1,4 @@
-geometry_msgs/Point center
+Point center
 float64 length
 float64 height
 float64 width

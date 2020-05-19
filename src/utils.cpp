@@ -12,24 +12,63 @@ const std::string hiros::skeletons::utils::padding(int t_n_pads)
   return ret_str;
 }
 
-// Point
-hiros::skeletons::types::Point
+// Vector
+hiros::skeletons::types::Vector
 hiros::skeletons::utils::toStruct(const double& t_x, const double& t_y, const double& t_z)
 {
-  return hiros::skeletons::types::Point(t_x, t_y, t_z);
+  return hiros::skeletons::types::Vector(t_x, t_y, t_z);
 }
 
-hiros::skeletons::types::Point hiros::skeletons::utils::toStruct(const geometry_msgs::Point& t_p)
+hiros::skeletons::types::Vector hiros::skeletons::utils::toStruct(const geometry_msgs::Point& t_p)
 {
-  return hiros::skeletons::types::Point(t_p.x, t_p.y, t_p.z);
+  return hiros::skeletons::types::Vector(t_p.x, t_p.y, t_p.z);
 }
 
-geometry_msgs::Point hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Point& t_p)
+hiros::skeletons::types::Vector hiros::skeletons::utils::toStruct(const geometry_msgs::Vector3& t_v)
+{
+  return hiros::skeletons::types::Vector(t_v.x, t_v.y, t_v.z);
+}
+
+geometry_msgs::Point hiros::skeletons::utils::toPointMsg(const hiros::skeletons::types::Vector& t_v)
 {
   geometry_msgs::Point p;
-  p.x = t_p.x;
-  p.y = t_p.y;
-  p.z = t_p.z;
+  p.x = t_v.x;
+  p.y = t_v.y;
+  p.z = t_v.z;
+  return p;
+}
+
+geometry_msgs::Vector3
+hiros::skeletons::utils::toVector3Msg(const hiros::skeletons::types::Vector& t_v)
+{
+  geometry_msgs::Vector3 v;
+  v.x = t_v.x;
+  v.y = t_v.y;
+  v.z = t_v.z;
+  return v;
+}
+
+// Point
+hiros::skeletons::types::Point
+hiros::skeletons::utils::toStruct(const hiros::skeletons::types::Position& t_p,
+                                  const hiros::skeletons::types::Velocity& t_v,
+                                  const hiros::skeletons::types::Acceleration& t_a)
+{
+  return hiros::skeletons::types::Point(t_p, t_v, t_a);
+}
+
+hiros::skeletons::types::Point hiros::skeletons::utils::toStruct(const skeleton_msgs::Point& t_p)
+{
+  return hiros::skeletons::types::Point(
+    toStruct(t_p.position), toStruct(t_p.velocity), toStruct(t_p.acceleration));
+}
+
+skeleton_msgs::Point hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Point& t_p)
+{
+  skeleton_msgs::Point p;
+  p.position = toPointMsg(t_p.position);
+  p.velocity = toVector3Msg(t_p.velocity);
+  p.acceleration = toVector3Msg(t_p.acceleration);
   return p;
 }
 
@@ -94,6 +133,17 @@ hiros::skeletons::utils::toStruct(const int& t_id,
                                   const hiros::skeletons::types::Point& t_point)
 {
   return hiros::skeletons::types::Keypoint(t_id, t_confidence, t_point);
+}
+
+hiros::skeletons::types::Keypoint
+hiros::skeletons::utils::toStruct(const int& t_id,
+                                  const double& t_confidence,
+                                  const hiros::skeletons::types::Position& t_position,
+                                  const hiros::skeletons::types::Velocity& t_velocity,
+                                  const hiros::skeletons::types::Acceleration& t_acceleration)
+{
+  return hiros::skeletons::types::Keypoint(
+    t_id, t_confidence, hiros::skeletons::types::Point(t_position, t_velocity, t_acceleration));
 }
 
 hiros::skeletons::types::Keypoint

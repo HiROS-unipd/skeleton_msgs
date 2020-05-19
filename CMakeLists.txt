@@ -20,6 +20,7 @@ add_message_files(FILES
                   Box.msg
                   Keypoint.msg
                   KeypointGroup.msg
+                  Point.msg
                   Skeleton.msg
                   SkeletonGroup.msg)
 

@@ -9,19 +9,42 @@ namespace hiros {
   namespace skeletons {
     namespace types {
 
-      // Point
-      Point::Point(const double& t_x, const double& t_y, const double& t_z)
+      // Vector
+      Vector::Vector(const double& t_x, const double& t_y, const double& t_z)
         : x(t_x)
         , y(t_y)
         , z(t_z)
       {}
 
+      std::ostream& operator<<(std::ostream& t_os, const Vector& t_v)
+      {
+        t_os << utils::padding(5) << "- x: " << t_v.x << std::endl
+             << utils::padding(6) << "y: " << t_v.y;
+        if (!std::isnan(t_v.z)) {
+          t_os << std::endl << utils::padding(6) << "z: " << t_v.z;
+        }
+        return t_os;
+      }
+
+      // Point
+      Point::Point(const Position& t_position,
+                   const Velocity& t_velocity,
+                   const Acceleration& t_acceleration)
+        : position(t_position)
+        , velocity(t_velocity)
+        , acceleration(t_acceleration)
+      {}
+
       std::ostream& operator<<(std::ostream& t_os, const Point& t_p)
       {
-        t_os << utils::padding(4) << "- x: " << t_p.x << std::endl
-             << utils::padding(5) << "y: " << t_p.y;
-        if (!std::isnan(t_p.z)) {
-          t_os << std::endl << utils::padding(5) << "z: " << t_p.z;
+        t_os << utils::padding(4) << "- position: " << std::endl << t_p.position;
+        if (!std::isnan(t_p.velocity.x)) {
+          t_os << std::endl << utils::padding(5) << "velocity: " << std::endl << t_p.velocity;
+        }
+        if (!std::isnan(t_p.acceleration.x)) {
+          t_os << std::endl
+               << utils::padding(5) << "acceleration: " << std::endl
+               << t_p.acceleration;
         }
         return t_os;
       }
