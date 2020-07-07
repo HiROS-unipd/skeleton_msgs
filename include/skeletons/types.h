@@ -17,6 +17,20 @@ namespace hiros {
                const double& t_y = std::numeric_limits<double>::quiet_NaN(),
                const double& t_z = std::numeric_limits<double>::quiet_NaN());
 
+        Vector& operator+=(const Vector& t_vec);
+        friend Vector operator+(const Vector& t_v1, const Vector& t_v2);
+
+        Vector& operator-=(const Vector& t_vec);
+        friend Vector operator-(const Vector& t_v1, const Vector& t_v2);
+        friend Vector operator-(const Vector& t_vec);
+
+        Vector& operator*=(const double& t_val);
+        friend Vector operator*(const Vector& t_vec, const double& t_val);
+        friend Vector operator*(const double& t_val, const Vector& t_vec);
+
+        Vector& operator/=(const double& t_val);
+        friend Vector operator/(const Vector& t_vec, const double& t_val);
+
         friend std::ostream& operator<<(std::ostream& t_os, const Vector& t_v);
 
         double x, y, z;

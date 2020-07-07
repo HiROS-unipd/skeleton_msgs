@@ -16,6 +16,77 @@ namespace hiros {
         , z(t_z)
       {}
 
+      Vector& Vector::operator+=(const Vector& t_vec)
+      {
+        x += t_vec.x;
+        y += t_vec.y;
+        z += t_vec.z;
+        return *this;
+      }
+
+      Vector operator+(const Vector& t_v1, const Vector& t_v2)
+      {
+        Vector res = t_v1;
+        return (res += t_v2);
+      }
+
+      Vector& Vector::operator-=(const Vector& t_vec)
+      {
+        x -= t_vec.x;
+        y -= t_vec.y;
+        z -= t_vec.z;
+        return *this;
+      }
+
+      Vector operator-(const Vector& t_v1, const Vector& t_v2)
+      {
+        Vector res = t_v1;
+        return (res -= t_v2);
+      }
+
+      Vector operator-(const Vector& t_vec)
+      {
+        Vector res;
+        res.x = -t_vec.x;
+        res.y = -t_vec.y;
+        res.z = -t_vec.z;
+        return res;
+      }
+
+      Vector& Vector::operator*=(const double& t_val)
+      {
+        x *= t_val;
+        y *= t_val;
+        z *= t_val;
+        return *this;
+      }
+
+      Vector operator*(const Vector& t_vec, const double& t_val)
+      {
+        Vector res = t_vec;
+        return (res *= t_val);
+      }
+
+      Vector operator*(const double& t_val, const Vector& t_vec)
+      {
+        Vector res = t_vec;
+        return (res *= t_val);
+      }
+
+      Vector& Vector::operator/=(const double& t_val)
+      {
+        x /= t_val;
+        y /= t_val;
+        z /= t_val;
+        return *this;
+      }
+
+      Vector operator/(const Vector& t_vec, const double& t_val)
+      {
+        Vector res = t_vec;
+        return (res /= t_val);
+      }
+
       std::ostream& operator<<(std::ostream& t_os, const Vector& t_v)
       {
         t_os << utils::padding(5) << "- x: " << t_v.x << std::endl
