@@ -120,17 +120,20 @@ namespace hiros {
 
       skeleton_msgs::SkeletonGroup toMsg(const std_msgs::Header& t_header,
                                          const ros::Time& t_src_time,
+                                         const std::string& t_src_frame,
                                          const hiros::skeletons::types::SkeletonGroup& t_sg);
 
       skeleton_msgs::SkeletonGroup toMsg(const ros::Time& t_stamp,
                                          const std::string& t_frame_id,
                                          const ros::Time& t_src_time,
+                                         const std::string& t_src_frame,
                                          const hiros::skeletons::types::SkeletonGroup& t_sg);
 
       skeleton_msgs::SkeletonGroup toMsg(const unsigned int& t_seq,
                                          const ros::Time& t_stamp,
                                          const std::string& t_frame_id,
                                          const ros::Time& t_src_time,
+                                         const std::string& t_src_frame,
                                          const hiros::skeletons::types::SkeletonGroup& t_sg);
 
     } // namespace utils
