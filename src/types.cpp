@@ -238,13 +238,22 @@ namespace hiros {
       }
 
       // SkeletonGroup
-      SkeletonGroup::SkeletonGroup(const std::vector<Skeleton>& t_skeletons)
-        : skeletons(t_skeletons)
+      SkeletonGroup::SkeletonGroup(const double& t_src_time,
+                                   const std::string& t_src_frame,
+                                   const std::vector<Skeleton>& t_skeletons)
+        : src_time(t_src_time)
+        , src_frame(t_src_frame)
+        , skeletons(t_skeletons)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg)
       {
-        t_os << "skeletons: ";
+        long src_time_sec = static_cast<long>(t_sg.src_time);
+        long src_time_nsec = static_cast<long>((t_sg.src_time - src_time_sec) * 1e9);
+
+        t_os << "- src_time: " << src_time_sec << "." << src_time_nsec << std::endl
+             << utils::padding(1) << "src_frame: " << t_sg.src_frame << std::endl
+             << utils::padding(1) << "skeletons: ";
         if (t_sg.skeletons.empty()) {
           t_os << "[]";
         }

@@ -130,10 +130,14 @@ namespace hiros {
       // SkeletonGroup
       struct SkeletonGroup
       {
-        SkeletonGroup(const std::vector<Skeleton>& t_skeletons = std::vector<Skeleton>());
+        SkeletonGroup(const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
+                      const std::string& t_src_frame = "",
+                      const std::vector<Skeleton>& t_skeletons = std::vector<Skeleton>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg);
 
+        double src_time;
+        std::string src_frame;
         std::vector<Skeleton> skeletons;
       };
 

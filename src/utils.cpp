@@ -242,15 +242,19 @@ skeleton_msgs::Skeleton hiros::skeletons::utils::toMsg(const hiros::skeletons::t
 
 // SkeletonGroup
 hiros::skeletons::types::SkeletonGroup
-hiros::skeletons::utils::toStruct(const std::vector<hiros::skeletons::types::Skeleton>& t_skeletons)
+hiros::skeletons::utils::toStruct(const double& t_src_time,
+                                  const std::string& t_src_frame,
+                                  const std::vector<hiros::skeletons::types::Skeleton>& t_skeletons)
 {
-  return hiros::skeletons::types::SkeletonGroup(t_skeletons);
+  return hiros::skeletons::types::SkeletonGroup(t_src_time, t_src_frame, t_skeletons);
 }
 
 hiros::skeletons::types::SkeletonGroup
 hiros::skeletons::utils::toStruct(const skeleton_msgs::SkeletonGroup& t_sg)
 {
   hiros::skeletons::types::SkeletonGroup sg;
+  sg.src_time = t_sg.src_time.toSec();
+  sg.src_frame = t_sg.src_frame;
   sg.skeletons.reserve(t_sg.skeletons.size());
   for (auto& s : t_sg.skeletons) {
     sg.skeletons.push_back(toStruct(s));
@@ -262,6 +266,8 @@ skeleton_msgs::SkeletonGroup
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::SkeletonGroup& t_sg)
 {
   skeleton_msgs::SkeletonGroup sg;
+  sg.src_time = ros::Time(t_sg.src_time);
+  sg.src_frame = t_sg.src_frame;
   sg.skeletons.reserve(t_sg.skeletons.size());
   for (auto& s : t_sg.skeletons) {
     sg.skeletons.push_back(toMsg(s));
@@ -287,6 +293,14 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
 }
 
 skeleton_msgs::SkeletonGroup
+hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
+                               const ros::Time& t_src_time,
+                               const hiros::skeletons::types::SkeletonGroup& t_sg)
+{
+  return toMsg(t_header, t_src_time, "", t_sg);
+}
+
+skeleton_msgs::SkeletonGroup
 hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
                                const std::string& t_frame_id,
                                const ros::Time& t_src_time,
@@ -303,6 +317,15 @@ hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
     sg.skeletons.push_back(toMsg(s));
   }
   return sg;
+}
+
+skeleton_msgs::SkeletonGroup
+hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
+                               const std::string& t_frame_id,
+                               const ros::Time& t_src_time,
+                               const hiros::skeletons::types::SkeletonGroup& t_sg)
+{
+  return toMsg(t_stamp, t_frame_id, t_src_time, "", t_sg);
 }
 
 skeleton_msgs::SkeletonGroup
@@ -324,4 +347,14 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
     sg.skeletons.push_back(toMsg(s));
   }
   return sg;
+}
+
+skeleton_msgs::SkeletonGroup
+hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
+                               const ros::Time& t_stamp,
+                               const std::string& t_frame_id,
+                               const ros::Time& t_src_time,
+                               const hiros::skeletons::types::SkeletonGroup& t_sg)
+{
+  return toMsg(t_seq, t_stamp, t_frame_id, t_src_time, "", t_sg);
 }
