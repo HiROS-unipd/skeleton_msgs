@@ -194,8 +194,11 @@ namespace hiros {
         , max_keypoints(t_max_keypoints)
         , confidence(t_confidence)
         , bounding_box(t_bounding_box)
-        , keypoints(t_keypoints)
-      {}
+      {
+        for (auto& kp : t_keypoints) {
+          keypoints.emplace(kp.id, kp);
+        }
+      }
 
       std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
       {
@@ -210,7 +213,7 @@ namespace hiros {
         }
         else {
           for (auto k : t_kg.keypoints) {
-            t_os << std::endl << k;
+            t_os << std::endl << k.second;
           }
         }
         return t_os;
@@ -222,8 +225,11 @@ namespace hiros {
                          const std::vector<KeypointGroup>& t_skeleton_parts)
         : id(t_id)
         , confidence(t_confidence)
-        , skeleton_parts(t_skeleton_parts)
-      {}
+      {
+        for (auto& skp : t_skeleton_parts) {
+          skeleton_parts.emplace(skp.id, skp);
+        }
+      }
 
       std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s)
       {
@@ -235,7 +241,7 @@ namespace hiros {
         }
         else {
           for (auto sp : t_s.skeleton_parts) {
-            t_os << std::endl << sp;
+            t_os << std::endl << sp.second;
           }
         }
         return t_os;

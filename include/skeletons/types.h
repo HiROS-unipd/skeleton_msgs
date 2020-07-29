@@ -4,6 +4,7 @@
 // Standard dependencies
 #include <iostream>
 #include <limits>
+#include <map>
 #include <vector>
 
 namespace hiros {
@@ -112,7 +113,8 @@ namespace hiros {
         unsigned int max_keypoints;
         double confidence;
         Box bounding_box;
-        std::vector<Keypoint> keypoints;
+        // map<keypoint_id, keypoint>
+        std::map<int, Keypoint> keypoints;
       };
 
       // Skeleton
@@ -126,7 +128,8 @@ namespace hiros {
 
         int id;
         double confidence;
-        std::vector<KeypointGroup> skeleton_parts;
+        // map<keypoint_group_id, keypoint_group>
+        std::map<int, KeypointGroup> skeleton_parts;
       };
 
       // SkeletonGroup

@@ -188,9 +188,8 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::KeypointGroup& t_kg)
 {
   hiros::skeletons::types::KeypointGroup kg(
     t_kg.id, t_kg.max_keypoints, t_kg.confidence, toStruct(t_kg.bounding_box));
-  kg.keypoints.reserve(t_kg.keypoints.size());
   for (auto& k : t_kg.keypoints) {
-    kg.keypoints.push_back(toStruct(k));
+    kg.keypoints.emplace(k.id, toStruct(k));
   }
   return kg;
 }
@@ -205,7 +204,7 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::KeypointGroup& t_k
   kg.bounding_box = toMsg(t_kg.bounding_box);
   kg.keypoints.reserve(t_kg.keypoints.size());
   for (auto& k : t_kg.keypoints) {
-    kg.keypoints.push_back(toMsg(k));
+    kg.keypoints.push_back(toMsg(k.second));
   }
   return kg;
 }
@@ -223,9 +222,8 @@ hiros::skeletons::types::Skeleton
 hiros::skeletons::utils::toStruct(const skeleton_msgs::Skeleton& t_s)
 {
   hiros::skeletons::types::Skeleton s(t_s.id, t_s.confidence);
-  s.skeleton_parts.reserve(t_s.skeleton_parts.size());
   for (auto& sp : t_s.skeleton_parts) {
-    s.skeleton_parts.push_back(toStruct(sp));
+    s.skeleton_parts.emplace(sp.id, toStruct(sp));
   }
   return s;
 }
@@ -237,7 +235,7 @@ skeleton_msgs::Skeleton hiros::skeletons::utils::toMsg(const hiros::skeletons::t
   s.confidence = t_s.confidence;
   s.skeleton_parts.reserve(t_s.skeleton_parts.size());
   for (auto& sp : t_s.skeleton_parts) {
-    s.skeleton_parts.push_back(toMsg(sp));
+    s.skeleton_parts.push_back(toMsg(sp.second));
   }
   return s;
 }
