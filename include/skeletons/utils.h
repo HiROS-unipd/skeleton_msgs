@@ -35,6 +35,10 @@ namespace hiros {
       geometry_msgs::Point toPointMsg(const hiros::skeletons::types::Vector& t_v);
       geometry_msgs::Vector3 toVector3Msg(const hiros::skeletons::types::Vector& t_v);
 
+      double magnitude(const hiros::skeletons::types::Vector& t_v);
+      double distance(const hiros::skeletons::types::Vector& t_v1,
+                      const hiros::skeletons::types::Vector& t_v2);
+
       // Point
       hiros::skeletons::types::Point toStruct(
         const hiros::skeletons::types::Position& t_p,
@@ -83,6 +87,12 @@ namespace hiros {
 
       skeleton_msgs::Keypoint toMsg(const hiros::skeletons::types::Keypoint& t_k);
 
+      bool hasKeypoint(const hiros::skeletons::types::KeypointGroup& t_keypoint_group,
+                       const int& t_keypoint_id);
+      bool hasKeypoint(const hiros::skeletons::types::Skeleton& t_skeleton,
+                       const int& t_keypoint_group_id,
+                       const int& t_keypoint_id);
+
       // keypointGroup
       hiros::skeletons::types::KeypointGroup
       toStruct(const int& t_id,
@@ -101,6 +111,9 @@ namespace hiros {
 
       skeleton_msgs::KeypointGroup toMsg(const hiros::skeletons::types::KeypointGroup& t_kg);
 
+      bool hasKeypointGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
+                            const int& t_keypoint_group_id);
+
       // Skeleton
       hiros::skeletons::types::Skeleton
       toStruct(const int& t_id,
@@ -110,6 +123,10 @@ namespace hiros {
       hiros::skeletons::types::Skeleton toStruct(const skeleton_msgs::Skeleton& t_s);
 
       skeleton_msgs::Skeleton toMsg(const hiros::skeletons::types::Skeleton& t_s);
+
+      hiros::skeletons::types::Skeleton*
+      getSkeleton(hiros::skeletons::types::SkeletonGroup& t_skeleton_group,
+                  const int& t_skeleton_id);
 
       // SkeletonGroup
       hiros::skeletons::types::SkeletonGroup

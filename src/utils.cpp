@@ -1,3 +1,6 @@
+// Standard dependencies
+#include <memory>
+
 // Internal dependencies
 #include "skeletons/utils.h"
 
@@ -46,6 +49,23 @@ hiros::skeletons::utils::toVector3Msg(const hiros::skeletons::types::Vector& t_v
   v.y = t_v.y;
   v.z = t_v.z;
   return v;
+}
+
+double hiros::skeletons::utils::magnitude(const hiros::skeletons::types::Vector& t_v)
+{
+  return distance(t_v, hiros::skeletons::types::Vector(0, 0, 0));
+}
+
+double hiros::skeletons::utils::distance(const hiros::skeletons::types::Vector& t_v1,
+                                         const hiros::skeletons::types::Vector& t_v2)
+{
+  double squared_dist = std::pow((t_v1.x - t_v2.x), 2) + std::pow((t_v1.y - t_v2.y), 2);
+
+  if (!std::isnan(t_v1.z) && !std::isnan(t_v2.z)) {
+    squared_dist += std::pow((t_v1.z - t_v2.z), 2);
+  }
+
+  return std::sqrt(squared_dist);
 }
 
 // Point
@@ -161,6 +181,21 @@ skeleton_msgs::Keypoint hiros::skeletons::utils::toMsg(const hiros::skeletons::t
   return k;
 }
 
+bool hiros::skeletons::utils::hasKeypoint(
+  const hiros::skeletons::types::KeypointGroup& t_keypoint_group,
+  const int& t_keypoint_id)
+{
+  return (t_keypoint_group.keypoints.count(t_keypoint_id) > 0);
+}
+
+bool hiros::skeletons::utils::hasKeypoint(const hiros::skeletons::types::Skeleton& t_skeleton,
+                                          const int& t_keypoint_group_id,
+                                          const int& t_keypoint_id)
+{
+  return (hasKeypointGroup(t_skeleton, t_keypoint_group_id)
+          && hasKeypoint(t_skeleton.skeleton_parts.at(t_keypoint_group_id), t_keypoint_id));
+}
+
 // keypointGroup
 hiros::skeletons::types::KeypointGroup
 hiros::skeletons::utils::toStruct(const int& t_id,
@@ -209,6 +244,12 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::KeypointGroup& t_k
   return kg;
 }
 
+bool hiros::skeletons::utils::hasKeypointGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
+                                               const int& t_keypoint_group_id)
+{
+  return (t_skeleton.skeleton_parts.count(t_keypoint_group_id) > 0);
+}
+
 // Skeleton
 hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
   const int& t_id,
@@ -238,6 +279,19 @@ skeleton_msgs::Skeleton hiros::skeletons::utils::toMsg(const hiros::skeletons::t
     s.skeleton_parts.push_back(toMsg(sp.second));
   }
   return s;
+}
+
+hiros::skeletons::types::Skeleton*
+hiros::skeletons::utils::getSkeleton(hiros::skeletons::types::SkeletonGroup& t_skeleton_group,
+                                     const int& t_skeleton_id)
+{
+  auto skeleton_it = std::find_if(t_skeleton_group.skeletons.begin(),
+                                  t_skeleton_group.skeletons.end(),
+                                  [t_skeleton_id](const hiros::skeletons::types::Skeleton& sk) {
+                                    return sk.id == t_skeleton_id;
+                                  });
+
+  return skeleton_it != t_skeleton_group.skeletons.end() ? &*skeleton_it : nullptr;
 }
 
 // SkeletonGroup
