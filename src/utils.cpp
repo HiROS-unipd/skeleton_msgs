@@ -213,15 +213,16 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::KeypointGroup& t_k
 // Skeleton
 hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
   const int& t_id,
+  const double& t_confidence,
   const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts)
 {
-  return hiros::skeletons::types::Skeleton(t_id, t_skeleton_parts);
+  return hiros::skeletons::types::Skeleton(t_id, t_confidence, t_skeleton_parts);
 }
 
 hiros::skeletons::types::Skeleton
 hiros::skeletons::utils::toStruct(const skeleton_msgs::Skeleton& t_s)
 {
-  hiros::skeletons::types::Skeleton s(t_s.id);
+  hiros::skeletons::types::Skeleton s(t_s.id, t_s.confidence);
   s.skeleton_parts.reserve(t_s.skeleton_parts.size());
   for (auto& sp : t_s.skeleton_parts) {
     s.skeleton_parts.push_back(toStruct(sp));
@@ -233,6 +234,7 @@ skeleton_msgs::Skeleton hiros::skeletons::utils::toMsg(const hiros::skeletons::t
 {
   skeleton_msgs::Skeleton s;
   s.id = t_s.id;
+  s.confidence = t_s.confidence;
   s.skeleton_parts.reserve(t_s.skeleton_parts.size());
   for (auto& sp : t_s.skeleton_parts) {
     s.skeleton_parts.push_back(toMsg(sp));

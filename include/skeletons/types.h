@@ -119,11 +119,13 @@ namespace hiros {
       struct Skeleton
       {
         Skeleton(const int& t_id = -1,
+                 const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                  const std::vector<KeypointGroup>& t_skeleton_parts = std::vector<KeypointGroup>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
 
         int id;
+        double confidence;
         std::vector<KeypointGroup> skeleton_parts;
       };
 

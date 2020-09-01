@@ -104,6 +104,7 @@ namespace hiros {
       // Skeleton
       hiros::skeletons::types::Skeleton
       toStruct(const int& t_id,
+               const double& t_confidence,
                const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts);
 
       hiros::skeletons::types::Skeleton toStruct(const skeleton_msgs::Skeleton& t_s);

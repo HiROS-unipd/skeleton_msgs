@@ -217,14 +217,18 @@ namespace hiros {
       }
 
       // Skeleton
-      Skeleton::Skeleton(const int& t_id, const std::vector<KeypointGroup>& t_skeleton_parts)
+      Skeleton::Skeleton(const int& t_id,
+                         const double& t_confidence,
+                         const std::vector<KeypointGroup>& t_skeleton_parts)
         : id(t_id)
+        , confidence(t_confidence)
         , skeleton_parts(t_skeleton_parts)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s)
       {
         t_os << utils::padding(1) << "- id: " << t_s.id << std::endl
+             << utils::padding(2) << "confidence: " << t_s.confidence << std::endl
              << utils::padding(2) << "skeleton_parts: ";
         if (t_s.skeleton_parts.empty()) {
           t_os << "[]";
