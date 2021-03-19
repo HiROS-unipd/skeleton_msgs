@@ -219,10 +219,10 @@ namespace hiros {
         return t_os;
       }
 
-      // Skeleton
-      Skeleton::Skeleton(const int& t_id,
-                         const double& t_confidence,
-                         const std::vector<MarkerGroup>& t_marker_groups)
+      // MarkerSkeleton
+      MarkerSkeleton::MarkerSkeleton(const int& t_id,
+                                     const double& t_confidence,
+                                     const std::vector<MarkerGroup>& t_marker_groups)
         : id(t_id)
         , confidence(t_confidence)
       {
@@ -231,45 +231,46 @@ namespace hiros {
         }
       }
 
-      std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s)
+      std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms)
       {
-        t_os << utils::padding(1) << "- id: " << t_s.id << std::endl
-             << utils::padding(2) << "confidence: " << t_s.confidence << std::endl
+        t_os << utils::padding(1) << "- id: " << t_ms.id << std::endl
+             << utils::padding(2) << "confidence: " << t_ms.confidence << std::endl
              << utils::padding(2) << "marker_groups: ";
-        if (t_s.marker_groups.empty()) {
+        if (t_ms.marker_groups.empty()) {
           t_os << "[]";
         }
         else {
-          for (auto mg : t_s.marker_groups) {
+          for (auto mg : t_ms.marker_groups) {
             t_os << std::endl << mg.second;
           }
         }
         return t_os;
       }
 
-      // SkeletonGroup
-      SkeletonGroup::SkeletonGroup(const double& t_src_time,
-                                   const std::string& t_src_frame,
-                                   const std::vector<Skeleton>& t_skeletons)
+      // MarkerSkeletonGroup
+      MarkerSkeletonGroup::MarkerSkeletonGroup(
+        const double& t_src_time,
+        const std::string& t_src_frame,
+        const std::vector<MarkerSkeleton>& t_marker_skeletons)
         : src_time(t_src_time)
         , src_frame(t_src_frame)
-        , skeletons(t_skeletons)
+        , marker_skeletons(t_marker_skeletons)
       {}
 
-      std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg)
+      std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg)
       {
-        long src_time_sec = static_cast<long>(t_sg.src_time);
-        long src_time_nsec = static_cast<long>((t_sg.src_time - src_time_sec) * 1e9);
+        long src_time_sec = static_cast<long>(t_msg.src_time);
+        long src_time_nsec = static_cast<long>((t_msg.src_time - src_time_sec) * 1e9);
 
         t_os << "- src_time: " << src_time_sec << "." << src_time_nsec << std::endl
-             << utils::padding(1) << "src_frame: " << t_sg.src_frame << std::endl
-             << utils::padding(1) << "skeletons: ";
-        if (t_sg.skeletons.empty()) {
+             << utils::padding(1) << "src_frame: " << t_msg.src_frame << std::endl
+             << utils::padding(1) << "marker_skeletons: ";
+        if (t_msg.marker_skeletons.empty()) {
           t_os << "[]";
         }
         else {
-          for (auto s : t_sg.skeletons) {
-            t_os << std::endl << s;
+          for (auto ms : t_msg.marker_skeletons) {
+            t_os << std::endl << ms;
           }
         }
         return t_os;

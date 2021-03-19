@@ -20,9 +20,9 @@ add_message_files(FILES
                   Box.msg
                   Marker.msg
                   MarkerGroup.msg
-                  Point.msg
-                  Skeleton.msg
-                  SkeletonGroup.msg)
+                  MarkerSkeleton.msg
+                  MarkerSkeletonGroup.msg
+                  Point.msg)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES

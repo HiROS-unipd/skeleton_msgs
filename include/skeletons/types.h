@@ -117,14 +117,15 @@ namespace hiros {
         std::map<int, Marker> markers;
       };
 
-      // Skeleton
-      struct Skeleton
+      // MarkerSkeleton
+      struct MarkerSkeleton
       {
-        Skeleton(const int& t_id = -1,
-                 const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                 const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>());
+        MarkerSkeleton(
+          const int& t_id = -1,
+          const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+          const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>());
 
-        friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
+        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms);
 
         int id;
         double confidence;
@@ -132,18 +133,19 @@ namespace hiros {
         std::map<int, MarkerGroup> marker_groups;
       };
 
-      // SkeletonGroup
-      struct SkeletonGroup
+      // MarkerSkeletonGroup
+      struct MarkerSkeletonGroup
       {
-        SkeletonGroup(const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
-                      const std::string& t_src_frame = "",
-                      const std::vector<Skeleton>& t_skeletons = std::vector<Skeleton>());
+        MarkerSkeletonGroup(
+          const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
+          const std::string& t_src_frame = "",
+          const std::vector<MarkerSkeleton>& t_marker_skeletons = std::vector<MarkerSkeleton>());
 
-        friend std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg);
+        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg);
 
         double src_time;
         std::string src_frame;
-        std::vector<Skeleton> skeletons;
+        std::vector<MarkerSkeleton> marker_skeletons;
       };
 
     } // namespace types

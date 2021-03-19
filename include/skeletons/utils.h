@@ -10,9 +10,9 @@
 #include "skeleton_msgs/Box.h"
 #include "skeleton_msgs/Marker.h"
 #include "skeleton_msgs/MarkerGroup.h"
+#include "skeleton_msgs/MarkerSkeleton.h"
+#include "skeleton_msgs/MarkerSkeletonGroup.h"
 #include "skeleton_msgs/Point.h"
-#include "skeleton_msgs/Skeleton.h"
-#include "skeleton_msgs/SkeletonGroup.h"
 
 // Internal dependencies
 #include "skeletons/types.h"
@@ -89,7 +89,7 @@ namespace hiros {
 
       bool hasMarker(const hiros::skeletons::types::MarkerGroup& t_marker_group,
                      const int& t_marker_id);
-      bool hasMarker(const hiros::skeletons::types::Skeleton& t_skeleton,
+      bool hasMarker(const hiros::skeletons::types::MarkerSkeleton& t_marker_skeleton,
                      const int& t_marker_group_id,
                      const int& t_marker_id);
 
@@ -111,65 +111,70 @@ namespace hiros {
 
       skeleton_msgs::MarkerGroup toMsg(const hiros::skeletons::types::MarkerGroup& t_mg);
 
-      bool hasMarkerGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
+      bool hasMarkerGroup(const hiros::skeletons::types::MarkerSkeleton& t_marker_skeleton,
                           const int& t_marker_group_id);
 
-      // Skeleton
-      hiros::skeletons::types::Skeleton
+      // MarkerSkeleton
+      hiros::skeletons::types::MarkerSkeleton
       toStruct(const int& t_id,
                const double& t_confidence,
                const std::vector<hiros::skeletons::types::MarkerGroup>& t_marker_groups);
 
-      hiros::skeletons::types::Skeleton toStruct(const skeleton_msgs::Skeleton& t_s);
+      hiros::skeletons::types::MarkerSkeleton toStruct(const skeleton_msgs::MarkerSkeleton& t_ms);
 
-      skeleton_msgs::Skeleton toMsg(const hiros::skeletons::types::Skeleton& t_s);
+      skeleton_msgs::MarkerSkeleton toMsg(const hiros::skeletons::types::MarkerSkeleton& t_ms);
 
-      hiros::skeletons::types::Skeleton*
-      getSkeleton(hiros::skeletons::types::SkeletonGroup& t_skeleton_group,
-                  const int& t_skeleton_id);
+      std::shared_ptr<hiros::skeletons::types::MarkerSkeleton>
+      getMarkerSkeleton(hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
+                        const int& t_marker_skeleton_id);
 
-      // SkeletonGroup
-      hiros::skeletons::types::SkeletonGroup
+      // MarkerSkeletonGroup
+      hiros::skeletons::types::MarkerSkeletonGroup
       toStruct(const double& t_src_time,
                const std::string& t_src_frame,
-               const std::vector<hiros::skeletons::types::Skeleton>& t_skeletons);
+               const std::vector<hiros::skeletons::types::MarkerSkeleton>& t_marker_skeletons);
 
-      hiros::skeletons::types::SkeletonGroup toStruct(const skeleton_msgs::SkeletonGroup& t_sg);
+      hiros::skeletons::types::MarkerSkeletonGroup
+      toStruct(const skeleton_msgs::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const unsigned int& t_seq,
+            const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const ros::Time& t_src_time,
+            const std::string& t_src_frame,
+            const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const std_msgs::Header& t_header,
-                                         const ros::Time& t_src_time,
-                                         const std::string& t_src_frame,
-                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const ros::Time& t_src_time,
+            const std::string& t_src_frame,
+            const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const std_msgs::Header& t_header,
-                                         const ros::Time& t_src_time,
-                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const unsigned int& t_seq,
+            const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const ros::Time& t_stamp,
-                                         const std::string& t_frame_id,
-                                         const ros::Time& t_src_time,
-                                         const std::string& t_src_frame,
-                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const std_msgs::Header& t_header,
+            const ros::Time& t_src_time,
+            const std::string& t_src_frame,
+            const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const ros::Time& t_stamp,
-                                         const std::string& t_frame_id,
-                                         const ros::Time& t_src_time,
-                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const unsigned int& t_seq,
-                                         const ros::Time& t_stamp,
-                                         const std::string& t_frame_id,
-                                         const ros::Time& t_src_time,
-                                         const std::string& t_src_frame,
-                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const std_msgs::Header& t_header,
+            const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      skeleton_msgs::SkeletonGroup toMsg(const unsigned int& t_seq,
-                                         const ros::Time& t_stamp,
-                                         const std::string& t_frame_id,
-                                         const ros::Time& t_src_time,
-                                         const hiros::skeletons::types::SkeletonGroup& t_sg);
+      skeleton_msgs::MarkerSkeletonGroup
+      toMsg(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
     } // namespace utils
   } // namespace skeletons
