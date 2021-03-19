@@ -276,6 +276,119 @@ namespace hiros {
         return t_os;
       }
 
+      // Orientation
+      Orientation::Orientation(const int& t_id,
+                               const double& t_confidence,
+                               const Quaternion& t_orientation,
+                               const Vector& t_angular_velocity,
+                               const Vector& t_linear_acceleration)
+        : id(t_id)
+        , confidence(t_confidence)
+        , orientation(t_orientation)
+        , angular_velocity(t_angular_velocity)
+        , linear_acceleration(t_linear_acceleration)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o)
+      {
+        t_os << utils::padding(3) << "- id: " << t_o.id << std::endl
+             << utils::padding(4) << "confidence: " << t_o.confidence << std::endl
+             << utils::padding(4) << "orientation: " << std::endl
+             << t_o.orientation << utils::padding(4) << "angular_velocity: " << std::endl
+             << t_o.angular_velocity << utils::padding(4) << "linear_acceleration: " << std::endl
+             << t_o.linear_acceleration;
+        return t_os;
+      }
+
+      // OrientationGroup
+      OrientationGroup::OrientationGroup(const int& t_id,
+                                         const unsigned int& t_max_orientations,
+                                         const double& t_confidence,
+                                         const std::vector<Orientation>& t_orientations)
+        : id(t_id)
+        , max_orientations(t_max_orientations)
+        , confidence(t_confidence)
+      {
+        for (auto& o : t_orientations) {
+          orientations.emplace(o.id, o);
+        }
+      }
+
+      std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og)
+      {
+        t_os << utils::padding(2) << "- id: " << t_og.id << std::endl
+             << utils::padding(3) << "max_orientations: " << t_og.max_orientations << std::endl
+             << utils::padding(3) << "confidence: " << t_og.confidence << std::endl
+             << utils::padding(3) << "orientations: ";
+        if (t_og.orientations.empty()) {
+          t_os << "[]";
+        }
+        else {
+          for (auto o : t_og.orientations) {
+            t_os << std::endl << o.second;
+          }
+        }
+        return t_os;
+      }
+
+      // OrientationSkeleton
+      OrientationSkeleton::OrientationSkeleton(
+        const int& t_id,
+        const double& t_confidence,
+        const std::vector<OrientationGroup>& t_orientation_groups)
+        : id(t_id)
+        , confidence(t_confidence)
+      {
+        for (auto& og : t_orientation_groups) {
+          orientation_groups.emplace(og.id, og);
+        }
+      }
+
+      std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk)
+      {
+        t_os << utils::padding(1) << "- id: " << t_osk.id << std::endl
+             << utils::padding(2) << "confidence: " << t_osk.confidence << std::endl
+             << utils::padding(2) << "orientation_groups: ";
+        if (t_osk.orientation_groups.empty()) {
+          t_os << "[]";
+        }
+        else {
+          for (auto og : t_osk.orientation_groups) {
+            t_os << std::endl << og.second;
+          }
+        }
+        return t_os;
+      }
+
+      // OrientationSkeletonGroup
+      OrientationSkeletonGroup::OrientationSkeletonGroup(
+        const double& t_src_time,
+        const std::string& t_src_frame,
+        const std::vector<OrientationSkeleton>& t_orientation_skeletons)
+        : src_time(t_src_time)
+        , src_frame(t_src_frame)
+        , orientation_skeletons(t_orientation_skeletons)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg)
+      {
+        long src_time_sec = static_cast<long>(t_osg.src_time);
+        long src_time_nsec = static_cast<long>((t_osg.src_time - src_time_sec) * 1e9);
+
+        t_os << "- src_time: " << src_time_sec << "." << src_time_nsec << std::endl
+             << utils::padding(1) << "src_frame: " << t_osg.src_frame << std::endl
+             << utils::padding(1) << "orientation_skeletons: ";
+        if (t_osg.orientation_skeletons.empty()) {
+          t_os << "[]";
+        }
+        else {
+          for (auto os : t_osg.orientation_skeletons) {
+            t_os << std::endl << os;
+          }
+        }
+        return t_os;
+      }
+
     } // namespace types
   } // namespace skeletons
 } // namespace hiros

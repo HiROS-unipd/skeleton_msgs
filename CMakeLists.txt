@@ -9,6 +9,7 @@ add_compile_options(-std=c++14)
 find_package(catkin REQUIRED
              COMPONENTS geometry_msgs
                         message_generation
+                        sensor_msgs
                         std_msgs)
 
 # ##############################################################################
@@ -22,11 +23,16 @@ add_message_files(FILES
                   MarkerGroup.msg
                   MarkerSkeleton.msg
                   MarkerSkeletonGroup.msg
+                  Orientation.msg
+                  OrientationGroup.msg
+                  OrientationSkeleton.msg
+                  OrientationSkeletonGroup.msg
                   Point.msg)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES
                   geometry_msgs
+                  sensor_msgs
                   std_msgs)
 
 # ##############################################################################
@@ -41,6 +47,7 @@ generate_messages(DEPENDENCIES
 catkin_package(CATKIN_DEPENDS
                geometry_msgs
                message_runtime
+               sensor_msgs
                std_msgs
                LIBRARIES
                ${PROJECT_NAME}_types

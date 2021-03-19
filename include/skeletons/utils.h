@@ -12,6 +12,10 @@
 #include "skeleton_msgs/MarkerGroup.h"
 #include "skeleton_msgs/MarkerSkeleton.h"
 #include "skeleton_msgs/MarkerSkeletonGroup.h"
+#include "skeleton_msgs/Orientation.h"
+#include "skeleton_msgs/OrientationGroup.h"
+#include "skeleton_msgs/OrientationSkeleton.h"
+#include "skeleton_msgs/OrientationSkeletonGroup.h"
 #include "skeleton_msgs/Point.h"
 
 // Internal dependencies
@@ -175,6 +179,110 @@ namespace hiros {
 
       skeleton_msgs::MarkerSkeletonGroup
       toMsg(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
+
+      // Orientation
+      hiros::skeletons::types::Orientation
+      toStruct(const int& t_id,
+               const double& t_confidence,
+               const hiros::skeletons::types::Quaternion& t_orientation,
+               const hiros::skeletons::types::Vector& t_angular_velocity =
+                 hiros::skeletons::types::Vector(),
+               const hiros::skeletons::types::Vector& t_linear_acceleration =
+                 hiros::skeletons::types::Vector());
+
+      hiros::skeletons::types::Orientation toStruct(const skeleton_msgs::Orientation& t_o);
+
+      skeleton_msgs::Orientation toMsg(const std_msgs::Header& t_header,
+                                       const hiros::skeletons::types::Orientation& t_o);
+
+      skeleton_msgs::Orientation toMsg(const hiros::skeletons::types::Orientation& t_o);
+
+      bool hasOrientation(const hiros::skeletons::types::OrientationGroup& t_orientation_group,
+                          const int& t_orientation_id);
+      bool
+      hasOrientation(const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
+                     const int& t_orientation_group_id,
+                     const int& t_orientation_id);
+
+      // OrientationGroup
+      hiros::skeletons::types::OrientationGroup
+      toStruct(const int& t_id,
+               const unsigned int& t_max_orientations,
+               const double& t_confidence,
+               const std::vector<hiros::skeletons::types::Orientation> t_orientations);
+
+      hiros::skeletons::types::OrientationGroup
+      toStruct(const skeleton_msgs::OrientationGroup& t_og);
+
+      skeleton_msgs::OrientationGroup toMsg(const hiros::skeletons::types::OrientationGroup& t_og);
+
+      bool hasOrientationGroup(
+        const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
+        const int& t_orientation_group_id);
+
+      // OrientationSkeleton
+      hiros::skeletons::types::OrientationSkeleton
+      toStruct(const int& t_id,
+               const double& t_confidence,
+               const std::vector<hiros::skeletons::types::OrientationGroup>& t_orientation_groups);
+
+      hiros::skeletons::types::OrientationSkeleton
+      toStruct(const skeleton_msgs::OrientationSkeleton& t_os);
+
+      skeleton_msgs::OrientationSkeleton
+      toMsg(const hiros::skeletons::types::OrientationSkeleton& t_os);
+
+      std::shared_ptr<hiros::skeletons::types::OrientationSkeleton> getOrientationSkeleton(
+        hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
+        const int& t_orientation_skeleton_id);
+
+      // OrientationSkeletonGroup
+      hiros::skeletons::types::OrientationSkeletonGroup toStruct(
+        const double& t_src_time,
+        const std::string& t_src_frame,
+        const std::vector<hiros::skeletons::types::OrientationSkeleton>& t_orientation_skeletons);
+
+      hiros::skeletons::types::OrientationSkeletonGroup
+      toStruct(const skeleton_msgs::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const unsigned int& t_seq,
+            const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const ros::Time& t_src_time,
+            const std::string& t_src_frame,
+            const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const ros::Time& t_src_time,
+            const std::string& t_src_frame,
+            const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const unsigned int& t_seq,
+            const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const std_msgs::Header& t_header,
+            const ros::Time& t_src_time,
+            const std::string& t_src_frame,
+            const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const ros::Time& t_stamp,
+            const std::string& t_frame_id,
+            const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const std_msgs::Header& t_header,
+            const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      skeleton_msgs::OrientationSkeletonGroup
+      toMsg(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
 
     } // namespace utils
   } // namespace skeletons

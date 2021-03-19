@@ -389,3 +389,250 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerSkeletonGrou
 {
   return toMsg(std_msgs::Header(), t_msg);
 }
+
+// Orientation
+hiros::skeletons::types::Orientation
+hiros::skeletons::utils::toStruct(const int& t_id,
+                                  const double& t_confidence,
+                                  const hiros::skeletons::types::Quaternion& t_orientation,
+                                  const hiros::skeletons::types::Vector& t_angular_velocity,
+                                  const hiros::skeletons::types::Vector& t_linear_acceleration)
+{
+  return hiros::skeletons::types::Orientation(
+    t_id, t_confidence, t_orientation, t_angular_velocity, t_linear_acceleration);
+}
+
+hiros::skeletons::types::Orientation
+hiros::skeletons::utils::toStruct(const skeleton_msgs::Orientation& t_o)
+{
+  return hiros::skeletons::types::Orientation(t_o.id,
+                                              t_o.confidence,
+                                              toStruct(t_o.orientation.orientation),
+                                              toStruct(t_o.orientation.angular_velocity),
+                                              toStruct(t_o.orientation.linear_acceleration));
+}
+
+skeleton_msgs::Orientation
+hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
+                               const hiros::skeletons::types::Orientation& t_o)
+{
+  skeleton_msgs::Orientation o;
+  o.id = t_o.id;
+  o.confidence = t_o.confidence;
+  o.orientation.header = t_header;
+  o.orientation.orientation = toMsg(t_o.orientation);
+  o.orientation.angular_velocity = toVector3Msg(t_o.angular_velocity);
+  o.orientation.linear_acceleration = toVector3Msg(t_o.linear_acceleration);
+  o.orientation.orientation_covariance.front() = -1;
+  o.orientation.angular_velocity_covariance.front() = -1;
+  o.orientation.linear_acceleration_covariance.front() = -1;
+  return o;
+}
+
+skeleton_msgs::Orientation
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Orientation& t_o)
+{
+  return toMsg(std_msgs::Header(), t_o);
+}
+
+bool hiros::skeletons::utils::hasOrientation(
+  const hiros::skeletons::types::OrientationGroup& t_orientation_group,
+  const int& t_orientation_id)
+{
+  return (t_orientation_group.orientations.count(t_orientation_id) > 0);
+}
+
+bool hiros::skeletons::utils::hasOrientation(
+  const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
+  const int& t_orientation_group_id,
+  const int& t_orientation_id)
+{
+  return (hasOrientationGroup(t_orientation_skeleton, t_orientation_group_id)
+          && hasOrientation(t_orientation_skeleton.orientation_groups.at(t_orientation_group_id),
+                            t_orientation_id));
+}
+
+// OrientationGroup
+hiros::skeletons::types::OrientationGroup hiros::skeletons::utils::toStruct(
+  const int& t_id,
+  const unsigned int& t_max_orientations,
+  const double& t_confidence,
+  const std::vector<hiros::skeletons::types::Orientation> t_orientations)
+{
+  return hiros::skeletons::types::OrientationGroup(
+    t_id, t_max_orientations, t_confidence, t_orientations);
+}
+
+hiros::skeletons::types::OrientationGroup
+hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationGroup& t_og)
+{
+  hiros::skeletons::types::OrientationGroup og(t_og.id, t_og.max_orientations, t_og.confidence);
+  for (auto& o : t_og.orientations) {
+    og.orientations.emplace(o.id, toStruct(o));
+  }
+  return og;
+}
+
+skeleton_msgs::OrientationGroup
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationGroup& t_og)
+{
+  skeleton_msgs::OrientationGroup og;
+  og.id = t_og.id;
+  og.max_orientations = t_og.max_orientations;
+  og.confidence = t_og.confidence;
+  og.orientations.reserve(t_og.orientations.size());
+  for (auto& o : t_og.orientations) {
+    og.orientations.push_back(toMsg(o.second));
+  }
+  return og;
+}
+
+bool hiros::skeletons::utils::hasOrientationGroup(
+  const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
+  const int& t_orientation_group_id)
+{
+  return (t_orientation_skeleton.orientation_groups.count(t_orientation_group_id) > 0);
+}
+
+// OrientationSkeleton
+hiros::skeletons::types::OrientationSkeleton hiros::skeletons::utils::toStruct(
+  const int& t_id,
+  const double& t_confidence,
+  const std::vector<hiros::skeletons::types::OrientationGroup>& t_orientation_groups)
+{
+  return hiros::skeletons::types::OrientationSkeleton(t_id, t_confidence, t_orientation_groups);
+}
+
+hiros::skeletons::types::OrientationSkeleton
+hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationSkeleton& t_os)
+{
+  hiros::skeletons::types::OrientationSkeleton os(t_os.id, t_os.confidence);
+  for (auto& og : t_os.orientation_groups) {
+    os.orientation_groups.emplace(og.id, toStruct(og));
+  }
+  return os;
+}
+
+skeleton_msgs::OrientationSkeleton
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationSkeleton& t_os)
+{
+  skeleton_msgs::OrientationSkeleton os;
+  os.id = t_os.id;
+  os.confidence = t_os.confidence;
+  os.orientation_groups.reserve(t_os.orientation_groups.size());
+  for (auto& og : t_os.orientation_groups) {
+    os.orientation_groups.push_back(toMsg(og.second));
+  }
+  return os;
+}
+
+std::shared_ptr<hiros::skeletons::types::OrientationSkeleton>
+hiros::skeletons::utils::getOrientationSkeleton(
+  hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
+  const int& t_orientation_skeleton_id)
+{
+  auto orientation_skeleton_it = std::find_if(
+    t_orientation_skeleton_group.orientation_skeletons.begin(),
+    t_orientation_skeleton_group.orientation_skeletons.end(),
+    [t_orientation_skeleton_id](const hiros::skeletons::types::OrientationSkeleton& os) {
+      return os.id == t_orientation_skeleton_id;
+    });
+
+  return orientation_skeleton_it != t_orientation_skeleton_group.orientation_skeletons.end()
+           ? std::shared_ptr<hiros::skeletons::types::OrientationSkeleton>(
+             &*orientation_skeleton_it)
+           : nullptr;
+}
+
+// OrientationSkeletonGroup
+hiros::skeletons::types::OrientationSkeletonGroup hiros::skeletons::utils::toStruct(
+  const double& t_src_time,
+  const std::string& t_src_frame,
+  const std::vector<hiros::skeletons::types::OrientationSkeleton>& t_orientation_skeletons)
+{
+  return hiros::skeletons::types::OrientationSkeletonGroup(
+    t_src_time, t_src_frame, t_orientation_skeletons);
+}
+
+hiros::skeletons::types::OrientationSkeletonGroup
+hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationSkeletonGroup& t_osg)
+{
+  hiros::skeletons::types::OrientationSkeletonGroup osg;
+  osg.src_time = t_osg.src_time.toSec();
+  osg.src_frame = t_osg.src_frame;
+  osg.orientation_skeletons.reserve(t_osg.orientation_skeletons.size());
+  for (auto& os : t_osg.orientation_skeletons) {
+    osg.orientation_skeletons.push_back(toStruct(os));
+  }
+  return osg;
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
+                               const ros::Time& t_stamp,
+                               const std::string& t_frame_id,
+                               const ros::Time& t_src_time,
+                               const std::string& t_src_frame,
+                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  skeleton_msgs::OrientationSkeletonGroup osg;
+  osg.header.seq = t_seq;
+  osg.header.stamp = t_stamp;
+  osg.header.frame_id = t_frame_id;
+  osg.src_time = t_src_time;
+  osg.src_frame = t_src_frame;
+  osg.orientation_skeletons.reserve(t_osg.orientation_skeletons.size());
+  for (auto& os : t_osg.orientation_skeletons) {
+    osg.orientation_skeletons.push_back(toMsg(os));
+  }
+  return osg;
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
+                               const std::string& t_frame_id,
+                               const ros::Time& t_src_time,
+                               const std::string& t_src_frame,
+                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  return toMsg(0, t_stamp, t_frame_id, t_src_time, t_src_frame, t_osg);
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
+                               const ros::Time& t_stamp,
+                               const std::string& t_frame_id,
+                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  return toMsg(t_seq, t_stamp, t_frame_id, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
+                               const ros::Time& t_src_time,
+                               const std::string& t_src_frame,
+                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  return toMsg(t_header.seq, t_header.stamp, t_header.frame_id, t_src_time, t_src_frame, t_osg);
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
+                               const std::string& t_frame_id,
+                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  return toMsg(0, t_stamp, t_frame_id, t_osg);
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
+                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  return toMsg(t_header, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
+}
+
+skeleton_msgs::OrientationSkeletonGroup
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
+{
+  return toMsg(std_msgs::Header(), t_osg);
+}

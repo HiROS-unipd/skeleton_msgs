@@ -148,6 +148,74 @@ namespace hiros {
         std::vector<MarkerSkeleton> marker_skeletons;
       };
 
+      // Orientation
+      struct Orientation
+      {
+        Orientation(const int& t_id = -1,
+                    const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+                    const Quaternion& t_orientation = Quaternion(),
+                    const Vector& t_angular_velocity = Vector(),
+                    const Vector& t_linear_acceleration = Vector());
+
+        friend std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o);
+
+        int id;
+        double confidence;
+        Quaternion orientation;
+        Vector angular_velocity;
+        Vector linear_acceleration;
+      };
+
+      // OrientationGroup
+      struct OrientationGroup
+      {
+        OrientationGroup(
+          const int& t_id = -1,
+          const unsigned int& t_max_orientations = 0,
+          const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+          const std::vector<Orientation>& t_orientations = std::vector<Orientation>());
+
+        friend std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og);
+
+        int id;
+        unsigned int max_orientations;
+        double confidence;
+        // map<orientation_id, orientation>
+        std::map<int, Orientation> orientations;
+      };
+
+      // OrientationSkeleton
+      struct OrientationSkeleton
+      {
+        OrientationSkeleton(const int& t_id = -1,
+                            const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+                            const std::vector<OrientationGroup>& t_orientation_groups =
+                              std::vector<OrientationGroup>());
+
+        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_osk);
+
+        int id;
+        double confidence;
+        // map<orientation_group_id, orientation_group>
+        std::map<int, OrientationGroup> orientation_groups;
+      };
+
+      // OrientationSkeletonGroup
+      struct OrientationSkeletonGroup
+      {
+        OrientationSkeletonGroup(
+          const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
+          const std::string& t_src_frame = "",
+          const std::vector<OrientationSkeleton>& t_orientation_skeletons =
+            std::vector<OrientationSkeleton>());
+
+        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_osg);
+
+        double src_time;
+        std::string src_frame;
+        std::vector<OrientationSkeleton> orientation_skeletons;
+      };
+
     } // namespace types
   } // namespace skeletons
 } // namespace hiros
