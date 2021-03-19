@@ -18,8 +18,8 @@ find_package(catkin REQUIRED
 # Generate messages in the 'msg' folder
 add_message_files(FILES
                   Box.msg
-                  Keypoint.msg
-                  KeypointGroup.msg
+                  Marker.msg
+                  MarkerGroup.msg
                   Point.msg
                   Skeleton.msg
                   SkeletonGroup.msg)

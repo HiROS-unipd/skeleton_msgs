@@ -8,8 +8,8 @@
 
 // Custom Ros Message dependencies
 #include "skeleton_msgs/Box.h"
-#include "skeleton_msgs/Keypoint.h"
-#include "skeleton_msgs/KeypointGroup.h"
+#include "skeleton_msgs/Marker.h"
+#include "skeleton_msgs/MarkerGroup.h"
 #include "skeleton_msgs/Point.h"
 #include "skeleton_msgs/Skeleton.h"
 #include "skeleton_msgs/SkeletonGroup.h"
@@ -70,12 +70,12 @@ namespace hiros {
 
       skeleton_msgs::Box toMsg(const hiros::skeletons::types::Box& t_b);
 
-      // Keypoint
-      hiros::skeletons::types::Keypoint toStruct(const int& t_id,
-                                                 const double& t_confidence,
-                                                 const hiros::skeletons::types::Point& t_point);
+      // Marker
+      hiros::skeletons::types::Marker toStruct(const int& t_id,
+                                               const double& t_confidence,
+                                               const hiros::skeletons::types::Point& t_point);
 
-      hiros::skeletons::types::Keypoint toStruct(
+      hiros::skeletons::types::Marker toStruct(
         const int& t_id,
         const double& t_confidence,
         const hiros::skeletons::types::Position& t_position,
@@ -83,42 +83,42 @@ namespace hiros {
         const hiros::skeletons::types::Acceleration& t_acceleration =
           hiros::skeletons::types::Acceleration());
 
-      hiros::skeletons::types::Keypoint toStruct(const skeleton_msgs::Keypoint& t_k);
+      hiros::skeletons::types::Marker toStruct(const skeleton_msgs::Marker& t_m);
 
-      skeleton_msgs::Keypoint toMsg(const hiros::skeletons::types::Keypoint& t_k);
+      skeleton_msgs::Marker toMsg(const hiros::skeletons::types::Marker& t_m);
 
-      bool hasKeypoint(const hiros::skeletons::types::KeypointGroup& t_keypoint_group,
-                       const int& t_keypoint_id);
-      bool hasKeypoint(const hiros::skeletons::types::Skeleton& t_skeleton,
-                       const int& t_keypoint_group_id,
-                       const int& t_keypoint_id);
+      bool hasMarker(const hiros::skeletons::types::MarkerGroup& t_marker_group,
+                     const int& t_marker_id);
+      bool hasMarker(const hiros::skeletons::types::Skeleton& t_skeleton,
+                     const int& t_marker_group_id,
+                     const int& t_marker_id);
 
-      // keypointGroup
-      hiros::skeletons::types::KeypointGroup
+      // MarkerGroup
+      hiros::skeletons::types::MarkerGroup
       toStruct(const int& t_id,
-               const unsigned int& t_max_keypoints,
+               const unsigned int& t_max_markers,
                const double& t_confidence,
-               const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
+               const std::vector<hiros::skeletons::types::Marker> t_markers);
 
-      hiros::skeletons::types::KeypointGroup
+      hiros::skeletons::types::MarkerGroup
       toStruct(const int& t_id,
-               const unsigned int& t_max_keypoints,
+               const unsigned int& t_max_markers,
                const double& t_confidence,
                const hiros::skeletons::types::Box& t_bounding_box,
-               const std::vector<hiros::skeletons::types::Keypoint> t_keypoints);
+               const std::vector<hiros::skeletons::types::Marker> t_markers);
 
-      hiros::skeletons::types::KeypointGroup toStruct(const skeleton_msgs::KeypointGroup& t_kg);
+      hiros::skeletons::types::MarkerGroup toStruct(const skeleton_msgs::MarkerGroup& t_mg);
 
-      skeleton_msgs::KeypointGroup toMsg(const hiros::skeletons::types::KeypointGroup& t_kg);
+      skeleton_msgs::MarkerGroup toMsg(const hiros::skeletons::types::MarkerGroup& t_mg);
 
-      bool hasKeypointGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
-                            const int& t_keypoint_group_id);
+      bool hasMarkerGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
+                          const int& t_marker_group_id);
 
       // Skeleton
       hiros::skeletons::types::Skeleton
       toStruct(const int& t_id,
                const double& t_confidence,
-               const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts);
+               const std::vector<hiros::skeletons::types::MarkerGroup>& t_marker_groups);
 
       hiros::skeletons::types::Skeleton toStruct(const skeleton_msgs::Skeleton& t_s);
 

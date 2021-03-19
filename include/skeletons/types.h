@@ -84,37 +84,37 @@ namespace hiros {
         Quaternion orientation;
       };
 
-      // Keypoint
-      struct Keypoint
+      // Marker
+      struct Marker
       {
-        Keypoint(const int& t_id = -1,
-                 const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                 const Point& t_point = Point());
+        Marker(const int& t_id = -1,
+               const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+               const Point& t_point = Point());
 
-        friend std::ostream& operator<<(std::ostream& t_os, const Keypoint& t_k);
+        friend std::ostream& operator<<(std::ostream& t_os, const Marker& t_m);
 
         int id;
         double confidence;
         Point point;
       };
 
-      // KeypointGroup
-      struct KeypointGroup
+      // MarkerGroup
+      struct MarkerGroup
       {
-        KeypointGroup(const int& t_id = -1,
-                      const unsigned int& t_max_keypoints = 0,
-                      const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                      const Box& t_bounding_box = Box(),
-                      const std::vector<Keypoint>& t_keypoints = std::vector<Keypoint>());
+        MarkerGroup(const int& t_id = -1,
+                    const unsigned int& t_max_markers = 0,
+                    const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+                    const Box& t_bounding_box = Box(),
+                    const std::vector<Marker>& t_markers = std::vector<Marker>());
 
-        friend std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg);
+        friend std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg);
 
         int id;
-        unsigned int max_keypoints;
+        unsigned int max_markers;
         double confidence;
         Box bounding_box;
-        // map<keypoint_id, keypoint>
-        std::map<int, Keypoint> keypoints;
+        // map<marker_id, marker>
+        std::map<int, Marker> markers;
       };
 
       // Skeleton
@@ -122,14 +122,14 @@ namespace hiros {
       {
         Skeleton(const int& t_id = -1,
                  const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                 const std::vector<KeypointGroup>& t_skeleton_parts = std::vector<KeypointGroup>());
+                 const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
 
         int id;
         double confidence;
-        // map<keypoint_group_id, keypoint_group>
-        std::map<int, KeypointGroup> skeleton_parts;
+        // map<marker_group_id, marker_group>
+        std::map<int, MarkerGroup> marker_groups;
       };
 
       // SkeletonGroup

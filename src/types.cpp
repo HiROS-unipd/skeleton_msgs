@@ -168,52 +168,52 @@ namespace hiros {
         return t_os;
       }
 
-      // Keypoint
-      Keypoint::Keypoint(const int& t_id, const double& t_confidence, const Point& t_point)
+      // Marker
+      Marker::Marker(const int& t_id, const double& t_confidence, const Point& t_point)
         : id(t_id)
         , confidence(t_confidence)
         , point(t_point)
       {}
 
-      std::ostream& operator<<(std::ostream& t_os, const Keypoint& t_k)
+      std::ostream& operator<<(std::ostream& t_os, const Marker& t_m)
       {
-        t_os << utils::padding(3) << "- id: " << t_k.id << std::endl
-             << utils::padding(4) << "confidence: " << t_k.confidence << std::endl
+        t_os << utils::padding(3) << "- id: " << t_m.id << std::endl
+             << utils::padding(4) << "confidence: " << t_m.confidence << std::endl
              << utils::padding(4) << "point: " << std::endl
-             << t_k.point;
+             << t_m.point;
         return t_os;
       }
 
-      // KeypointGroup
-      KeypointGroup::KeypointGroup(const int& t_id,
-                                   const unsigned int& t_max_keypoints,
-                                   const double& t_confidence,
-                                   const Box& t_bounding_box,
-                                   const std::vector<Keypoint>& t_keypoints)
+      // MarkerGroup
+      MarkerGroup::MarkerGroup(const int& t_id,
+                               const unsigned int& t_max_markers,
+                               const double& t_confidence,
+                               const Box& t_bounding_box,
+                               const std::vector<Marker>& t_markers)
         : id(t_id)
-        , max_keypoints(t_max_keypoints)
+        , max_markers(t_max_markers)
         , confidence(t_confidence)
         , bounding_box(t_bounding_box)
       {
-        for (auto& kp : t_keypoints) {
-          keypoints.emplace(kp.id, kp);
+        for (auto& m : t_markers) {
+          markers.emplace(m.id, m);
         }
       }
 
-      std::ostream& operator<<(std::ostream& t_os, const KeypointGroup& t_kg)
+      std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg)
       {
-        t_os << utils::padding(2) << "- id: " << t_kg.id << std::endl
-             << utils::padding(3) << "max_keypoints: " << t_kg.max_keypoints << std::endl
-             << utils::padding(3) << "confidence: " << t_kg.confidence << std::endl
+        t_os << utils::padding(2) << "- id: " << t_mg.id << std::endl
+             << utils::padding(3) << "max_markers: " << t_mg.max_markers << std::endl
+             << utils::padding(3) << "confidence: " << t_mg.confidence << std::endl
              << utils::padding(3) << "bounding_box: " << std::endl
-             << t_kg.bounding_box << std::endl
-             << utils::padding(3) << "keypoints: ";
-        if (t_kg.keypoints.empty()) {
+             << t_mg.bounding_box << std::endl
+             << utils::padding(3) << "markers: ";
+        if (t_mg.markers.empty()) {
           t_os << "[]";
         }
         else {
-          for (auto k : t_kg.keypoints) {
-            t_os << std::endl << k.second;
+          for (auto m : t_mg.markers) {
+            t_os << std::endl << m.second;
           }
         }
         return t_os;
@@ -222,12 +222,12 @@ namespace hiros {
       // Skeleton
       Skeleton::Skeleton(const int& t_id,
                          const double& t_confidence,
-                         const std::vector<KeypointGroup>& t_skeleton_parts)
+                         const std::vector<MarkerGroup>& t_marker_groups)
         : id(t_id)
         , confidence(t_confidence)
       {
-        for (auto& skp : t_skeleton_parts) {
-          skeleton_parts.emplace(skp.id, skp);
+        for (auto& mg : t_marker_groups) {
+          marker_groups.emplace(mg.id, mg);
         }
       }
 
@@ -235,13 +235,13 @@ namespace hiros {
       {
         t_os << utils::padding(1) << "- id: " << t_s.id << std::endl
              << utils::padding(2) << "confidence: " << t_s.confidence << std::endl
-             << utils::padding(2) << "skeleton_parts: ";
-        if (t_s.skeleton_parts.empty()) {
+             << utils::padding(2) << "marker_groups: ";
+        if (t_s.marker_groups.empty()) {
           t_os << "[]";
         }
         else {
-          for (auto sp : t_s.skeleton_parts) {
-            t_os << std::endl << sp.second;
+          for (auto mg : t_s.marker_groups) {
+            t_os << std::endl << mg.second;
           }
         }
         return t_os;

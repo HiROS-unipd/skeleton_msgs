@@ -146,125 +146,123 @@ skeleton_msgs::Box hiros::skeletons::utils::toMsg(const hiros::skeletons::types:
   return b;
 }
 
-// Keypoint
-hiros::skeletons::types::Keypoint
+// Marker
+hiros::skeletons::types::Marker
 hiros::skeletons::utils::toStruct(const int& t_id,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::Point& t_point)
 {
-  return hiros::skeletons::types::Keypoint(t_id, t_confidence, t_point);
+  return hiros::skeletons::types::Marker(t_id, t_confidence, t_point);
 }
 
-hiros::skeletons::types::Keypoint
+hiros::skeletons::types::Marker
 hiros::skeletons::utils::toStruct(const int& t_id,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::Position& t_position,
                                   const hiros::skeletons::types::Velocity& t_velocity,
                                   const hiros::skeletons::types::Acceleration& t_acceleration)
 {
-  return hiros::skeletons::types::Keypoint(
+  return hiros::skeletons::types::Marker(
     t_id, t_confidence, hiros::skeletons::types::Point(t_position, t_velocity, t_acceleration));
 }
 
-hiros::skeletons::types::Keypoint
-hiros::skeletons::utils::toStruct(const skeleton_msgs::Keypoint& t_k)
+hiros::skeletons::types::Marker hiros::skeletons::utils::toStruct(const skeleton_msgs::Marker& t_m)
 {
-  return hiros::skeletons::types::Keypoint(t_k.id, t_k.confidence, toStruct(t_k.point));
+  return hiros::skeletons::types::Marker(t_m.id, t_m.confidence, toStruct(t_m.point));
 }
 
-skeleton_msgs::Keypoint hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Keypoint& t_k)
+skeleton_msgs::Marker hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Marker& t_m)
 {
-  skeleton_msgs::Keypoint k;
-  k.id = t_k.id;
-  k.confidence = t_k.confidence;
-  k.point = toMsg(t_k.point);
-  return k;
+  skeleton_msgs::Marker m;
+  m.id = t_m.id;
+  m.confidence = t_m.confidence;
+  m.point = toMsg(t_m.point);
+  return m;
 }
 
-bool hiros::skeletons::utils::hasKeypoint(
-  const hiros::skeletons::types::KeypointGroup& t_keypoint_group,
-  const int& t_keypoint_id)
+bool hiros::skeletons::utils::hasMarker(const hiros::skeletons::types::MarkerGroup& t_marker_group,
+                                        const int& t_marker_id)
 {
-  return (t_keypoint_group.keypoints.count(t_keypoint_id) > 0);
+  return (t_marker_group.markers.count(t_marker_id) > 0);
 }
 
-bool hiros::skeletons::utils::hasKeypoint(const hiros::skeletons::types::Skeleton& t_skeleton,
-                                          const int& t_keypoint_group_id,
-                                          const int& t_keypoint_id)
+bool hiros::skeletons::utils::hasMarker(const hiros::skeletons::types::Skeleton& t_skeleton,
+                                        const int& t_marker_group_id,
+                                        const int& t_marker_id)
 {
-  return (hasKeypointGroup(t_skeleton, t_keypoint_group_id)
-          && hasKeypoint(t_skeleton.skeleton_parts.at(t_keypoint_group_id), t_keypoint_id));
+  return (hasMarkerGroup(t_skeleton, t_marker_group_id)
+          && hasMarker(t_skeleton.marker_groups.at(t_marker_group_id), t_marker_id));
 }
 
-// keypointGroup
-hiros::skeletons::types::KeypointGroup
+// MarkerGroup
+hiros::skeletons::types::MarkerGroup
 hiros::skeletons::utils::toStruct(const int& t_id,
-                                  const unsigned int& t_max_keypoints,
+                                  const unsigned int& t_max_markers,
                                   const double& t_confidence,
-                                  const std::vector<hiros::skeletons::types::Keypoint> t_keypoints)
+                                  const std::vector<hiros::skeletons::types::Marker> t_markers)
 {
-  return hiros::skeletons::types::KeypointGroup(
-    t_id, t_max_keypoints, t_confidence, hiros::skeletons::types::Box(), t_keypoints);
+  return hiros::skeletons::types::MarkerGroup(
+    t_id, t_max_markers, t_confidence, hiros::skeletons::types::Box(), t_markers);
 }
 
-hiros::skeletons::types::KeypointGroup
+hiros::skeletons::types::MarkerGroup
 hiros::skeletons::utils::toStruct(const int& t_id,
-                                  const unsigned int& t_max_keypoints,
+                                  const unsigned int& t_max_markers,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::Box& t_bounding_box,
-                                  const std::vector<hiros::skeletons::types::Keypoint> t_keypoints)
+                                  const std::vector<hiros::skeletons::types::Marker> t_markers)
 {
-  return hiros::skeletons::types::KeypointGroup(
-    t_id, t_max_keypoints, t_confidence, t_bounding_box, t_keypoints);
+  return hiros::skeletons::types::MarkerGroup(
+    t_id, t_max_markers, t_confidence, t_bounding_box, t_markers);
 }
 
-hiros::skeletons::types::KeypointGroup
-hiros::skeletons::utils::toStruct(const skeleton_msgs::KeypointGroup& t_kg)
+hiros::skeletons::types::MarkerGroup
+hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerGroup& t_mg)
 {
-  hiros::skeletons::types::KeypointGroup kg(
-    t_kg.id, t_kg.max_keypoints, t_kg.confidence, toStruct(t_kg.bounding_box));
-  for (auto& k : t_kg.keypoints) {
-    kg.keypoints.emplace(k.id, toStruct(k));
+  hiros::skeletons::types::MarkerGroup mg(
+    t_mg.id, t_mg.max_markers, t_mg.confidence, toStruct(t_mg.bounding_box));
+  for (auto& m : t_mg.markers) {
+    mg.markers.emplace(m.id, toStruct(m));
   }
-  return kg;
+  return mg;
 }
 
-skeleton_msgs::KeypointGroup
-hiros::skeletons::utils::toMsg(const hiros::skeletons::types::KeypointGroup& t_kg)
+skeleton_msgs::MarkerGroup
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerGroup& t_mg)
 {
-  skeleton_msgs::KeypointGroup kg;
-  kg.id = t_kg.id;
-  kg.max_keypoints = t_kg.max_keypoints;
-  kg.confidence = t_kg.confidence;
-  kg.bounding_box = toMsg(t_kg.bounding_box);
-  kg.keypoints.reserve(t_kg.keypoints.size());
-  for (auto& k : t_kg.keypoints) {
-    kg.keypoints.push_back(toMsg(k.second));
+  skeleton_msgs::MarkerGroup mg;
+  mg.id = t_mg.id;
+  mg.max_markers = t_mg.max_markers;
+  mg.confidence = t_mg.confidence;
+  mg.bounding_box = toMsg(t_mg.bounding_box);
+  mg.markers.reserve(t_mg.markers.size());
+  for (auto& m : t_mg.markers) {
+    mg.markers.push_back(toMsg(m.second));
   }
-  return kg;
+  return mg;
 }
 
-bool hiros::skeletons::utils::hasKeypointGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
-                                               const int& t_keypoint_group_id)
+bool hiros::skeletons::utils::hasMarkerGroup(const hiros::skeletons::types::Skeleton& t_skeleton,
+                                             const int& t_marker_group_id)
 {
-  return (t_skeleton.skeleton_parts.count(t_keypoint_group_id) > 0);
+  return (t_skeleton.marker_groups.count(t_marker_group_id) > 0);
 }
 
 // Skeleton
 hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
   const int& t_id,
   const double& t_confidence,
-  const std::vector<hiros::skeletons::types::KeypointGroup>& t_skeleton_parts)
+  const std::vector<hiros::skeletons::types::MarkerGroup>& t_marker_groups)
 {
-  return hiros::skeletons::types::Skeleton(t_id, t_confidence, t_skeleton_parts);
+  return hiros::skeletons::types::Skeleton(t_id, t_confidence, t_marker_groups);
 }
 
 hiros::skeletons::types::Skeleton
 hiros::skeletons::utils::toStruct(const skeleton_msgs::Skeleton& t_s)
 {
   hiros::skeletons::types::Skeleton s(t_s.id, t_s.confidence);
-  for (auto& sp : t_s.skeleton_parts) {
-    s.skeleton_parts.emplace(sp.id, toStruct(sp));
+  for (auto& mg : t_s.marker_groups) {
+    s.marker_groups.emplace(mg.id, toStruct(mg));
   }
   return s;
 }
@@ -274,9 +272,9 @@ skeleton_msgs::Skeleton hiros::skeletons::utils::toMsg(const hiros::skeletons::t
   skeleton_msgs::Skeleton s;
   s.id = t_s.id;
   s.confidence = t_s.confidence;
-  s.skeleton_parts.reserve(t_s.skeleton_parts.size());
-  for (auto& sp : t_s.skeleton_parts) {
-    s.skeleton_parts.push_back(toMsg(sp.second));
+  s.marker_groups.reserve(t_s.marker_groups.size());
+  for (auto& mg : t_s.marker_groups) {
+    s.marker_groups.push_back(toMsg(mg.second));
   }
   return s;
 }
