@@ -289,7 +289,7 @@ std::shared_ptr<hiros::skeletons::types::MarkerSkeleton> hiros::skeletons::utils
   auto marker_skeleton_it =
     std::find_if(t_marker_skeleton_group.marker_skeletons.begin(),
                  t_marker_skeleton_group.marker_skeletons.end(),
-                 [t_marker_skeleton_id](const hiros::skeletons::types::MarkerSkeleton& ms) {
+                 [&t_marker_skeleton_id](const hiros::skeletons::types::MarkerSkeleton& ms) {
                    return ms.id == t_marker_skeleton_id;
                  });
 
@@ -534,7 +534,7 @@ hiros::skeletons::utils::getOrientationSkeleton(
   auto orientation_skeleton_it = std::find_if(
     t_orientation_skeleton_group.orientation_skeletons.begin(),
     t_orientation_skeleton_group.orientation_skeletons.end(),
-    [t_orientation_skeleton_id](const hiros::skeletons::types::OrientationSkeleton& os) {
+    [&t_orientation_skeleton_id](const hiros::skeletons::types::OrientationSkeleton& os) {
       return os.id == t_orientation_skeleton_id;
     });
 
