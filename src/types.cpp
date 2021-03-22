@@ -200,6 +200,16 @@ namespace hiros {
         }
       }
 
+      bool MarkerGroup::addMarker(const Marker& t_marker)
+      {
+        if (markers.count(t_marker.id) > 0) {
+          return false;
+        }
+
+        markers.emplace(t_marker.id, t_marker);
+        return true;
+      }
+
       std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg)
       {
         t_os << utils::padding(2) << "- id: " << t_mg.id << std::endl
@@ -231,6 +241,16 @@ namespace hiros {
         }
       }
 
+      bool MarkerSkeleton::addMarkerGroup(const MarkerGroup& t_marker_group)
+      {
+        if (marker_groups.count(t_marker_group.id) > 0) {
+          return false;
+        }
+
+        marker_groups.emplace(t_marker_group.id, t_marker_group);
+        return true;
+      }
+
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms)
       {
         t_os << utils::padding(1) << "- id: " << t_ms.id << std::endl
@@ -256,6 +276,20 @@ namespace hiros {
         , src_frame(t_src_frame)
         , marker_skeletons(t_marker_skeletons)
       {}
+
+      bool MarkerSkeletonGroup::addMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton)
+      {
+        if (std::find_if(
+              marker_skeletons.begin(),
+              marker_skeletons.end(),
+              [t_marker_skeleton](const auto& s) { return s.id == t_marker_skeleton.id; })
+            != marker_skeletons.end()) {
+          return false;
+        }
+
+        marker_skeletons.emplace_back(t_marker_skeleton);
+        return true;
+      }
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg)
       {
@@ -314,6 +348,16 @@ namespace hiros {
         }
       }
 
+      bool OrientationGroup::addOrientation(const Orientation& t_orientation)
+      {
+        if (orientations.count(t_orientation.id) > 0) {
+          return false;
+        }
+
+        orientations.emplace(t_orientation.id, t_orientation);
+        return true;
+      }
+
       std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og)
       {
         t_os << utils::padding(2) << "- id: " << t_og.id << std::endl
@@ -344,6 +388,16 @@ namespace hiros {
         }
       }
 
+      bool OrientationSkeleton::addOrientationGroup(const OrientationGroup& t_orientation_group)
+      {
+        if (orientation_groups.count(t_orientation_group.id) > 0) {
+          return false;
+        }
+
+        orientation_groups.emplace(t_orientation_group.id, t_orientation_group);
+        return true;
+      }
+
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk)
       {
         t_os << utils::padding(1) << "- id: " << t_osk.id << std::endl
@@ -369,6 +423,21 @@ namespace hiros {
         , src_frame(t_src_frame)
         , orientation_skeletons(t_orientation_skeletons)
       {}
+
+      bool OrientationSkeletonGroup::addOrientationSkeleton(
+        const OrientationSkeleton& t_orientation_skeleton)
+      {
+        if (std::find_if(
+              orientation_skeletons.begin(),
+              orientation_skeletons.end(),
+              [t_orientation_skeleton](const auto& s) { return s.id == t_orientation_skeleton.id; })
+            != orientation_skeletons.end()) {
+          return false;
+        }
+
+        orientation_skeletons.emplace_back(t_orientation_skeleton);
+        return true;
+      }
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg)
       {

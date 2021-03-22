@@ -107,6 +107,8 @@ namespace hiros {
                     const Box& t_bounding_box = Box(),
                     const std::vector<Marker>& t_markers = std::vector<Marker>());
 
+        bool addMarker(const Marker& t_marker);
+
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg);
 
         int id;
@@ -125,6 +127,8 @@ namespace hiros {
           const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
           const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>());
 
+        bool addMarkerGroup(const MarkerGroup& t_marker_group);
+
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms);
 
         int id;
@@ -140,6 +144,8 @@ namespace hiros {
           const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
           const std::string& t_src_frame = "",
           const std::vector<MarkerSkeleton>& t_marker_skeletons = std::vector<MarkerSkeleton>());
+
+        bool addMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton);
 
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg);
 
@@ -175,6 +181,8 @@ namespace hiros {
           const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
           const std::vector<Orientation>& t_orientations = std::vector<Orientation>());
 
+        bool addOrientation(const Orientation& t_orientation);
+
         friend std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og);
 
         int id;
@@ -192,6 +200,8 @@ namespace hiros {
                             const std::vector<OrientationGroup>& t_orientation_groups =
                               std::vector<OrientationGroup>());
 
+        bool addOrientationGroup(const OrientationGroup& t_orientation_group);
+
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_osk);
 
         int id;
@@ -208,6 +218,8 @@ namespace hiros {
           const std::string& t_src_frame = "",
           const std::vector<OrientationSkeleton>& t_orientation_skeletons =
             std::vector<OrientationSkeleton>());
+
+        bool addOrientationSkeleton(const OrientationSkeleton& t_orientation_skeleton);
 
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_osg);
 
