@@ -10,7 +10,8 @@ find_package(catkin REQUIRED
              COMPONENTS geometry_msgs
                         message_generation
                         sensor_msgs
-                        std_msgs)
+                        std_msgs
+                        tf2)
 
 # ##############################################################################
 # Declare ROS messages, services and actions ##
@@ -49,6 +50,7 @@ catkin_package(CATKIN_DEPENDS
                message_runtime
                sensor_msgs
                std_msgs
+               tf2
                LIBRARIES
                ${PROJECT_NAME}_types
                INCLUDE_DIRS

@@ -16,56 +16,51 @@ const std::string hiros::skeletons::utils::padding(int t_n_pads)
 }
 
 // Vector
-hiros::skeletons::types::Vector
+tf2::Vector3
 hiros::skeletons::utils::toStruct(const double& t_x, const double& t_y, const double& t_z)
 {
-  return hiros::skeletons::types::Vector(t_x, t_y, t_z);
+  return tf2::Vector3(t_x, t_y, t_z);
 }
 
-hiros::skeletons::types::Vector hiros::skeletons::utils::toStruct(const geometry_msgs::Point& t_p)
+tf2::Vector3 hiros::skeletons::utils::toStruct(const geometry_msgs::Point& t_p)
 {
-  return hiros::skeletons::types::Vector(t_p.x, t_p.y, t_p.z);
+  return tf2::Vector3(t_p.x, t_p.y, t_p.z);
 }
 
-hiros::skeletons::types::Vector hiros::skeletons::utils::toStruct(const geometry_msgs::Vector3& t_v)
+tf2::Vector3 hiros::skeletons::utils::toStruct(const geometry_msgs::Vector3& t_v)
 {
-  return hiros::skeletons::types::Vector(t_v.x, t_v.y, t_v.z);
+  return tf2::Vector3(t_v.x, t_v.y, t_v.z);
 }
 
-geometry_msgs::Point hiros::skeletons::utils::toPointMsg(const hiros::skeletons::types::Vector& t_v)
+geometry_msgs::Point hiros::skeletons::utils::toPointMsg(const tf2::Vector3& t_v)
 {
   geometry_msgs::Point p;
-  p.x = t_v.x;
-  p.y = t_v.y;
-  p.z = t_v.z;
+  p.x = t_v.x();
+  p.y = t_v.y();
+  p.z = t_v.z();
   return p;
 }
 
-geometry_msgs::Vector3
-hiros::skeletons::utils::toVector3Msg(const hiros::skeletons::types::Vector& t_v)
+geometry_msgs::Vector3 hiros::skeletons::utils::toVector3Msg(const tf2::Vector3& t_v)
 {
   geometry_msgs::Vector3 v;
-  v.x = t_v.x;
-  v.y = t_v.y;
-  v.z = t_v.z;
+  v.x = t_v.x();
+  v.y = t_v.y();
+  v.z = t_v.z();
   return v;
 }
 
-double hiros::skeletons::utils::magnitude(const hiros::skeletons::types::Vector& t_v)
+double hiros::skeletons::utils::magnitude(const tf2::Vector3& t_v)
 {
-  return distance(t_v, hiros::skeletons::types::Vector(0, 0, 0));
+  return t_v.length();
 }
 
-double hiros::skeletons::utils::distance(const hiros::skeletons::types::Vector& t_v1,
-                                         const hiros::skeletons::types::Vector& t_v2)
+double hiros::skeletons::utils::distance(const types::Position& t_p1, const types::Position& t_p2)
 {
-  double squared_dist = std::pow((t_v1.x - t_v2.x), 2) + std::pow((t_v1.y - t_v2.y), 2);
-
-  if (!std::isnan(t_v1.z) && !std::isnan(t_v2.z)) {
-    squared_dist += std::pow((t_v1.z - t_v2.z), 2);
-  }
-
-  return std::sqrt(squared_dist);
+  return (!std::isnan(t_p1.z()) && !std::isnan(t_p2.z()))
+           ? t_p1.distance(t_p2)
+           : types::Position(t_p1.x(), t_p1.y(), 0)
+               .distance(types::Position(t_p2.x(), t_p2.y(), 0));
 }
 
 // Point
@@ -94,28 +89,26 @@ hiros_skeleton_msgs::Point hiros::skeletons::utils::toMsg(const hiros::skeletons
 }
 
 // Quaternion
-hiros::skeletons::types::Quaternion hiros::skeletons::utils::toStruct(const double& t_x,
-                                                                      const double& t_y,
-                                                                      const double& t_z,
-                                                                      const double& t_w)
+tf2::Quaternion hiros::skeletons::utils::toStruct(const double& t_x,
+                                                  const double& t_y,
+                                                  const double& t_z,
+                                                  const double& t_w)
 {
-  return hiros::skeletons::types::Quaternion(t_x, t_y, t_z, t_w);
+  return tf2::Quaternion(t_x, t_y, t_z, t_w);
 }
 
-hiros::skeletons::types::Quaternion
-hiros::skeletons::utils::toStruct(const geometry_msgs::Quaternion& t_q)
+tf2::Quaternion hiros::skeletons::utils::toStruct(const geometry_msgs::Quaternion& t_q)
 {
-  return hiros::skeletons::types::Quaternion(t_q.x, t_q.y, t_q.z, t_q.w);
+  return tf2::Quaternion(t_q.x, t_q.y, t_q.z, t_q.w);
 }
 
-geometry_msgs::Quaternion
-hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Quaternion& t_q)
+geometry_msgs::Quaternion hiros::skeletons::utils::toMsg(const tf2::Quaternion& t_q)
 {
   geometry_msgs::Quaternion q;
-  q.x = t_q.x;
-  q.y = t_q.y;
-  q.z = t_q.z;
-  q.w = t_q.w;
+  q.x = t_q.x();
+  q.y = t_q.y();
+  q.z = t_q.z();
+  q.w = t_q.w();
   return q;
 }
 
@@ -125,7 +118,7 @@ hiros::skeletons::utils::toStruct(const hiros::skeletons::types::Point& t_center
                                   const double& t_length,
                                   const double& t_height,
                                   const double& t_width,
-                                  const hiros::skeletons::types::Quaternion& t_orientation)
+                                  const tf2::Quaternion& t_orientation)
 {
   return hiros::skeletons::types::Box(t_center, t_length, t_height, t_width, t_orientation);
 }
@@ -398,9 +391,9 @@ hiros::skeletons::types::Orientation
 hiros::skeletons::utils::toStruct(const int& t_id,
                                   const std::string& t_frame_id,
                                   const double& t_confidence,
-                                  const hiros::skeletons::types::Quaternion& t_orientation,
-                                  const hiros::skeletons::types::Vector& t_angular_velocity,
-                                  const hiros::skeletons::types::Vector& t_linear_acceleration)
+                                  const tf2::Quaternion& t_orientation,
+                                  const tf2::Vector3& t_angular_velocity,
+                                  const tf2::Vector3& t_linear_acceleration)
 {
   return hiros::skeletons::types::Orientation(
     t_id, t_frame_id, t_confidence, t_orientation, t_angular_velocity, t_linear_acceleration);

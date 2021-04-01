@@ -10,89 +10,12 @@ namespace hiros {
     namespace types {
 
       // Vector
-      Vector::Vector(const double& t_x, const double& t_y, const double& t_z)
-        : x(t_x)
-        , y(t_y)
-        , z(t_z)
-      {}
-
-      Vector& Vector::operator+=(const Vector& t_vec)
+      std::ostream& operator<<(std::ostream& t_os, const tf2::Vector3& t_v)
       {
-        x += t_vec.x;
-        y += t_vec.y;
-        z += t_vec.z;
-        return *this;
-      }
-
-      Vector operator+(const Vector& t_v1, const Vector& t_v2)
-      {
-        Vector res = t_v1;
-        return (res += t_v2);
-      }
-
-      Vector& Vector::operator-=(const Vector& t_vec)
-      {
-        x -= t_vec.x;
-        y -= t_vec.y;
-        z -= t_vec.z;
-        return *this;
-      }
-
-      Vector operator-(const Vector& t_v1, const Vector& t_v2)
-      {
-        Vector res = t_v1;
-        return (res -= t_v2);
-      }
-
-      Vector operator-(const Vector& t_vec)
-      {
-        Vector res;
-        res.x = -t_vec.x;
-        res.y = -t_vec.y;
-        res.z = -t_vec.z;
-        return res;
-      }
-
-      Vector& Vector::operator*=(const double& t_val)
-      {
-        x *= t_val;
-        y *= t_val;
-        z *= t_val;
-        return *this;
-      }
-
-      Vector operator*(const Vector& t_vec, const double& t_val)
-      {
-        Vector res = t_vec;
-        return (res *= t_val);
-      }
-
-      Vector operator*(const double& t_val, const Vector& t_vec)
-      {
-        Vector res = t_vec;
-        return (res *= t_val);
-      }
-
-      Vector& Vector::operator/=(const double& t_val)
-      {
-        x /= t_val;
-        y /= t_val;
-        z /= t_val;
-        return *this;
-      }
-
-      Vector operator/(const Vector& t_vec, const double& t_val)
-      {
-        Vector res = t_vec;
-        return (res /= t_val);
-      }
-
-      std::ostream& operator<<(std::ostream& t_os, const Vector& t_v)
-      {
-        t_os << utils::padding(5) << "- x: " << t_v.x << std::endl
-             << utils::padding(6) << "y: " << t_v.y;
-        if (!std::isnan(t_v.z)) {
-          t_os << std::endl << utils::padding(6) << "z: " << t_v.z;
+        t_os << utils::padding(5) << "- x: " << t_v.x() << std::endl
+             << utils::padding(6) << "y: " << t_v.y();
+        if (!std::isnan(t_v.z())) {
+          t_os << std::endl << utils::padding(6) << "z: " << t_v.z();
         }
         return t_os;
       }
@@ -109,10 +32,10 @@ namespace hiros {
       std::ostream& operator<<(std::ostream& t_os, const Point& t_p)
       {
         t_os << utils::padding(4) << "- position: " << std::endl << t_p.position;
-        if (!std::isnan(t_p.velocity.x)) {
+        if (!std::isnan(t_p.velocity.x())) {
           t_os << std::endl << utils::padding(5) << "velocity: " << std::endl << t_p.velocity;
         }
-        if (!std::isnan(t_p.acceleration.x)) {
+        if (!std::isnan(t_p.acceleration.x())) {
           t_os << std::endl
                << utils::padding(5) << "acceleration: " << std::endl
                << t_p.acceleration;
@@ -121,22 +44,12 @@ namespace hiros {
       }
 
       // Quaternion
-      Quaternion::Quaternion(const double& t_x,
-                             const double& t_y,
-                             const double& t_z,
-                             const double& t_w)
-        : x(t_x)
-        , y(t_y)
-        , z(t_z)
-        , w(t_w)
-      {}
-
-      std::ostream& operator<<(std::ostream& t_os, const Quaternion& t_p)
+      std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_p)
       {
-        t_os << utils::padding(4) << "- x: " << t_p.x << std::endl
-             << utils::padding(5) << "y: " << t_p.y << std::endl
-             << utils::padding(5) << "z: " << t_p.z << std::endl
-             << utils::padding(5) << "w: " << t_p.w;
+        t_os << utils::padding(4) << "- x: " << t_p.x() << std::endl
+             << utils::padding(5) << "y: " << t_p.y() << std::endl
+             << utils::padding(5) << "z: " << t_p.z() << std::endl
+             << utils::padding(5) << "w: " << t_p.w();
         return t_os;
       }
 
@@ -145,7 +58,7 @@ namespace hiros {
                const double& t_length,
                const double& t_height,
                const double& t_width,
-               const Quaternion& t_orientation)
+               const tf2::Quaternion& t_orientation)
         : center(t_center)
         , length(t_length)
         , height(t_height)
@@ -162,7 +75,7 @@ namespace hiros {
         if (!std::isnan(t_b.width)) {
           t_os << std::endl << utils::padding(4) << "width: " << t_b.width;
         }
-        if (t_b.orientation.w != 1.0) {
+        if (!std::isnan(t_b.orientation.w())) {
           t_os << std::endl << utils::padding(4) << "orientation: " << std::endl << t_b.orientation;
         }
         return t_os;
@@ -314,9 +227,9 @@ namespace hiros {
       Orientation::Orientation(const int& t_id,
                                const std::string& t_frame_id,
                                const double& t_confidence,
-                               const Quaternion& t_orientation,
-                               const Vector& t_angular_velocity,
-                               const Vector& t_linear_acceleration)
+                               const tf2::Quaternion& t_orientation,
+                               const tf2::Vector3& t_angular_velocity,
+                               const tf2::Vector3& t_linear_acceleration)
         : id(t_id)
         , frame_id(t_frame_id)
         , confidence(t_confidence)

@@ -1,6 +1,10 @@
 #ifndef hiros_skeletons_types_h
 #define hiros_skeletons_types_h
 
+// ROS dependencies
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2/LinearMath/Vector3.h"
+
 // Standard dependencies
 #include <iostream>
 #include <limits>
@@ -12,41 +16,25 @@ namespace hiros {
     namespace types {
 
       // Vector
-      struct Vector
-      {
-        Vector(const double& t_x = std::numeric_limits<double>::quiet_NaN(),
-               const double& t_y = std::numeric_limits<double>::quiet_NaN(),
-               const double& t_z = std::numeric_limits<double>::quiet_NaN());
+      typedef tf2::Vector3 Position;
+      typedef tf2::Vector3 Velocity;
+      typedef tf2::Vector3 Acceleration;
 
-        Vector& operator+=(const Vector& t_vec);
-        friend Vector operator+(const Vector& t_v1, const Vector& t_v2);
-
-        Vector& operator-=(const Vector& t_vec);
-        friend Vector operator-(const Vector& t_v1, const Vector& t_v2);
-        friend Vector operator-(const Vector& t_vec);
-
-        Vector& operator*=(const double& t_val);
-        friend Vector operator*(const Vector& t_vec, const double& t_val);
-        friend Vector operator*(const double& t_val, const Vector& t_vec);
-
-        Vector& operator/=(const double& t_val);
-        friend Vector operator/(const Vector& t_vec, const double& t_val);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const Vector& t_v);
-
-        double x, y, z;
-      };
-
-      typedef Vector Position;
-      typedef Vector Velocity;
-      typedef Vector Acceleration;
+      std::ostream& operator<<(std::ostream& t_os, const tf2::Vector3& t_v);
 
       // Point
       struct Point
       {
-        Point(const Position& t_position = Position(),
-              const Velocity& t_velocity = Velocity(),
-              const Acceleration& t_acceleration = Acceleration());
+        Point(const Position& t_position = Position(std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN()),
+              const Velocity& t_velocity = Velocity(std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN()),
+              const Acceleration& t_acceleration =
+                Acceleration(std::numeric_limits<double>::quiet_NaN(),
+                             std::numeric_limits<double>::quiet_NaN(),
+                             std::numeric_limits<double>::quiet_NaN()));
 
         friend std::ostream& operator<<(std::ostream& t_os, const Point& t_p);
 
@@ -56,17 +44,7 @@ namespace hiros {
       };
 
       // Quaternion
-      struct Quaternion
-      {
-        Quaternion(const double& t_x = 0.0,
-                   const double& t_y = 0.0,
-                   const double& t_z = 0.0,
-                   const double& t_w = 1.0);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const Quaternion& t_q);
-
-        double x, y, z, w;
-      };
+      std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_q);
 
       // Box
       struct Box
@@ -75,13 +53,17 @@ namespace hiros {
             const double& t_length = std::numeric_limits<double>::quiet_NaN(),
             const double& t_height = std::numeric_limits<double>::quiet_NaN(),
             const double& t_width = std::numeric_limits<double>::quiet_NaN(),
-            const Quaternion& t_orientation = Quaternion());
+            const tf2::Quaternion& t_orientation =
+              tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN()));
 
         friend std::ostream& operator<<(std::ostream& t_os, const Box& t_b);
 
         Point center;
         double length, height, width;
-        Quaternion orientation;
+        tf2::Quaternion orientation;
       };
 
       // Marker
@@ -160,18 +142,28 @@ namespace hiros {
         Orientation(const int& t_id = -1,
                     const std::string& t_frame_id = "",
                     const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                    const Quaternion& t_orientation = Quaternion(),
-                    const Vector& t_angular_velocity = Vector(),
-                    const Vector& t_linear_acceleration = Vector());
+                    const tf2::Quaternion& t_orientation =
+                      tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
+                                      std::numeric_limits<double>::quiet_NaN(),
+                                      std::numeric_limits<double>::quiet_NaN(),
+                                      std::numeric_limits<double>::quiet_NaN()),
+                    const tf2::Vector3& t_angular_velocity =
+                      tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                                   std::numeric_limits<double>::quiet_NaN(),
+                                   std::numeric_limits<double>::quiet_NaN()),
+                    const tf2::Vector3& t_linear_acceleration =
+                      tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                                   std::numeric_limits<double>::quiet_NaN(),
+                                   std::numeric_limits<double>::quiet_NaN()));
 
         friend std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o);
 
         int id;
         std::string frame_id;
         double confidence;
-        Quaternion orientation;
-        Vector angular_velocity;
-        Vector linear_acceleration;
+        tf2::Quaternion orientation;
+        tf2::Vector3 angular_velocity;
+        tf2::Vector3 linear_acceleration;
       };
 
       // OrientationGroup

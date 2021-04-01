@@ -28,38 +28,42 @@ namespace hiros {
       const std::string padding(int t_n_pads);
 
       // Vector
-      hiros::skeletons::types::Vector
-      toStruct(const double& t_x,
-               const double& t_y,
-               const double& t_z = std::numeric_limits<double>::quiet_NaN());
+      tf2::Vector3 toStruct(const double& t_x,
+                            const double& t_y,
+                            const double& t_z = std::numeric_limits<double>::quiet_NaN());
 
-      hiros::skeletons::types::Vector toStruct(const geometry_msgs::Point& t_p);
-      hiros::skeletons::types::Vector toStruct(const geometry_msgs::Vector3& t_v);
+      tf2::Vector3 toStruct(const geometry_msgs::Point& t_p);
+      tf2::Vector3 toStruct(const geometry_msgs::Vector3& t_v);
 
-      geometry_msgs::Point toPointMsg(const hiros::skeletons::types::Vector& t_v);
-      geometry_msgs::Vector3 toVector3Msg(const hiros::skeletons::types::Vector& t_v);
+      geometry_msgs::Point toPointMsg(const tf2::Vector3& t_v);
+      geometry_msgs::Vector3 toVector3Msg(const tf2::Vector3& t_v);
 
-      double magnitude(const hiros::skeletons::types::Vector& t_v);
-      double distance(const hiros::skeletons::types::Vector& t_v1,
-                      const hiros::skeletons::types::Vector& t_v2);
+      double magnitude(const tf2::Vector3& t_v);
+      double distance(const types::Position& t_p1, const types::Position& t_p2);
 
       // Point
-      hiros::skeletons::types::Point toStruct(
-        const hiros::skeletons::types::Position& t_p,
-        const hiros::skeletons::types::Velocity& t_v = hiros::skeletons::types::Velocity(),
-        const hiros::skeletons::types::Acceleration& t_a = hiros::skeletons::types::Acceleration());
+      hiros::skeletons::types::Point
+      toStruct(const hiros::skeletons::types::Position& t_p,
+               const hiros::skeletons::types::Velocity& t_v =
+                 hiros::skeletons::types::Velocity(std::numeric_limits<double>::quiet_NaN(),
+                                                   std::numeric_limits<double>::quiet_NaN(),
+                                                   std::numeric_limits<double>::quiet_NaN()),
+               const hiros::skeletons::types::Acceleration& t_a =
+                 hiros::skeletons::types::Acceleration(std::numeric_limits<double>::quiet_NaN(),
+                                                       std::numeric_limits<double>::quiet_NaN(),
+                                                       std::numeric_limits<double>::quiet_NaN()));
 
       hiros::skeletons::types::Point toStruct(const hiros_skeleton_msgs::Point& t_p);
 
       hiros_skeleton_msgs::Point toMsg(const hiros::skeletons::types::Point& t_p);
 
       // Quaternion
-      hiros::skeletons::types::Quaternion
+      tf2::Quaternion
       toStruct(const double& t_x, const double& t_y, const double& t_z, const double& t_w);
 
-      hiros::skeletons::types::Quaternion toStruct(const geometry_msgs::Quaternion& t_q);
+      tf2::Quaternion toStruct(const geometry_msgs::Quaternion& t_q);
 
-      geometry_msgs::Quaternion toMsg(const hiros::skeletons::types::Quaternion& t_q);
+      geometry_msgs::Quaternion toMsg(const tf2::Quaternion& t_q);
 
       // Box
       hiros::skeletons::types::Box
@@ -67,8 +71,11 @@ namespace hiros {
                const double& t_length,
                const double& t_height,
                const double& t_width = std::numeric_limits<double>::quiet_NaN(),
-               const hiros::skeletons::types::Quaternion& t_orientation =
-                 hiros::skeletons::types::Quaternion());
+               const tf2::Quaternion& t_orientation =
+                 tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::quiet_NaN()));
 
       hiros::skeletons::types::Box toStruct(const hiros_skeleton_msgs::Box& t_b);
 
@@ -187,11 +194,15 @@ namespace hiros {
       toStruct(const int& t_id,
                const std::string& t_frame_id,
                const double& t_confidence,
-               const hiros::skeletons::types::Quaternion& t_orientation,
-               const hiros::skeletons::types::Vector& t_angular_velocity =
-                 hiros::skeletons::types::Vector(),
-               const hiros::skeletons::types::Vector& t_linear_acceleration =
-                 hiros::skeletons::types::Vector());
+               const tf2::Quaternion& t_orientation,
+               const tf2::Vector3& t_angular_velocity =
+                 tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN()),
+               const tf2::Vector3& t_linear_acceleration =
+                 tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN()));
 
       hiros::skeletons::types::Orientation toStruct(const hiros_skeleton_msgs::Orientation& t_o);
 
