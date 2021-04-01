@@ -183,6 +183,7 @@ namespace hiros {
       // Orientation
       hiros::skeletons::types::Orientation
       toStruct(const int& t_id,
+               const std::string& t_frame_id,
                const double& t_confidence,
                const hiros::skeletons::types::Quaternion& t_orientation,
                const hiros::skeletons::types::Vector& t_angular_velocity =
@@ -214,6 +215,9 @@ namespace hiros {
       hiros::skeletons::types::OrientationGroup
       toStruct(const skeleton_msgs::OrientationGroup& t_og);
 
+      skeleton_msgs::OrientationGroup toMsg(const std_msgs::Header& t_header,
+                                            const hiros::skeletons::types::OrientationGroup& t_og);
+
       skeleton_msgs::OrientationGroup toMsg(const hiros::skeletons::types::OrientationGroup& t_og);
 
       bool hasOrientationGroup(
@@ -228,6 +232,10 @@ namespace hiros {
 
       hiros::skeletons::types::OrientationSkeleton
       toStruct(const skeleton_msgs::OrientationSkeleton& t_os);
+
+      skeleton_msgs::OrientationSkeleton
+      toMsg(const std_msgs::Header& t_header,
+            const hiros::skeletons::types::OrientationSkeleton& t_os);
 
       skeleton_msgs::OrientationSkeleton
       toMsg(const hiros::skeletons::types::OrientationSkeleton& t_os);

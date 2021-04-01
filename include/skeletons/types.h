@@ -158,6 +158,7 @@ namespace hiros {
       struct Orientation
       {
         Orientation(const int& t_id = -1,
+                    const std::string& t_frame_id = "",
                     const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                     const Quaternion& t_orientation = Quaternion(),
                     const Vector& t_angular_velocity = Vector(),
@@ -166,6 +167,7 @@ namespace hiros {
         friend std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o);
 
         int id;
+        std::string frame_id;
         double confidence;
         Quaternion orientation;
         Vector angular_velocity;

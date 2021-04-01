@@ -312,11 +312,13 @@ namespace hiros {
 
       // Orientation
       Orientation::Orientation(const int& t_id,
+                               const std::string& t_frame_id,
                                const double& t_confidence,
                                const Quaternion& t_orientation,
                                const Vector& t_angular_velocity,
                                const Vector& t_linear_acceleration)
         : id(t_id)
+        , frame_id(t_frame_id)
         , confidence(t_confidence)
         , orientation(t_orientation)
         , angular_velocity(t_angular_velocity)
@@ -326,6 +328,7 @@ namespace hiros {
       std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o)
       {
         t_os << utils::padding(3) << "- id: " << t_o.id << std::endl
+             << utils::padding(4) << "frame_id: " << t_o.frame_id << std::endl
              << utils::padding(4) << "confidence: " << t_o.confidence << std::endl
              << utils::padding(4) << "orientation: " << std::endl
              << t_o.orientation << utils::padding(4) << "angular_velocity: " << std::endl
