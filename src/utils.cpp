@@ -77,15 +77,16 @@ hiros::skeletons::utils::toStruct(const hiros::skeletons::types::Position& t_p,
   return hiros::skeletons::types::Point(t_p, t_v, t_a);
 }
 
-hiros::skeletons::types::Point hiros::skeletons::utils::toStruct(const skeleton_msgs::Point& t_p)
+hiros::skeletons::types::Point
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Point& t_p)
 {
   return hiros::skeletons::types::Point(
     toStruct(t_p.position), toStruct(t_p.velocity), toStruct(t_p.acceleration));
 }
 
-skeleton_msgs::Point hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Point& t_p)
+hiros_skeleton_msgs::Point hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Point& t_p)
 {
-  skeleton_msgs::Point p;
+  hiros_skeleton_msgs::Point p;
   p.position = toPointMsg(t_p.position);
   p.velocity = toVector3Msg(t_p.velocity);
   p.acceleration = toVector3Msg(t_p.acceleration);
@@ -129,15 +130,15 @@ hiros::skeletons::utils::toStruct(const hiros::skeletons::types::Point& t_center
   return hiros::skeletons::types::Box(t_center, t_length, t_height, t_width, t_orientation);
 }
 
-hiros::skeletons::types::Box hiros::skeletons::utils::toStruct(const skeleton_msgs::Box& t_b)
+hiros::skeletons::types::Box hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Box& t_b)
 {
   return hiros::skeletons::types::Box(
     toStruct(t_b.center), t_b.length, t_b.height, t_b.width, toStruct(t_b.orientation));
 }
 
-skeleton_msgs::Box hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Box& t_b)
+hiros_skeleton_msgs::Box hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Box& t_b)
 {
-  skeleton_msgs::Box b;
+  hiros_skeleton_msgs::Box b;
   b.center = toMsg(t_b.center);
   b.length = t_b.length;
   b.height = t_b.height;
@@ -166,14 +167,16 @@ hiros::skeletons::utils::toStruct(const int& t_id,
     t_id, t_confidence, hiros::skeletons::types::Point(t_position, t_velocity, t_acceleration));
 }
 
-hiros::skeletons::types::Marker hiros::skeletons::utils::toStruct(const skeleton_msgs::Marker& t_m)
+hiros::skeletons::types::Marker
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Marker& t_m)
 {
   return hiros::skeletons::types::Marker(t_m.id, t_m.confidence, toStruct(t_m.point));
 }
 
-skeleton_msgs::Marker hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Marker& t_m)
+hiros_skeleton_msgs::Marker
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Marker& t_m)
 {
-  skeleton_msgs::Marker m;
+  hiros_skeleton_msgs::Marker m;
   m.id = t_m.id;
   m.confidence = t_m.confidence;
   m.point = toMsg(t_m.point);
@@ -218,7 +221,7 @@ hiros::skeletons::utils::toStruct(const int& t_id,
 }
 
 hiros::skeletons::types::MarkerGroup
-hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerGroup& t_mg)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MarkerGroup& t_mg)
 {
   hiros::skeletons::types::MarkerGroup mg(
     t_mg.id, t_mg.max_markers, t_mg.confidence, toStruct(t_mg.bounding_box));
@@ -228,10 +231,10 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerGroup& t_mg)
   return mg;
 }
 
-skeleton_msgs::MarkerGroup
+hiros_skeleton_msgs::MarkerGroup
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerGroup& t_mg)
 {
-  skeleton_msgs::MarkerGroup mg;
+  hiros_skeleton_msgs::MarkerGroup mg;
   mg.id = t_mg.id;
   mg.max_markers = t_mg.max_markers;
   mg.confidence = t_mg.confidence;
@@ -260,7 +263,7 @@ hiros::skeletons::types::MarkerSkeleton hiros::skeletons::utils::toStruct(
 }
 
 hiros::skeletons::types::MarkerSkeleton
-hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerSkeleton& t_ms)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MarkerSkeleton& t_ms)
 {
   hiros::skeletons::types::MarkerSkeleton ms(t_ms.id, t_ms.confidence);
   for (auto& mg : t_ms.marker_groups) {
@@ -269,10 +272,10 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerSkeleton& t_ms)
   return ms;
 }
 
-skeleton_msgs::MarkerSkeleton
+hiros_skeleton_msgs::MarkerSkeleton
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerSkeleton& t_ms)
 {
-  skeleton_msgs::MarkerSkeleton ms;
+  hiros_skeleton_msgs::MarkerSkeleton ms;
   ms.id = t_ms.id;
   ms.confidence = t_ms.confidence;
   ms.marker_groups.reserve(t_ms.marker_groups.size());
@@ -308,7 +311,7 @@ hiros::skeletons::types::MarkerSkeletonGroup hiros::skeletons::utils::toStruct(
 }
 
 hiros::skeletons::types::MarkerSkeletonGroup
-hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerSkeletonGroup& t_msg)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MarkerSkeletonGroup& t_msg)
 {
   hiros::skeletons::types::MarkerSkeletonGroup msg;
   msg.src_time = t_msg.src_time.toSec();
@@ -320,7 +323,7 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::MarkerSkeletonGroup& t_ms
   return msg;
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
                                const ros::Time& t_stamp,
                                const std::string& t_frame_id,
@@ -328,7 +331,7 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
                                const std::string& t_src_frame,
                                const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
 {
-  skeleton_msgs::MarkerSkeletonGroup msg;
+  hiros_skeleton_msgs::MarkerSkeletonGroup msg;
   msg.header.seq = t_seq;
   msg.header.stamp = t_stamp;
   msg.header.frame_id = t_frame_id;
@@ -341,7 +344,7 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
   return msg;
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
                                const std::string& t_frame_id,
                                const ros::Time& t_src_time,
@@ -351,7 +354,7 @@ hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
   return toMsg(0, t_stamp, t_frame_id, t_src_time, t_src_frame, t_msg);
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
                                const ros::Time& t_stamp,
                                const std::string& t_frame_id,
@@ -360,7 +363,7 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
   return toMsg(t_seq, t_stamp, t_frame_id, ros::Time(t_msg.src_time), t_msg.src_frame, t_msg);
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const ros::Time& t_src_time,
                                const std::string& t_src_frame,
@@ -369,7 +372,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   return toMsg(t_header.seq, t_header.stamp, t_header.frame_id, t_src_time, t_src_frame, t_msg);
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
                                const std::string& t_frame_id,
                                const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
@@ -377,14 +380,14 @@ hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
   return toMsg(0, t_stamp, t_frame_id, t_msg);
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
 {
   return toMsg(t_header, ros::Time(t_msg.src_time), t_msg.src_frame, t_msg);
 }
 
-skeleton_msgs::MarkerSkeletonGroup
+hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
 {
   return toMsg(std_msgs::Header(), t_msg);
@@ -404,7 +407,7 @@ hiros::skeletons::utils::toStruct(const int& t_id,
 }
 
 hiros::skeletons::types::Orientation
-hiros::skeletons::utils::toStruct(const skeleton_msgs::Orientation& t_o)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Orientation& t_o)
 {
   return hiros::skeletons::types::Orientation(t_o.id,
                                               t_o.orientation.header.frame_id,
@@ -414,11 +417,11 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::Orientation& t_o)
                                               toStruct(t_o.orientation.linear_acceleration));
 }
 
-skeleton_msgs::Orientation
+hiros_skeleton_msgs::Orientation
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::Orientation& t_o)
 {
-  skeleton_msgs::Orientation o;
+  hiros_skeleton_msgs::Orientation o;
   o.id = t_o.id;
   o.confidence = t_o.confidence;
   o.orientation.header = t_header;
@@ -432,7 +435,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   return o;
 }
 
-skeleton_msgs::Orientation
+hiros_skeleton_msgs::Orientation
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Orientation& t_o)
 {
   std_msgs::Header h;
@@ -469,7 +472,7 @@ hiros::skeletons::types::OrientationGroup hiros::skeletons::utils::toStruct(
 }
 
 hiros::skeletons::types::OrientationGroup
-hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationGroup& t_og)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::OrientationGroup& t_og)
 {
   hiros::skeletons::types::OrientationGroup og(t_og.id, t_og.max_orientations, t_og.confidence);
   for (auto& o : t_og.orientations) {
@@ -478,11 +481,11 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationGroup& t_og)
   return og;
 }
 
-skeleton_msgs::OrientationGroup
+hiros_skeleton_msgs::OrientationGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::OrientationGroup& t_og)
 {
-  skeleton_msgs::OrientationGroup og;
+  hiros_skeleton_msgs::OrientationGroup og;
   og.id = t_og.id;
   og.max_orientations = t_og.max_orientations;
   og.confidence = t_og.confidence;
@@ -493,7 +496,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   return og;
 }
 
-skeleton_msgs::OrientationGroup
+hiros_skeleton_msgs::OrientationGroup
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationGroup& t_og)
 {
   return toMsg({}, t_og);
@@ -516,7 +519,7 @@ hiros::skeletons::types::OrientationSkeleton hiros::skeletons::utils::toStruct(
 }
 
 hiros::skeletons::types::OrientationSkeleton
-hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationSkeleton& t_os)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::OrientationSkeleton& t_os)
 {
   hiros::skeletons::types::OrientationSkeleton os(t_os.id, t_os.confidence);
   for (auto& og : t_os.orientation_groups) {
@@ -525,11 +528,11 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationSkeleton& t_os
   return os;
 }
 
-skeleton_msgs::OrientationSkeleton
+hiros_skeleton_msgs::OrientationSkeleton
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::OrientationSkeleton& t_os)
 {
-  skeleton_msgs::OrientationSkeleton os;
+  hiros_skeleton_msgs::OrientationSkeleton os;
   os.id = t_os.id;
   os.confidence = t_os.confidence;
   os.orientation_groups.reserve(t_os.orientation_groups.size());
@@ -539,7 +542,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   return os;
 }
 
-skeleton_msgs::OrientationSkeleton
+hiros_skeleton_msgs::OrientationSkeleton
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationSkeleton& t_os)
 {
   return toMsg({}, t_os);
@@ -574,7 +577,7 @@ hiros::skeletons::types::OrientationSkeletonGroup hiros::skeletons::utils::toStr
 }
 
 hiros::skeletons::types::OrientationSkeletonGroup
-hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationSkeletonGroup& t_osg)
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::OrientationSkeletonGroup& t_osg)
 {
   hiros::skeletons::types::OrientationSkeletonGroup osg;
   osg.src_time = t_osg.src_time.toSec();
@@ -586,7 +589,7 @@ hiros::skeletons::utils::toStruct(const skeleton_msgs::OrientationSkeletonGroup&
   return osg;
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
                                const ros::Time& t_stamp,
                                const std::string& t_frame_id,
@@ -594,7 +597,7 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
                                const std::string& t_src_frame,
                                const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
 {
-  skeleton_msgs::OrientationSkeletonGroup osg;
+  hiros_skeleton_msgs::OrientationSkeletonGroup osg;
   osg.header.seq = t_seq;
   osg.header.stamp = t_stamp;
   osg.header.frame_id = t_frame_id;
@@ -607,7 +610,7 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
   return osg;
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
                                const std::string& t_frame_id,
                                const ros::Time& t_src_time,
@@ -617,7 +620,7 @@ hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
   return toMsg(0, t_stamp, t_frame_id, t_src_time, t_src_frame, t_osg);
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
                                const ros::Time& t_stamp,
                                const std::string& t_frame_id,
@@ -626,7 +629,7 @@ hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
   return toMsg(t_seq, t_stamp, t_frame_id, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const ros::Time& t_src_time,
                                const std::string& t_src_frame,
@@ -635,7 +638,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   return toMsg(t_header.seq, t_header.stamp, t_header.frame_id, t_src_time, t_src_frame, t_osg);
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
                                const std::string& t_frame_id,
                                const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
@@ -643,14 +646,14 @@ hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
   return toMsg(0, t_stamp, t_frame_id, t_osg);
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
 {
   return toMsg(t_header, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
 }
 
-skeleton_msgs::OrientationSkeletonGroup
+hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
 {
   return toMsg(std_msgs::Header(), t_osg);
