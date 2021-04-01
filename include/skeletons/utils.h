@@ -65,6 +65,8 @@ namespace hiros {
 
       geometry_msgs::Quaternion toMsg(const tf2::Quaternion& t_q);
 
+      double distance(const tf2::Quaternion& t_q1, const tf2::Quaternion& t_q2);
+
       // Box
       hiros::skeletons::types::Box
       toStruct(const hiros::skeletons::types::Point& t_center,

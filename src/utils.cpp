@@ -112,6 +112,11 @@ geometry_msgs::Quaternion hiros::skeletons::utils::toMsg(const tf2::Quaternion& 
   return q;
 }
 
+double hiros::skeletons::utils::distance(const tf2::Quaternion& t_q1, const tf2::Quaternion& t_q2)
+{
+  return t_q1.normalized().angleShortestPath(t_q2.normalized());
+}
+
 // Box
 hiros::skeletons::types::Box
 hiros::skeletons::utils::toStruct(const hiros::skeletons::types::Point& t_center,
