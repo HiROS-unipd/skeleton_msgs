@@ -382,7 +382,9 @@ hiros_skeleton_msgs::MarkerSkeletonGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
 {
-  return toMsg(t_header, ros::Time(t_msg.src_time), t_msg.src_frame, t_msg);
+  return std::isnan(t_msg.src_time)
+           ? toMsg(t_header, t_header.stamp, t_msg.src_frame, t_msg)
+           : toMsg(t_header, ros::Time(t_msg.src_time), t_msg.src_frame, t_msg);
 }
 
 hiros_skeleton_msgs::MarkerSkeletonGroup
@@ -648,7 +650,9 @@ hiros_skeleton_msgs::OrientationSkeletonGroup
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
                                const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
 {
-  return toMsg(t_header, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
+  return std::isnan(t_osg.src_time)
+           ? toMsg(t_header, t_header.stamp, t_osg.src_frame, t_osg)
+           : toMsg(t_header, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
 }
 
 hiros_skeleton_msgs::OrientationSkeletonGroup
