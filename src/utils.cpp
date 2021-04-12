@@ -393,28 +393,67 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerSkeletonGrou
   return toMsg(std_msgs::Header(), t_msg);
 }
 
+// MIMU
+hiros::skeletons::types::MIMU
+hiros::skeletons::utils::toStruct(const std::string& t_frame_id,
+                                  const tf2::Quaternion& t_orientation,
+                                  const tf2::Vector3& t_angular_velocity,
+                                  const tf2::Vector3& t_linear_acceleration,
+                                  const tf2::Vector3& t_magnetic_field)
+{
+  return hiros::skeletons::types::MIMU(
+    t_frame_id, t_orientation, t_angular_velocity, t_linear_acceleration, t_magnetic_field);
+}
+
+hiros::skeletons::types::MIMU
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MIMU& t_m)
+{
+  return hiros::skeletons::types::MIMU(t_m.imu.header.frame_id,
+                                       toStruct(t_m.imu.orientation),
+                                       toStruct(t_m.imu.angular_velocity),
+                                       toStruct(t_m.imu.linear_acceleration),
+                                       toStruct(t_m.mag.magnetic_field));
+}
+
+hiros_skeleton_msgs::MIMU hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
+                                                         const hiros::skeletons::types::MIMU& t_m)
+{
+  hiros_skeleton_msgs::MIMU m;
+  m.imu.header = t_header;
+  m.imu.header.frame_id = t_m.frame_id;
+  m.imu.orientation = toMsg(t_m.orientation);
+  m.imu.angular_velocity = toVector3Msg(t_m.angular_velocity);
+  m.imu.linear_acceleration = toVector3Msg(t_m.linear_acceleration);
+  m.imu.orientation_covariance.front() = -1;
+  m.imu.angular_velocity_covariance.front() = -1;
+  m.imu.linear_acceleration_covariance.front() = -1;
+  m.mag.header = t_header;
+  m.mag.header.frame_id = t_m.frame_id;
+  m.mag.magnetic_field = toVector3Msg(t_m.magnetic_field);
+  m.mag.magnetic_field_covariance.front() = -1;
+  return m;
+}
+
+hiros_skeleton_msgs::MIMU hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MIMU& t_m)
+{
+  std_msgs::Header h;
+  h.frame_id = t_m.frame_id;
+  return toMsg(h, t_m);
+}
+
 // Orientation
 hiros::skeletons::types::Orientation
 hiros::skeletons::utils::toStruct(const int& t_id,
-                                  const std::string& t_frame_id,
                                   const double& t_confidence,
-                                  const tf2::Quaternion& t_orientation,
-                                  const tf2::Vector3& t_angular_velocity,
-                                  const tf2::Vector3& t_linear_acceleration)
+                                  const hiros::skeletons::types::MIMU& t_mimu)
 {
-  return hiros::skeletons::types::Orientation(
-    t_id, t_frame_id, t_confidence, t_orientation, t_angular_velocity, t_linear_acceleration);
+  return hiros::skeletons::types::Orientation(t_id, t_confidence, t_mimu);
 }
 
 hiros::skeletons::types::Orientation
 hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Orientation& t_o)
 {
-  return hiros::skeletons::types::Orientation(t_o.id,
-                                              t_o.orientation.header.frame_id,
-                                              t_o.confidence,
-                                              toStruct(t_o.orientation.orientation),
-                                              toStruct(t_o.orientation.angular_velocity),
-                                              toStruct(t_o.orientation.linear_acceleration));
+  return hiros::skeletons::types::Orientation(t_o.id, t_o.confidence, toStruct(t_o.mimu));
 }
 
 hiros_skeleton_msgs::Orientation
@@ -424,14 +463,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   hiros_skeleton_msgs::Orientation o;
   o.id = t_o.id;
   o.confidence = t_o.confidence;
-  o.orientation.header = t_header;
-  o.orientation.header.frame_id = t_o.frame_id;
-  o.orientation.orientation = toMsg(t_o.orientation);
-  o.orientation.angular_velocity = toVector3Msg(t_o.angular_velocity);
-  o.orientation.linear_acceleration = toVector3Msg(t_o.linear_acceleration);
-  o.orientation.orientation_covariance.front() = -1;
-  o.orientation.angular_velocity_covariance.front() = -1;
-  o.orientation.linear_acceleration_covariance.front() = -1;
+  o.mimu = toMsg(t_header, t_o.mimu);
   return o;
 }
 
@@ -439,7 +471,7 @@ hiros_skeleton_msgs::Orientation
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Orientation& t_o)
 {
   std_msgs::Header h;
-  h.frame_id = t_o.frame_id;
+  h.frame_id = t_o.mimu.frame_id;
   return toMsg(h, t_o);
 }
 

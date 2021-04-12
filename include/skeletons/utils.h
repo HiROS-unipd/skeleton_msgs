@@ -8,6 +8,7 @@
 
 // Custom Ros Message dependencies
 #include "hiros_skeleton_msgs/Box.h"
+#include "hiros_skeleton_msgs/MIMU.h"
 #include "hiros_skeleton_msgs/Marker.h"
 #include "hiros_skeleton_msgs/MarkerGroup.h"
 #include "hiros_skeleton_msgs/MarkerSkeleton.h"
@@ -191,12 +192,14 @@ namespace hiros {
       hiros_skeleton_msgs::MarkerSkeletonGroup
       toMsg(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
-      // Orientation
-      hiros::skeletons::types::Orientation
-      toStruct(const int& t_id,
-               const std::string& t_frame_id,
-               const double& t_confidence,
-               const tf2::Quaternion& t_orientation,
+      // MIMU
+      hiros::skeletons::types::MIMU
+      toStruct(const std::string& t_frame_id = "",
+               const tf2::Quaternion& t_orientation =
+                 tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::quiet_NaN()),
                const tf2::Vector3& t_angular_velocity =
                  tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
                               std::numeric_limits<double>::quiet_NaN(),
@@ -204,7 +207,24 @@ namespace hiros {
                const tf2::Vector3& t_linear_acceleration =
                  tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
                               std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN()),
+               const tf2::Vector3& t_magnetic_field =
+                 tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                              std::numeric_limits<double>::quiet_NaN(),
                               std::numeric_limits<double>::quiet_NaN()));
+
+      hiros::skeletons::types::MIMU toStruct(const hiros_skeleton_msgs::MIMU& t_m);
+
+      hiros_skeleton_msgs::MIMU toMsg(const std_msgs::Header& t_header,
+                                      const hiros::skeletons::types::MIMU& t_m);
+
+      hiros_skeleton_msgs::MIMU toMsg(const hiros::skeletons::types::MIMU& t_m);
+
+      // Orientation
+      hiros::skeletons::types::Orientation
+      toStruct(const int& t_id,
+               const double& t_confidence,
+               const hiros::skeletons::types::MIMU& t_mimu = hiros::skeletons::types::MIMU());
 
       hiros::skeletons::types::Orientation toStruct(const hiros_skeleton_msgs::Orientation& t_o);
 

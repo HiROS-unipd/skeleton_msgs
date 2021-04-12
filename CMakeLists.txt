@@ -24,6 +24,7 @@ add_message_files(FILES
                   MarkerGroup.msg
                   MarkerSkeleton.msg
                   MarkerSkeletonGroup.msg
+                  MIMU.msg
                   Orientation.msg
                   OrientationGroup.msg
                   OrientationSkeleton.msg

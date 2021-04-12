@@ -136,34 +136,49 @@ namespace hiros {
         std::vector<MarkerSkeleton> marker_skeletons;
       };
 
+      // MIMU
+      struct MIMU
+      {
+        MIMU(const std::string& t_frame_id = "",
+             const tf2::Quaternion& t_orientation =
+               tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
+                               std::numeric_limits<double>::quiet_NaN(),
+                               std::numeric_limits<double>::quiet_NaN(),
+                               std::numeric_limits<double>::quiet_NaN()),
+             const tf2::Vector3& t_angular_velocity =
+               tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                            std::numeric_limits<double>::quiet_NaN(),
+                            std::numeric_limits<double>::quiet_NaN()),
+             const tf2::Vector3& t_linear_acceleration =
+               tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                            std::numeric_limits<double>::quiet_NaN(),
+                            std::numeric_limits<double>::quiet_NaN()),
+             const tf2::Vector3& t_magnetic_field =
+               tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
+                            std::numeric_limits<double>::quiet_NaN(),
+                            std::numeric_limits<double>::quiet_NaN()));
+
+        friend std::ostream& operator<<(std::ostream& t_os, const MIMU& t_m);
+
+        std::string frame_id;
+        tf2::Quaternion orientation;
+        tf2::Vector3 angular_velocity;
+        tf2::Vector3 linear_acceleration;
+        tf2::Vector3 magnetic_field;
+      };
+
       // Orientation
       struct Orientation
       {
         Orientation(const int& t_id = -1,
-                    const std::string& t_frame_id = "",
                     const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                    const tf2::Quaternion& t_orientation =
-                      tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
-                                      std::numeric_limits<double>::quiet_NaN(),
-                                      std::numeric_limits<double>::quiet_NaN(),
-                                      std::numeric_limits<double>::quiet_NaN()),
-                    const tf2::Vector3& t_angular_velocity =
-                      tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
-                                   std::numeric_limits<double>::quiet_NaN(),
-                                   std::numeric_limits<double>::quiet_NaN()),
-                    const tf2::Vector3& t_linear_acceleration =
-                      tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
-                                   std::numeric_limits<double>::quiet_NaN(),
-                                   std::numeric_limits<double>::quiet_NaN()));
+                    const MIMU& t_mimu = MIMU());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o);
 
         int id;
-        std::string frame_id;
         double confidence;
-        tf2::Quaternion orientation;
-        tf2::Vector3 angular_velocity;
-        tf2::Vector3 linear_acceleration;
+        MIMU mimu;
       };
 
       // OrientationGroup

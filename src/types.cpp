@@ -223,30 +223,49 @@ namespace hiros {
         return t_os;
       }
 
-      // Orientation
-      Orientation::Orientation(const int& t_id,
-                               const std::string& t_frame_id,
-                               const double& t_confidence,
-                               const tf2::Quaternion& t_orientation,
-                               const tf2::Vector3& t_angular_velocity,
-                               const tf2::Vector3& t_linear_acceleration)
-        : id(t_id)
-        , frame_id(t_frame_id)
-        , confidence(t_confidence)
+      // MIMU
+      MIMU::MIMU(const std::string& t_frame_id,
+                 const tf2::Quaternion& t_orientation,
+                 const tf2::Vector3& t_angular_velocity,
+                 const tf2::Vector3& t_linear_acceleration,
+                 const tf2::Vector3& t_magnetic_field)
+        : frame_id(t_frame_id)
         , orientation(t_orientation)
         , angular_velocity(t_angular_velocity)
         , linear_acceleration(t_linear_acceleration)
+        , magnetic_field(t_magnetic_field)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const MIMU& t_m)
+      {
+        t_os << utils::padding(4) << "- frame_id: " << t_m.frame_id << std::endl
+             << utils::padding(5) << "orientation: " << t_m.orientation;
+        if (!std::isnan(t_m.angular_velocity.x())) {
+          t_os << std::endl << utils::padding(5) << "angular_velocity: " << t_m.angular_velocity;
+        }
+        if (!std::isnan(t_m.linear_acceleration.x())) {
+          t_os << std::endl
+               << utils::padding(5) << "linear_acceleration: " << t_m.linear_acceleration;
+        }
+        if (!std::isnan(t_m.magnetic_field.x())) {
+          t_os << std::endl << utils::padding(5) << "magnetic_field: " << t_m.magnetic_field;
+        }
+        return t_os;
+      }
+
+      // Orientation
+      Orientation::Orientation(const int& t_id, const double& t_confidence, const MIMU& t_mimu)
+        : id(t_id)
+        , confidence(t_confidence)
+        , mimu(t_mimu)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o)
       {
         t_os << utils::padding(3) << "- id: " << t_o.id << std::endl
-             << utils::padding(4) << "frame_id: " << t_o.frame_id << std::endl
              << utils::padding(4) << "confidence: " << t_o.confidence << std::endl
-             << utils::padding(4) << "orientation: " << std::endl
-             << t_o.orientation << utils::padding(4) << "angular_velocity: " << std::endl
-             << t_o.angular_velocity << utils::padding(4) << "linear_acceleration: " << std::endl
-             << t_o.linear_acceleration;
+             << utils::padding(4) << "mimu: " << std::endl
+             << t_o.mimu;
         return t_os;
       }
 

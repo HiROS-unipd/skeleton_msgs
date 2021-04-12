@@ -67,5 +67,8 @@ OrientationSkeletonGroup
             │
             └── int32 id
             └── float64 confidence
-            └── sensor_msgs/Imu orientation
+            └── MIMU mimu
+                │
+                └── sensor_msgs/Imu imu
+                └── sensor_msgs/MagneticField mag
 ```
