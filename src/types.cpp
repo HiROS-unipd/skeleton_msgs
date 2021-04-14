@@ -206,10 +206,16 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg)
       {
-        long src_time_sec = static_cast<long>(t_msg.src_time);
-        long src_time_nsec = static_cast<long>((t_msg.src_time - src_time_sec) * 1e9);
-
-        t_os << "- src_time: " << src_time_sec << "." << src_time_nsec << std::endl
+        t_os << "- src_time: ";
+        if (!std::isnan(t_msg.src_time)) {
+          long src_time_sec = static_cast<long>(t_msg.src_time);
+          long src_time_nsec = static_cast<long>((t_msg.src_time - src_time_sec) * 1e9);
+          t_os << src_time_sec << "." << src_time_nsec;
+        }
+        else {
+          t_os << "nan";
+        }
+        t_os << std::endl
              << utils::padding(1) << "src_frame: " << t_msg.src_frame << std::endl
              << utils::padding(1) << "marker_skeletons: ";
         if (t_msg.marker_skeletons.empty()) {
@@ -377,10 +383,16 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg)
       {
-        long src_time_sec = static_cast<long>(t_osg.src_time);
-        long src_time_nsec = static_cast<long>((t_osg.src_time - src_time_sec) * 1e9);
-
-        t_os << "- src_time: " << src_time_sec << "." << src_time_nsec << std::endl
+        t_os << "- src_time: ";
+        if (!std::isnan(t_osg.src_time)) {
+          long src_time_sec = static_cast<long>(t_osg.src_time);
+          long src_time_nsec = static_cast<long>((t_osg.src_time - src_time_sec) * 1e9);
+          t_os << src_time_sec << "." << src_time_nsec;
+        }
+        else {
+          t_os << "nan";
+        }
+        t_os << std::endl
              << utils::padding(1) << "src_frame: " << t_osg.src_frame << std::endl
              << utils::padding(1) << "orientation_skeletons: ";
         if (t_osg.orientation_skeletons.empty()) {
