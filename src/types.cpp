@@ -46,10 +46,10 @@ namespace hiros {
       // Quaternion
       std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_p)
       {
-        t_os << utils::padding(4) << "- x: " << t_p.x() << std::endl
-             << utils::padding(5) << "y: " << t_p.y() << std::endl
-             << utils::padding(5) << "z: " << t_p.z() << std::endl
-             << utils::padding(5) << "w: " << t_p.w();
+        t_os << utils::padding(5) << "- x: " << t_p.x() << std::endl
+             << utils::padding(6) << "y: " << t_p.y() << std::endl
+             << utils::padding(6) << "z: " << t_p.z() << std::endl
+             << utils::padding(6) << "w: " << t_p.w();
         return t_os;
       }
 
@@ -245,16 +245,22 @@ namespace hiros {
       std::ostream& operator<<(std::ostream& t_os, const MIMU& t_m)
       {
         t_os << utils::padding(4) << "- frame_id: " << t_m.frame_id << std::endl
-             << utils::padding(5) << "orientation: " << t_m.orientation;
+             << utils::padding(5) << "orientation: " << std::endl
+             << t_m.orientation;
         if (!std::isnan(t_m.angular_velocity.x())) {
-          t_os << std::endl << utils::padding(5) << "angular_velocity: " << t_m.angular_velocity;
+          t_os << std::endl
+               << utils::padding(5) << "angular_velocity: " << std::endl
+               << t_m.angular_velocity;
         }
         if (!std::isnan(t_m.linear_acceleration.x())) {
           t_os << std::endl
-               << utils::padding(5) << "linear_acceleration: " << t_m.linear_acceleration;
+               << utils::padding(5) << "linear_acceleration: " << std::endl
+               << t_m.linear_acceleration;
         }
         if (!std::isnan(t_m.magnetic_field.x())) {
-          t_os << std::endl << utils::padding(5) << "magnetic_field: " << t_m.magnetic_field;
+          t_os << std::endl
+               << utils::padding(5) << "magnetic_field: " << std::endl
+               << t_m.magnetic_field;
         }
         return t_os;
       }
