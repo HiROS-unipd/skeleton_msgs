@@ -211,7 +211,7 @@ namespace hiros {
 
         bool addOrientationGroup(const OrientationGroup& t_orientation_group);
 
-        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_osk);
+        friend std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk);
 
         int id;
         double confidence;
@@ -230,7 +230,7 @@ namespace hiros {
 
         bool addOrientationSkeleton(const OrientationSkeleton& t_orientation_skeleton);
 
-        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_osg);
+        friend std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg);
 
         double src_time;
         std::string src_frame;
