@@ -42,6 +42,8 @@ namespace hiros {
       double magnitude(const tf2::Vector3& t_v);
       double distance(const types::Position& t_p1, const types::Position& t_p2);
 
+      std::string toString(const tf2::Vector3& t_v, int t_pad_lv = 0);
+
       // Point
       hiros::skeletons::types::Point
       toStruct(const hiros::skeletons::types::Position& t_p,
@@ -58,6 +60,8 @@ namespace hiros {
 
       hiros_skeleton_msgs::Point toMsg(const hiros::skeletons::types::Point& t_p);
 
+      std::string toString(const hiros::skeletons::types::Point& t_p, int t_pad_lv = 0);
+
       // Quaternion
       tf2::Quaternion
       toStruct(const double& t_x, const double& t_y, const double& t_z, const double& t_w);
@@ -67,6 +71,8 @@ namespace hiros {
       geometry_msgs::Quaternion toMsg(const tf2::Quaternion& t_q);
 
       double distance(const tf2::Quaternion& t_q1, const tf2::Quaternion& t_q2);
+
+      std::string toString(const tf2::Quaternion& t_q, int t_pad_lv = 0);
 
       // Box
       hiros::skeletons::types::Box
@@ -83,6 +89,8 @@ namespace hiros {
       hiros::skeletons::types::Box toStruct(const hiros_skeleton_msgs::Box& t_b);
 
       hiros_skeleton_msgs::Box toMsg(const hiros::skeletons::types::Box& t_b);
+
+      std::string toString(const hiros::skeletons::types::Box& t_b, int t_pad_lv = 0);
 
       // Marker
       hiros::skeletons::types::Marker toStruct(const int& t_id,
@@ -107,6 +115,8 @@ namespace hiros {
                      const int& t_marker_group_id,
                      const int& t_marker_id);
 
+      std::string toString(const hiros::skeletons::types::Marker& t_m, int t_pad_lv = 0);
+
       // MarkerGroup
       hiros::skeletons::types::MarkerGroup
       toStruct(const int& t_id,
@@ -128,6 +138,8 @@ namespace hiros {
       bool hasMarkerGroup(const hiros::skeletons::types::MarkerSkeleton& t_marker_skeleton,
                           const int& t_marker_group_id);
 
+      std::string toString(const hiros::skeletons::types::MarkerGroup& t_mg, int t_pad_lv = 0);
+
       // MarkerSkeleton
       hiros::skeletons::types::MarkerSkeleton
       toStruct(const int& t_id,
@@ -143,6 +155,8 @@ namespace hiros {
       std::shared_ptr<hiros::skeletons::types::MarkerSkeleton>
       getMarkerSkeleton(hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
                         const int& t_marker_skeleton_id);
+
+      std::string toString(const hiros::skeletons::types::MarkerSkeleton& t_ms, int t_pad_lv = 0);
 
       // MarkerSkeletonGroup
       hiros::skeletons::types::MarkerSkeletonGroup
@@ -192,6 +206,9 @@ namespace hiros {
       hiros_skeleton_msgs::MarkerSkeletonGroup
       toMsg(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg);
 
+      std::string toString(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg,
+                           int t_pad_lv = 0);
+
       // MIMU
       hiros::skeletons::types::MIMU
       toStruct(const std::string& t_frame_id = "",
@@ -220,6 +237,8 @@ namespace hiros {
 
       hiros_skeleton_msgs::MIMU toMsg(const hiros::skeletons::types::MIMU& t_m);
 
+      std::string toString(const hiros::skeletons::types::MIMU& t_m, int t_pad_lv = 0);
+
       // Orientation
       hiros::skeletons::types::Orientation
       toStruct(const int& t_id,
@@ -239,6 +258,8 @@ namespace hiros {
       hasOrientation(const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
                      const int& t_orientation_group_id,
                      const int& t_orientation_id);
+
+      std::string toString(const hiros::skeletons::types::Orientation& t_o, int t_pad_lv = 0);
 
       // OrientationGroup
       hiros::skeletons::types::OrientationGroup
@@ -261,6 +282,8 @@ namespace hiros {
         const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
         const int& t_orientation_group_id);
 
+      std::string toString(const hiros::skeletons::types::OrientationGroup& t_og, int t_pad_lv = 0);
+
       // OrientationSkeleton
       hiros::skeletons::types::OrientationSkeleton
       toStruct(const int& t_id,
@@ -280,6 +303,9 @@ namespace hiros {
       std::shared_ptr<hiros::skeletons::types::OrientationSkeleton> getOrientationSkeleton(
         hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
         const int& t_orientation_skeleton_id);
+
+      std::string toString(const hiros::skeletons::types::OrientationSkeleton& t_os,
+                           int t_pad_lv = 0);
 
       // OrientationSkeletonGroup
       hiros::skeletons::types::OrientationSkeletonGroup toStruct(
@@ -328,6 +354,9 @@ namespace hiros {
 
       hiros_skeleton_msgs::OrientationSkeletonGroup
       toMsg(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg);
+
+      std::string toString(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg,
+                           int t_pad_lv = 0);
 
     } // namespace utils
   } // namespace skeletons

@@ -12,12 +12,7 @@ namespace hiros {
       // Vector
       std::ostream& operator<<(std::ostream& t_os, const tf2::Vector3& t_v)
       {
-        t_os << utils::padding(5) << "- x: " << t_v.x() << std::endl
-             << utils::padding(6) << "y: " << t_v.y();
-        if (!std::isnan(t_v.z())) {
-          t_os << std::endl << utils::padding(6) << "z: " << t_v.z();
-        }
-        return t_os;
+        return t_os << utils::toString(t_v);
       }
 
       // Point
@@ -31,26 +26,13 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Point& t_p)
       {
-        t_os << utils::padding(4) << "- position: " << std::endl << t_p.position;
-        if (!std::isnan(t_p.velocity.x())) {
-          t_os << std::endl << utils::padding(5) << "velocity: " << std::endl << t_p.velocity;
-        }
-        if (!std::isnan(t_p.acceleration.x())) {
-          t_os << std::endl
-               << utils::padding(5) << "acceleration: " << std::endl
-               << t_p.acceleration;
-        }
-        return t_os;
+        return t_os << utils::toString(t_p);
       }
 
       // Quaternion
-      std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_p)
+      std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_q)
       {
-        t_os << utils::padding(5) << "- x: " << t_p.x() << std::endl
-             << utils::padding(6) << "y: " << t_p.y() << std::endl
-             << utils::padding(6) << "z: " << t_p.z() << std::endl
-             << utils::padding(6) << "w: " << t_p.w();
-        return t_os;
+        return t_os << utils::toString(t_q);
       }
 
       // Box
@@ -68,17 +50,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Box& t_b)
       {
-        t_os << utils::padding(3) << "- center: " << std::endl
-             << t_b.center << std::endl
-             << utils::padding(4) << "length: " << t_b.length << std::endl
-             << utils::padding(4) << "height: " << t_b.height;
-        if (!std::isnan(t_b.width)) {
-          t_os << std::endl << utils::padding(4) << "width: " << t_b.width;
-        }
-        if (!std::isnan(t_b.orientation.w())) {
-          t_os << std::endl << utils::padding(4) << "orientation: " << std::endl << t_b.orientation;
-        }
-        return t_os;
+        return t_os << utils::toString(t_b);
       }
 
       // Marker
@@ -90,11 +62,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Marker& t_m)
       {
-        t_os << utils::padding(3) << "- id: " << t_m.id << std::endl
-             << utils::padding(4) << "confidence: " << t_m.confidence << std::endl
-             << utils::padding(4) << "point: " << std::endl
-             << t_m.point;
-        return t_os;
+        return t_os << utils::toString(t_m);
       }
 
       // MarkerGroup
@@ -125,21 +93,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg)
       {
-        t_os << utils::padding(2) << "- id: " << t_mg.id << std::endl
-             << utils::padding(3) << "max_markers: " << t_mg.max_markers << std::endl
-             << utils::padding(3) << "confidence: " << t_mg.confidence << std::endl
-             << utils::padding(3) << "bounding_box: " << std::endl
-             << t_mg.bounding_box << std::endl
-             << utils::padding(3) << "markers: ";
-        if (t_mg.markers.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto m : t_mg.markers) {
-            t_os << std::endl << m.second;
-          }
-        }
-        return t_os;
+        return t_os << utils::toString(t_mg);
       }
 
       // MarkerSkeleton
@@ -166,18 +120,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms)
       {
-        t_os << utils::padding(1) << "- id: " << t_ms.id << std::endl
-             << utils::padding(2) << "confidence: " << t_ms.confidence << std::endl
-             << utils::padding(2) << "marker_groups: ";
-        if (t_ms.marker_groups.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto mg : t_ms.marker_groups) {
-            t_os << std::endl << mg.second;
-          }
-        }
-        return t_os;
+        return t_os << utils::toString(t_ms);
       }
 
       // MarkerSkeletonGroup
@@ -206,27 +149,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg)
       {
-        t_os << "- src_time: ";
-        if (!std::isnan(t_msg.src_time)) {
-          long src_time_sec = static_cast<long>(t_msg.src_time);
-          long src_time_nsec = static_cast<long>((t_msg.src_time - src_time_sec) * 1e9);
-          t_os << src_time_sec << "." << src_time_nsec;
-        }
-        else {
-          t_os << "nan";
-        }
-        t_os << std::endl
-             << utils::padding(1) << "src_frame: " << t_msg.src_frame << std::endl
-             << utils::padding(1) << "marker_skeletons: ";
-        if (t_msg.marker_skeletons.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto ms : t_msg.marker_skeletons) {
-            t_os << std::endl << ms;
-          }
-        }
-        return t_os;
+        return t_os << utils::toString(t_msg);
       }
 
       // MIMU
@@ -244,25 +167,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const MIMU& t_m)
       {
-        t_os << utils::padding(4) << "- frame_id: " << t_m.frame_id << std::endl
-             << utils::padding(5) << "orientation: " << std::endl
-             << t_m.orientation;
-        if (!std::isnan(t_m.angular_velocity.x())) {
-          t_os << std::endl
-               << utils::padding(5) << "angular_velocity: " << std::endl
-               << t_m.angular_velocity;
-        }
-        if (!std::isnan(t_m.linear_acceleration.x())) {
-          t_os << std::endl
-               << utils::padding(5) << "linear_acceleration: " << std::endl
-               << t_m.linear_acceleration;
-        }
-        if (!std::isnan(t_m.magnetic_field.x())) {
-          t_os << std::endl
-               << utils::padding(5) << "magnetic_field: " << std::endl
-               << t_m.magnetic_field;
-        }
-        return t_os;
+        return t_os << utils::toString(t_m);
       }
 
       // Orientation
@@ -274,11 +179,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o)
       {
-        t_os << utils::padding(3) << "- id: " << t_o.id << std::endl
-             << utils::padding(4) << "confidence: " << t_o.confidence << std::endl
-             << utils::padding(4) << "mimu: " << std::endl
-             << t_o.mimu;
-        return t_os;
+        return t_os << utils::toString(t_o);
       }
 
       // OrientationGroup
@@ -307,19 +208,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og)
       {
-        t_os << utils::padding(2) << "- id: " << t_og.id << std::endl
-             << utils::padding(3) << "max_orientations: " << t_og.max_orientations << std::endl
-             << utils::padding(3) << "confidence: " << t_og.confidence << std::endl
-             << utils::padding(3) << "orientations: ";
-        if (t_og.orientations.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto o : t_og.orientations) {
-            t_os << std::endl << o.second;
-          }
-        }
-        return t_os;
+        return t_os << utils::toString(t_og);
       }
 
       // OrientationSkeleton
@@ -347,18 +236,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk)
       {
-        t_os << utils::padding(1) << "- id: " << t_osk.id << std::endl
-             << utils::padding(2) << "confidence: " << t_osk.confidence << std::endl
-             << utils::padding(2) << "orientation_groups: ";
-        if (t_osk.orientation_groups.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto og : t_osk.orientation_groups) {
-            t_os << std::endl << og.second;
-          }
-        }
-        return t_os;
+        return t_os << utils::toString(t_osk);
       }
 
       // OrientationSkeletonGroup
@@ -389,27 +267,7 @@ namespace hiros {
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg)
       {
-        t_os << "- src_time: ";
-        if (!std::isnan(t_osg.src_time)) {
-          long src_time_sec = static_cast<long>(t_osg.src_time);
-          long src_time_nsec = static_cast<long>((t_osg.src_time - src_time_sec) * 1e9);
-          t_os << src_time_sec << "." << src_time_nsec;
-        }
-        else {
-          t_os << "nan";
-        }
-        t_os << std::endl
-             << utils::padding(1) << "src_frame: " << t_osg.src_frame << std::endl
-             << utils::padding(1) << "orientation_skeletons: ";
-        if (t_osg.orientation_skeletons.empty()) {
-          t_os << "[]";
-        }
-        else {
-          for (auto os : t_osg.orientation_skeletons) {
-            t_os << std::endl << os;
-          }
-        }
-        return t_os;
+        return t_os << utils::toString(t_osg);
       }
 
     } // namespace types
