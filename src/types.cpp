@@ -135,10 +135,9 @@ namespace hiros {
 
       bool MarkerSkeletonGroup::addMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton)
       {
-        if (std::find_if(
-              marker_skeletons.begin(),
-              marker_skeletons.end(),
-              [&t_marker_skeleton](const auto& s) { return s.id == t_marker_skeleton.id; })
+        if (std::find_if(marker_skeletons.begin(),
+                         marker_skeletons.end(),
+                         [&](const auto& s) { return s.id == t_marker_skeleton.id; })
             != marker_skeletons.end()) {
           return false;
         }
@@ -254,9 +253,7 @@ namespace hiros {
       {
         if (std::find_if(orientation_skeletons.begin(),
                          orientation_skeletons.end(),
-                         [&t_orientation_skeleton](const auto& s) {
-                           return s.id == t_orientation_skeleton.id;
-                         })
+                         [&](const auto& s) { return s.id == t_orientation_skeleton.id; })
             != orientation_skeletons.end()) {
           return false;
         }

@@ -376,12 +376,11 @@ std::shared_ptr<hiros::skeletons::types::MarkerSkeleton> hiros::skeletons::utils
   hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
   const int& t_marker_skeleton_id)
 {
-  auto marker_skeleton_it =
-    std::find_if(t_marker_skeleton_group.marker_skeletons.begin(),
-                 t_marker_skeleton_group.marker_skeletons.end(),
-                 [&t_marker_skeleton_id](const hiros::skeletons::types::MarkerSkeleton& ms) {
-                   return ms.id == t_marker_skeleton_id;
-                 });
+  auto marker_skeleton_it = std::find_if(t_marker_skeleton_group.marker_skeletons.begin(),
+                                         t_marker_skeleton_group.marker_skeletons.end(),
+                                         [&](const hiros::skeletons::types::MarkerSkeleton& ms) {
+                                           return ms.id == t_marker_skeleton_id;
+                                         });
 
   return marker_skeleton_it != t_marker_skeleton_group.marker_skeletons.end()
            ? std::shared_ptr<hiros::skeletons::types::MarkerSkeleton>(&*marker_skeleton_it)
@@ -775,12 +774,12 @@ hiros::skeletons::utils::getOrientationSkeleton(
   hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
   const int& t_orientation_skeleton_id)
 {
-  auto orientation_skeleton_it = std::find_if(
-    t_orientation_skeleton_group.orientation_skeletons.begin(),
-    t_orientation_skeleton_group.orientation_skeletons.end(),
-    [&t_orientation_skeleton_id](const hiros::skeletons::types::OrientationSkeleton& os) {
-      return os.id == t_orientation_skeleton_id;
-    });
+  auto orientation_skeleton_it =
+    std::find_if(t_orientation_skeleton_group.orientation_skeletons.begin(),
+                 t_orientation_skeleton_group.orientation_skeletons.end(),
+                 [&](const hiros::skeletons::types::OrientationSkeleton& os) {
+                   return os.id == t_orientation_skeleton_id;
+                 });
 
   return orientation_skeleton_it != t_orientation_skeleton_group.orientation_skeletons.end()
            ? std::shared_ptr<hiros::skeletons::types::OrientationSkeleton>(
