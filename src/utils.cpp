@@ -383,7 +383,7 @@ std::shared_ptr<hiros::skeletons::types::MarkerSkeleton> hiros::skeletons::utils
                                          });
 
   return marker_skeleton_it != t_marker_skeleton_group.marker_skeletons.end()
-           ? std::shared_ptr<hiros::skeletons::types::MarkerSkeleton>(&*marker_skeleton_it)
+           ? std::make_shared<hiros::skeletons::types::MarkerSkeleton>(*marker_skeleton_it)
            : nullptr;
 }
 
@@ -782,8 +782,8 @@ hiros::skeletons::utils::getOrientationSkeleton(
                  });
 
   return orientation_skeleton_it != t_orientation_skeleton_group.orientation_skeletons.end()
-           ? std::shared_ptr<hiros::skeletons::types::OrientationSkeleton>(
-             &*orientation_skeleton_it)
+           ? std::make_shared<hiros::skeletons::types::OrientationSkeleton>(
+             *orientation_skeleton_it)
            : nullptr;
 }
 
