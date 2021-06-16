@@ -399,6 +399,18 @@ bool hiros::skeletons::utils::hasMarkerSkeleton(
          != t_marker_skeleton_group.marker_skeletons.end();
 }
 
+unsigned int
+hiros::skeletons::utils::numberOfMarkers(const hiros::skeletons::types::MarkerSkeleton& t_ms)
+{
+  unsigned int n_mks = 0;
+
+  for (const auto& mg : t_ms.marker_groups) {
+    n_mks += mg.second.markers.size();
+  }
+
+  return n_mks;
+}
+
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::MarkerSkeleton& t_ms,
                                               int t_pad_lv)
 {
@@ -809,6 +821,18 @@ bool hiros::skeletons::utils::hasOrientationSkeleton(
                         return os.id == t_orientation_skeleton_id;
                       })
          != t_orientation_skeleton_group.orientation_skeletons.end();
+}
+
+unsigned int hiros::skeletons::utils::numberOfOrientations(
+  const hiros::skeletons::types::OrientationSkeleton& t_os)
+{
+  unsigned int n_ors = 0;
+
+  for (const auto& og : t_os.orientation_groups) {
+    n_ors += og.second.orientations.size();
+  }
+
+  return n_ors;
 }
 
 std::string

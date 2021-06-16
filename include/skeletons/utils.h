@@ -160,6 +160,8 @@ namespace hiros {
       hasMarkerSkeleton(const hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
                         const int& t_marker_skeleton_id);
 
+      unsigned int numberOfMarkers(const hiros::skeletons::types::MarkerSkeleton& t_ms);
+
       std::string toString(const hiros::skeletons::types::MarkerSkeleton& t_ms, int t_pad_lv = 0);
 
       // MarkerSkeletonGroup
@@ -311,6 +313,8 @@ namespace hiros {
       bool hasOrientationSkeleton(
         const hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
         const int& t_orientation_skeleton_id);
+
+      unsigned int numberOfOrientations(const hiros::skeletons::types::OrientationSkeleton& t_os);
 
       std::string toString(const hiros::skeletons::types::OrientationSkeleton& t_os,
                            int t_pad_lv = 0);
