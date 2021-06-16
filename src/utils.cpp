@@ -387,6 +387,18 @@ std::shared_ptr<hiros::skeletons::types::MarkerSkeleton> hiros::skeletons::utils
            : nullptr;
 }
 
+bool hiros::skeletons::utils::hasMarkerSkeleton(
+  const hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
+  const int& t_marker_skeleton_id)
+{
+  return std::find_if(t_marker_skeleton_group.marker_skeletons.begin(),
+                      t_marker_skeleton_group.marker_skeletons.end(),
+                      [&](const hiros::skeletons::types::MarkerSkeleton& ms) {
+                        return ms.id == t_marker_skeleton_id;
+                      })
+         != t_marker_skeleton_group.marker_skeletons.end();
+}
+
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::MarkerSkeleton& t_ms,
                                               int t_pad_lv)
 {
@@ -785,6 +797,18 @@ hiros::skeletons::utils::getOrientationSkeleton(
            ? std::make_shared<hiros::skeletons::types::OrientationSkeleton>(
              *orientation_skeleton_it)
            : nullptr;
+}
+
+bool hiros::skeletons::utils::hasOrientationSkeleton(
+  const hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
+  const int& t_orientation_skeleton_id)
+{
+  return std::find_if(t_orientation_skeleton_group.orientation_skeletons.begin(),
+                      t_orientation_skeleton_group.orientation_skeletons.end(),
+                      [&](const hiros::skeletons::types::OrientationSkeleton& os) {
+                        return os.id == t_orientation_skeleton_id;
+                      })
+         != t_orientation_skeleton_group.orientation_skeletons.end();
 }
 
 std::string
