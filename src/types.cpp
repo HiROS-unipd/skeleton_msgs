@@ -91,6 +91,18 @@ namespace hiros {
         return true;
       }
 
+      bool MarkerGroup::removeMarker(const int& t_id)
+      {
+        if (markers.count(t_id) == 0) {
+          return false;
+        }
+
+        markers.erase(t_id);
+        return true;
+      }
+
+      bool MarkerGroup::removeMarker(const Marker& t_marker) { return removeMarker(t_marker.id); }
+
       std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg)
       {
         return t_os << utils::toString(t_mg);
@@ -116,6 +128,21 @@ namespace hiros {
 
         marker_groups.emplace(t_marker_group.id, t_marker_group);
         return true;
+      }
+
+      bool MarkerSkeleton::removeMarkerGroup(const int& t_id)
+      {
+        if (marker_groups.count(t_id) == 0) {
+          return false;
+        }
+
+        marker_groups.erase(t_id);
+        return true;
+      }
+
+      bool MarkerSkeleton::removeMarkerGroup(const MarkerGroup& t_marker_group)
+      {
+        return removeMarkerGroup(t_marker_group.id);
       }
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms)
@@ -144,6 +171,24 @@ namespace hiros {
 
         marker_skeletons.emplace_back(t_marker_skeleton);
         return true;
+      }
+
+      bool MarkerSkeletonGroup::removeMarkerSkeleton(const int& t_id)
+      {
+        if (!utils::hasMarkerSkeleton(*this, t_id)) {
+          return false;
+        }
+
+        marker_skeletons.erase(std::remove_if(marker_skeletons.begin(),
+                                              marker_skeletons.end(),
+                                              [&](const auto& ms) { return (ms.id == t_id); }),
+                               marker_skeletons.end());
+        return true;
+      }
+
+      bool MarkerSkeletonGroup::removeMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton)
+      {
+        return removeMarkerSkeleton(t_marker_skeleton.id);
       }
 
       std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg)
@@ -205,6 +250,21 @@ namespace hiros {
         return true;
       }
 
+      bool OrientationGroup::removeOrientation(const int& t_id)
+      {
+        if (orientations.count(t_id) == 0) {
+          return false;
+        }
+
+        orientations.erase(t_id);
+        return true;
+      }
+
+      bool OrientationGroup::removeOrientation(const Orientation& t_orientation)
+      {
+        return removeOrientation(t_orientation.id);
+      }
+
       std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og)
       {
         return t_os << utils::toString(t_og);
@@ -231,6 +291,21 @@ namespace hiros {
 
         orientation_groups.emplace(t_orientation_group.id, t_orientation_group);
         return true;
+      }
+
+      bool OrientationSkeleton::removeOrientationGroup(const int& t_id)
+      {
+        if (orientation_groups.count(t_id) == 0) {
+          return false;
+        }
+
+        orientation_groups.erase(t_id);
+        return true;
+      }
+
+      bool OrientationSkeleton::removeOrientationGroup(const OrientationGroup& t_orientation_group)
+      {
+        return removeOrientationGroup(t_orientation_group.id);
       }
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk)
@@ -260,6 +335,25 @@ namespace hiros {
 
         orientation_skeletons.emplace_back(t_orientation_skeleton);
         return true;
+      }
+
+      bool OrientationSkeletonGroup::removeOrientationSkeleton(const int& t_id)
+      {
+        if (!utils::hasOrientationSkeleton(*this, t_id)) {
+          return false;
+        }
+
+        orientation_skeletons.erase(std::remove_if(orientation_skeletons.begin(),
+                                                   orientation_skeletons.end(),
+                                                   [&](const auto& os) { return (os.id == t_id); }),
+                                    orientation_skeletons.end());
+        return true;
+      }
+
+      bool OrientationSkeletonGroup::removeOrientationSkeleton(
+        const OrientationSkeleton& t_orientation_skeleton)
+      {
+        return removeOrientationSkeleton(t_orientation_skeleton.id);
       }
 
       std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg)

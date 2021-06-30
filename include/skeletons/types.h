@@ -90,6 +90,8 @@ namespace hiros {
                     const std::vector<Marker>& t_markers = std::vector<Marker>());
 
         bool addMarker(const Marker& t_marker);
+        bool removeMarker(const int& t_id);
+        bool removeMarker(const Marker& t_marker);
 
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg);
 
@@ -110,6 +112,8 @@ namespace hiros {
           const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>());
 
         bool addMarkerGroup(const MarkerGroup& t_marker_group);
+        bool removeMarkerGroup(const int& t_id);
+        bool removeMarkerGroup(const MarkerGroup& t_marker_group);
 
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms);
 
@@ -128,6 +132,8 @@ namespace hiros {
           const std::vector<MarkerSkeleton>& t_marker_skeletons = std::vector<MarkerSkeleton>());
 
         bool addMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton);
+        bool removeMarkerSkeleton(const int& t_id);
+        bool removeMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton);
 
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg);
 
@@ -191,6 +197,8 @@ namespace hiros {
           const std::vector<Orientation>& t_orientations = std::vector<Orientation>());
 
         bool addOrientation(const Orientation& t_orientation);
+        bool removeOrientation(const int& t_id);
+        bool removeOrientation(const Orientation& t_orientation);
 
         friend std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og);
 
@@ -210,6 +218,8 @@ namespace hiros {
                               std::vector<OrientationGroup>());
 
         bool addOrientationGroup(const OrientationGroup& t_orientation_group);
+        bool removeOrientationGroup(const int& t_id);
+        bool removeOrientationGroup(const OrientationGroup& t_orientation_group);
 
         friend std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk);
 
@@ -229,6 +239,8 @@ namespace hiros {
             std::vector<OrientationSkeleton>());
 
         bool addOrientationSkeleton(const OrientationSkeleton& t_orientation_skeleton);
+        bool removeOrientationSkeleton(const int& t_id);
+        bool removeOrientationSkeleton(const OrientationSkeleton& t_orientation_skeleton);
 
         friend std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg);
 
