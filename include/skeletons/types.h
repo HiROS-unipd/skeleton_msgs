@@ -8,7 +8,6 @@
 // Standard dependencies
 #include <iostream>
 #include <limits>
-#include <map>
 #include <vector>
 
 namespace hiros {
@@ -44,6 +43,8 @@ namespace hiros {
       };
 
       // Quaternion
+      typedef tf2::Quaternion Quaternion;
+
       std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_q);
 
       // Box
@@ -89,9 +90,11 @@ namespace hiros {
                     const Box& t_bounding_box = Box(),
                     const std::vector<Marker>& t_markers = std::vector<Marker>());
 
+        const Marker& getMarker(const int& t_id) const;
+        Marker& getMarker(const int& t_id);
+        bool hasMarker(const int& t_id) const;
         bool addMarker(const Marker& t_marker);
         bool removeMarker(const int& t_id);
-        bool removeMarker(const Marker& t_marker);
 
         friend std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg);
 
@@ -99,47 +102,7 @@ namespace hiros {
         unsigned int max_markers;
         double confidence;
         Box bounding_box;
-        // map<marker_id, marker>
-        std::map<int, Marker> markers;
-      };
-
-      // MarkerSkeleton
-      struct MarkerSkeleton
-      {
-        MarkerSkeleton(
-          const int& t_id = -1,
-          const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-          const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>());
-
-        bool addMarkerGroup(const MarkerGroup& t_marker_group);
-        bool removeMarkerGroup(const int& t_id);
-        bool removeMarkerGroup(const MarkerGroup& t_marker_group);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeleton& t_ms);
-
-        int id;
-        double confidence;
-        // map<marker_group_id, marker_group>
-        std::map<int, MarkerGroup> marker_groups;
-      };
-
-      // MarkerSkeletonGroup
-      struct MarkerSkeletonGroup
-      {
-        MarkerSkeletonGroup(
-          const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
-          const std::string& t_src_frame = "",
-          const std::vector<MarkerSkeleton>& t_marker_skeletons = std::vector<MarkerSkeleton>());
-
-        bool addMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton);
-        bool removeMarkerSkeleton(const int& t_id);
-        bool removeMarkerSkeleton(const MarkerSkeleton& t_marker_skeleton);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const MarkerSkeletonGroup& t_msg);
-
-        double src_time;
-        std::string src_frame;
-        std::vector<MarkerSkeleton> marker_skeletons;
+        std::vector<Marker> markers;
       };
 
       // MIMU
@@ -196,57 +159,71 @@ namespace hiros {
           const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
           const std::vector<Orientation>& t_orientations = std::vector<Orientation>());
 
+        const Orientation& getOrientation(const int& t_id) const;
+        Orientation& getOrientation(const int& t_id);
+        bool hasOrientation(const int& t_id) const;
         bool addOrientation(const Orientation& t_orientation);
         bool removeOrientation(const int& t_id);
-        bool removeOrientation(const Orientation& t_orientation);
 
         friend std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og);
 
         int id;
         unsigned int max_orientations;
         double confidence;
-        // map<orientation_id, orientation>
-        std::map<int, Orientation> orientations;
+        std::vector<Orientation> orientations;
       };
 
-      // OrientationSkeleton
-      struct OrientationSkeleton
+      // Skeleton
+      struct Skeleton
       {
-        OrientationSkeleton(const int& t_id = -1,
-                            const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                            const std::vector<OrientationGroup>& t_orientation_groups =
-                              std::vector<OrientationGroup>());
+        Skeleton(const int& t_id = -1,
+                 const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
+                 const std::string t_src_frame = "",
+                 const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+                 const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>(),
+                 const std::vector<OrientationGroup>& t_orientation_groups =
+                   std::vector<OrientationGroup>());
 
+        const MarkerGroup& getMarkerGroup(const int& t_id) const;
+        MarkerGroup& getMarkerGroup(const int& t_id);
+        bool hasMarkerGroup(const int& t_id) const;
+        bool addMarkerGroup(const MarkerGroup& t_marker_group);
+        bool removeMarkerGroup(const int& t_id);
+
+        const OrientationGroup& getOrientationGroup(const int& t_id) const;
+        OrientationGroup& getOrientationGroup(const int& t_id);
+        bool hasOrientationGroup(const int& t_id) const;
         bool addOrientationGroup(const OrientationGroup& t_orientation_group);
         bool removeOrientationGroup(const int& t_id);
-        bool removeOrientationGroup(const OrientationGroup& t_orientation_group);
 
-        friend std::ostream& operator<<(std::ostream& t_os, const OrientationSkeleton& t_osk);
+        friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
 
         int id;
-        double confidence;
-        // map<orientation_group_id, orientation_group>
-        std::map<int, OrientationGroup> orientation_groups;
-      };
-
-      // OrientationSkeletonGroup
-      struct OrientationSkeletonGroup
-      {
-        OrientationSkeletonGroup(
-          const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
-          const std::string& t_src_frame = "",
-          const std::vector<OrientationSkeleton>& t_orientation_skeletons =
-            std::vector<OrientationSkeleton>());
-
-        bool addOrientationSkeleton(const OrientationSkeleton& t_orientation_skeleton);
-        bool removeOrientationSkeleton(const int& t_id);
-        bool removeOrientationSkeleton(const OrientationSkeleton& t_orientation_skeleton);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const OrientationSkeletonGroup& t_osg);
-
         double src_time;
         std::string src_frame;
-        std::vector<OrientationSkeleton> orientation_skeletons;
+        double confidence;
+        std::vector<MarkerGroup> marker_groups;
+        std::vector<OrientationGroup> orientation_groups;
+      };
+
+      // SkeletonGroup
+      struct SkeletonGroup
+      {
+        SkeletonGroup(const double& t_time = std::numeric_limits<double>::quiet_NaN(),
+                      const std::string& t_frame = "",
+                      const std::vector<Skeleton>& t_skeletons = std::vector<Skeleton>());
+
+        const Skeleton& getSkeleton(const int& t_id) const;
+        Skeleton& getSkeleton(const int& t_id);
+        bool hasSkeleton(const int& t_id) const;
+        bool addSkeleton(const Skeleton& t_skeleton);
+        bool removeSkeleton(const int& t_id);
+
+        friend std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg);
+
+        double time;
+        std::string frame;
+        std::vector<Skeleton> skeletons;
       };
 
     } // namespace types

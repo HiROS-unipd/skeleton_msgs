@@ -22,14 +22,12 @@ add_message_files(FILES
                   Box.msg
                   Marker.msg
                   MarkerGroup.msg
-                  MarkerSkeleton.msg
-                  MarkerSkeletonGroup.msg
                   MIMU.msg
                   Orientation.msg
                   OrientationGroup.msg
-                  OrientationSkeleton.msg
-                  OrientationSkeletonGroup.msg
-                  Point.msg)
+                  Point.msg
+                  Skeleton.msg
+                  SkeletonGroup.msg)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES

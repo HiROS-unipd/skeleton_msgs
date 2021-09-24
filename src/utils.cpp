@@ -238,21 +238,6 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Marker& t_m)
   return m;
 }
 
-bool hiros::skeletons::utils::hasMarker(const hiros::skeletons::types::MarkerGroup& t_marker_group,
-                                        const int& t_marker_id)
-{
-  return (t_marker_group.markers.count(t_marker_id) > 0);
-}
-
-bool hiros::skeletons::utils::hasMarker(
-  const hiros::skeletons::types::MarkerSkeleton& t_marker_skeleton,
-  const int& t_marker_group_id,
-  const int& t_marker_id)
-{
-  return (hasMarkerGroup(t_marker_skeleton, t_marker_group_id)
-          && hasMarker(t_marker_skeleton.marker_groups.at(t_marker_group_id), t_marker_id));
-}
-
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Marker& t_m,
                                               int t_pad_lv)
 {
@@ -292,7 +277,7 @@ hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MarkerGroup& t_mg)
   hiros::skeletons::types::MarkerGroup mg(
     t_mg.id, t_mg.max_markers, t_mg.confidence, toStruct(t_mg.bounding_box));
   for (auto& m : t_mg.markers) {
-    mg.markers.emplace(m.id, toStruct(m));
+    mg.addMarker(toStruct(m));
   }
   return mg;
 }
@@ -307,16 +292,9 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerGroup& t_mg)
   mg.bounding_box = toMsg(t_mg.bounding_box);
   mg.markers.reserve(t_mg.markers.size());
   for (auto& m : t_mg.markers) {
-    mg.markers.push_back(toMsg(m.second));
+    mg.markers.push_back(toMsg(m));
   }
   return mg;
-}
-
-bool hiros::skeletons::utils::hasMarkerGroup(
-  const hiros::skeletons::types::MarkerSkeleton& t_marker_skeleton,
-  const int& t_marker_group_id)
-{
-  return (t_marker_skeleton.marker_groups.count(t_marker_group_id) > 0);
 }
 
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::MarkerGroup& t_mg,
@@ -334,218 +312,7 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Mar
   }
   else {
     for (auto m : t_mg.markers) {
-      ss << std::endl << toString(m.second, t_pad_lv + 1);
-    }
-  }
-  return ss.str();
-}
-
-// MarkerSkeleton
-hiros::skeletons::types::MarkerSkeleton hiros::skeletons::utils::toStruct(
-  const int& t_id,
-  const double& t_confidence,
-  const std::vector<hiros::skeletons::types::MarkerGroup>& t_marker_groups)
-{
-  return hiros::skeletons::types::MarkerSkeleton(t_id, t_confidence, t_marker_groups);
-}
-
-hiros::skeletons::types::MarkerSkeleton
-hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MarkerSkeleton& t_ms)
-{
-  hiros::skeletons::types::MarkerSkeleton ms(t_ms.id, t_ms.confidence);
-  for (auto& mg : t_ms.marker_groups) {
-    ms.marker_groups.emplace(mg.id, toStruct(mg));
-  }
-  return ms;
-}
-
-hiros_skeleton_msgs::MarkerSkeleton
-hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerSkeleton& t_ms)
-{
-  hiros_skeleton_msgs::MarkerSkeleton ms;
-  ms.id = t_ms.id;
-  ms.confidence = t_ms.confidence;
-  ms.marker_groups.reserve(t_ms.marker_groups.size());
-  for (auto& mg : t_ms.marker_groups) {
-    ms.marker_groups.push_back(toMsg(mg.second));
-  }
-  return ms;
-}
-
-std::shared_ptr<hiros::skeletons::types::MarkerSkeleton> hiros::skeletons::utils::getMarkerSkeleton(
-  hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
-  const int& t_marker_skeleton_id)
-{
-  auto marker_skeleton_it = std::find_if(t_marker_skeleton_group.marker_skeletons.begin(),
-                                         t_marker_skeleton_group.marker_skeletons.end(),
-                                         [&](const hiros::skeletons::types::MarkerSkeleton& ms) {
-                                           return ms.id == t_marker_skeleton_id;
-                                         });
-
-  return marker_skeleton_it != t_marker_skeleton_group.marker_skeletons.end()
-           ? std::make_shared<hiros::skeletons::types::MarkerSkeleton>(*marker_skeleton_it)
-           : nullptr;
-}
-
-bool hiros::skeletons::utils::hasMarkerSkeleton(
-  const hiros::skeletons::types::MarkerSkeletonGroup& t_marker_skeleton_group,
-  const int& t_marker_skeleton_id)
-{
-  return std::find_if(t_marker_skeleton_group.marker_skeletons.begin(),
-                      t_marker_skeleton_group.marker_skeletons.end(),
-                      [&](const hiros::skeletons::types::MarkerSkeleton& ms) {
-                        return ms.id == t_marker_skeleton_id;
-                      })
-         != t_marker_skeleton_group.marker_skeletons.end();
-}
-
-unsigned int
-hiros::skeletons::utils::numberOfMarkers(const hiros::skeletons::types::MarkerSkeleton& t_ms)
-{
-  unsigned int n_mks = 0;
-
-  for (const auto& mg : t_ms.marker_groups) {
-    n_mks += mg.second.markers.size();
-  }
-
-  return n_mks;
-}
-
-std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::MarkerSkeleton& t_ms,
-                                              int t_pad_lv)
-{
-  std::stringstream ss;
-  ss << padding(t_pad_lv) << "- id: " << t_ms.id << std::endl
-     << padding(t_pad_lv + 1) << "confidence: " << t_ms.confidence << std::endl
-     << padding(t_pad_lv + 1) << "marker_groups: ";
-  if (t_ms.marker_groups.empty()) {
-    ss << "[]";
-  }
-  else {
-    for (auto mg : t_ms.marker_groups) {
-      ss << std::endl << toString(mg.second, t_pad_lv + 1);
-    }
-  }
-  return ss.str();
-}
-
-// MarkerSkeletonGroup
-hiros::skeletons::types::MarkerSkeletonGroup hiros::skeletons::utils::toStruct(
-  const double& t_src_time,
-  const std::string& t_src_frame,
-  const std::vector<hiros::skeletons::types::MarkerSkeleton>& t_marker_skeletons)
-{
-  return hiros::skeletons::types::MarkerSkeletonGroup(t_src_time, t_src_frame, t_marker_skeletons);
-}
-
-hiros::skeletons::types::MarkerSkeletonGroup
-hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::MarkerSkeletonGroup& t_msg)
-{
-  hiros::skeletons::types::MarkerSkeletonGroup msg;
-  msg.src_time = t_msg.src_time.toSec();
-  msg.src_frame = t_msg.src_frame;
-  msg.marker_skeletons.reserve(t_msg.marker_skeletons.size());
-  for (auto& ms : t_msg.marker_skeletons) {
-    msg.marker_skeletons.push_back(toStruct(ms));
-  }
-  return msg;
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
-                               const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const ros::Time& t_src_time,
-                               const std::string& t_src_frame,
-                               const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  hiros_skeleton_msgs::MarkerSkeletonGroup msg;
-  msg.header.seq = t_seq;
-  msg.header.stamp = t_stamp;
-  msg.header.frame_id = t_frame_id;
-  msg.src_time = t_src_time;
-  msg.src_frame = t_src_frame;
-  msg.marker_skeletons.reserve(t_msg.marker_skeletons.size());
-  for (auto& ms : t_msg.marker_skeletons) {
-    msg.marker_skeletons.push_back(toMsg(ms));
-  }
-  return msg;
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const ros::Time& t_src_time,
-                               const std::string& t_src_frame,
-                               const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  return toMsg(0, t_stamp, t_frame_id, t_src_time, t_src_frame, t_msg);
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
-                               const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  return toMsg(t_seq, t_stamp, t_frame_id, ros::Time(t_msg.src_time), t_msg.src_frame, t_msg);
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
-                               const ros::Time& t_src_time,
-                               const std::string& t_src_frame,
-                               const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  return toMsg(t_header.seq, t_header.stamp, t_header.frame_id, t_src_time, t_src_frame, t_msg);
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  return toMsg(0, t_stamp, t_frame_id, t_msg);
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
-                               const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  return std::isnan(t_msg.src_time)
-           ? toMsg(t_header, t_header.stamp, t_msg.src_frame, t_msg)
-           : toMsg(t_header, ros::Time(t_msg.src_time), t_msg.src_frame, t_msg);
-}
-
-hiros_skeleton_msgs::MarkerSkeletonGroup
-hiros::skeletons::utils::toMsg(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg)
-{
-  return toMsg(std_msgs::Header(), t_msg);
-}
-
-std::string
-hiros::skeletons::utils::toString(const hiros::skeletons::types::MarkerSkeletonGroup& t_msg,
-                                  int t_pad_lv)
-{
-  std::stringstream ss;
-  ss << padding(t_pad_lv) << "- src_time: ";
-  if (!std::isnan(t_msg.src_time)) {
-    long src_time_sec = static_cast<long>(t_msg.src_time);
-    long src_time_nsec = static_cast<long>((t_msg.src_time - src_time_sec) * 1e9);
-    ss << src_time_sec << "." << src_time_nsec;
-  }
-  else {
-    ss << "nan";
-  }
-  ss << std::endl
-     << padding(t_pad_lv + 1) << "src_frame: " << t_msg.src_frame << std::endl
-     << padding(t_pad_lv + 1) << "marker_skeletons: ";
-  if (t_msg.marker_skeletons.empty()) {
-    ss << "[]";
-  }
-  else {
-    for (auto ms : t_msg.marker_skeletons) {
-      ss << std::endl << toString(ms, t_pad_lv + 1);
+      ss << std::endl << toString(m, t_pad_lv + 1);
     }
   }
   return ss.str();
@@ -658,23 +425,6 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Orientation& t_o)
   return toMsg(h, t_o);
 }
 
-bool hiros::skeletons::utils::hasOrientation(
-  const hiros::skeletons::types::OrientationGroup& t_orientation_group,
-  const int& t_orientation_id)
-{
-  return (t_orientation_group.orientations.count(t_orientation_id) > 0);
-}
-
-bool hiros::skeletons::utils::hasOrientation(
-  const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
-  const int& t_orientation_group_id,
-  const int& t_orientation_id)
-{
-  return (hasOrientationGroup(t_orientation_skeleton, t_orientation_group_id)
-          && hasOrientation(t_orientation_skeleton.orientation_groups.at(t_orientation_group_id),
-                            t_orientation_id));
-}
-
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Orientation& t_o,
                                               int t_pad_lv)
 {
@@ -702,7 +452,7 @@ hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::OrientationGroup& t
 {
   hiros::skeletons::types::OrientationGroup og(t_og.id, t_og.max_orientations, t_og.confidence);
   for (auto& o : t_og.orientations) {
-    og.orientations.emplace(o.id, toStruct(o));
+    og.addOrientation(toStruct(o));
   }
   return og;
 }
@@ -717,7 +467,7 @@ hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
   og.confidence = t_og.confidence;
   og.orientations.reserve(t_og.orientations.size());
   for (auto& o : t_og.orientations) {
-    og.orientations.push_back(toMsg(t_header, o.second));
+    og.orientations.push_back(toMsg(t_header, o));
   }
   return og;
 }
@@ -726,13 +476,6 @@ hiros_skeleton_msgs::OrientationGroup
 hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationGroup& t_og)
 {
   return toMsg({}, t_og);
-}
-
-bool hiros::skeletons::utils::hasOrientationGroup(
-  const hiros::skeletons::types::OrientationSkeleton& t_orientation_skeleton,
-  const int& t_orientation_group_id)
-{
-  return (t_orientation_skeleton.orientation_groups.count(t_orientation_group_id) > 0);
 }
 
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::OrientationGroup& t_og,
@@ -748,230 +491,182 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Ori
   }
   else {
     for (auto o : t_og.orientations) {
-      ss << std::endl << utils::toString(o.second, t_pad_lv + 1);
+      ss << std::endl << utils::toString(o, t_pad_lv + 1);
     }
   }
   return ss.str();
 }
 
-// OrientationSkeleton
-hiros::skeletons::types::OrientationSkeleton hiros::skeletons::utils::toStruct(
+// Skeleton
+hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
   const int& t_id,
+  const double& t_src_time,
+  const std::string& t_src_frame,
   const double& t_confidence,
+  const std::vector<hiros::skeletons::types::MarkerGroup>& t_marker_groups,
   const std::vector<hiros::skeletons::types::OrientationGroup>& t_orientation_groups)
 {
-  return hiros::skeletons::types::OrientationSkeleton(t_id, t_confidence, t_orientation_groups);
+  return hiros::skeletons::types::Skeleton(
+    t_id, t_src_time, t_src_frame, t_confidence, t_marker_groups, t_orientation_groups);
 }
 
-hiros::skeletons::types::OrientationSkeleton
-hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::OrientationSkeleton& t_os)
+hiros::skeletons::types::Skeleton
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Skeleton& t_s)
 {
-  hiros::skeletons::types::OrientationSkeleton os(t_os.id, t_os.confidence);
-  for (auto& og : t_os.orientation_groups) {
-    os.orientation_groups.emplace(og.id, toStruct(og));
+  hiros::skeletons::types::Skeleton s(t_s.id, t_s.src_time.toSec(), t_s.src_frame, t_s.confidence);
+  for (auto& mg : t_s.marker_groups) {
+    s.addMarkerGroup(toStruct(mg));
   }
-  return os;
+  for (auto& og : t_s.orientation_groups) {
+    s.addOrientationGroup(toStruct(og));
+  }
+  return s;
 }
 
-hiros_skeleton_msgs::OrientationSkeleton
+hiros_skeleton_msgs::Skeleton
 hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
-                               const hiros::skeletons::types::OrientationSkeleton& t_os)
+                               const hiros::skeletons::types::Skeleton& t_s)
 {
-  hiros_skeleton_msgs::OrientationSkeleton os;
-  os.id = t_os.id;
-  os.confidence = t_os.confidence;
-  os.orientation_groups.reserve(t_os.orientation_groups.size());
-  for (auto& og : t_os.orientation_groups) {
-    os.orientation_groups.push_back(toMsg(t_header, og.second));
+  hiros_skeleton_msgs::Skeleton s;
+  s.id = t_s.id;
+  s.confidence = t_s.confidence;
+  s.src_time = ros::Time(t_s.src_time);
+  s.src_frame = t_s.src_frame;
+  s.marker_groups.reserve(t_s.marker_groups.size());
+  s.orientation_groups.reserve(t_s.orientation_groups.size());
+  for (auto& mg : t_s.marker_groups) {
+    s.marker_groups.push_back(toMsg(mg));
   }
-  return os;
+  for (auto& og : t_s.orientation_groups) {
+    s.orientation_groups.push_back(toMsg(t_header, og));
+  }
+  return s;
 }
 
-hiros_skeleton_msgs::OrientationSkeleton
-hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationSkeleton& t_os)
+hiros_skeleton_msgs::Skeleton
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Skeleton& t_s)
 {
-  return toMsg({}, t_os);
+  return toMsg({}, t_s);
 }
 
-std::shared_ptr<hiros::skeletons::types::OrientationSkeleton>
-hiros::skeletons::utils::getOrientationSkeleton(
-  hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
-  const int& t_orientation_skeleton_id)
+unsigned int hiros::skeletons::utils::numberOfMarkers(const hiros::skeletons::types::Skeleton& t_s)
 {
-  auto orientation_skeleton_it =
-    std::find_if(t_orientation_skeleton_group.orientation_skeletons.begin(),
-                 t_orientation_skeleton_group.orientation_skeletons.end(),
-                 [&](const hiros::skeletons::types::OrientationSkeleton& os) {
-                   return os.id == t_orientation_skeleton_id;
-                 });
+  unsigned int n_mks = 0;
 
-  return orientation_skeleton_it != t_orientation_skeleton_group.orientation_skeletons.end()
-           ? std::make_shared<hiros::skeletons::types::OrientationSkeleton>(
-             *orientation_skeleton_it)
-           : nullptr;
+  for (const auto& mg : t_s.marker_groups) {
+    n_mks += mg.markers.size();
+  }
+
+  return n_mks;
 }
 
-bool hiros::skeletons::utils::hasOrientationSkeleton(
-  const hiros::skeletons::types::OrientationSkeletonGroup& t_orientation_skeleton_group,
-  const int& t_orientation_skeleton_id)
-{
-  return std::find_if(t_orientation_skeleton_group.orientation_skeletons.begin(),
-                      t_orientation_skeleton_group.orientation_skeletons.end(),
-                      [&](const hiros::skeletons::types::OrientationSkeleton& os) {
-                        return os.id == t_orientation_skeleton_id;
-                      })
-         != t_orientation_skeleton_group.orientation_skeletons.end();
-}
-
-unsigned int hiros::skeletons::utils::numberOfOrientations(
-  const hiros::skeletons::types::OrientationSkeleton& t_os)
+unsigned int
+hiros::skeletons::utils::numberOfOrientations(const hiros::skeletons::types::Skeleton& t_s)
 {
   unsigned int n_ors = 0;
 
-  for (const auto& og : t_os.orientation_groups) {
-    n_ors += og.second.orientations.size();
+  for (const auto& og : t_s.orientation_groups) {
+    n_ors += og.orientations.size();
   }
 
   return n_ors;
 }
 
-std::string
-hiros::skeletons::utils::toString(const hiros::skeletons::types::OrientationSkeleton& t_os,
-                                  int t_pad_lv)
+std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Skeleton& t_s,
+                                              int t_pad_lv)
 {
   std::stringstream ss;
-  ss << padding(t_pad_lv) << "- id: " << t_os.id << std::endl
-     << padding(t_pad_lv + 1) << "confidence: " << t_os.confidence << std::endl
-     << padding(t_pad_lv + 1) << "orientation_groups: ";
-  if (t_os.orientation_groups.empty()) {
-    ss << "[]";
-  }
-  else {
-    for (auto og : t_os.orientation_groups) {
-      ss << std::endl << toString(og.second, t_pad_lv + 1);
-    }
-  }
-  return ss.str();
-}
-
-// OrientationSkeletonGroup
-hiros::skeletons::types::OrientationSkeletonGroup hiros::skeletons::utils::toStruct(
-  const double& t_src_time,
-  const std::string& t_src_frame,
-  const std::vector<hiros::skeletons::types::OrientationSkeleton>& t_orientation_skeletons)
-{
-  return hiros::skeletons::types::OrientationSkeletonGroup(
-    t_src_time, t_src_frame, t_orientation_skeletons);
-}
-
-hiros::skeletons::types::OrientationSkeletonGroup
-hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::OrientationSkeletonGroup& t_osg)
-{
-  hiros::skeletons::types::OrientationSkeletonGroup osg;
-  osg.src_time = t_osg.src_time.toSec();
-  osg.src_frame = t_osg.src_frame;
-  osg.orientation_skeletons.reserve(t_osg.orientation_skeletons.size());
-  for (auto& os : t_osg.orientation_skeletons) {
-    osg.orientation_skeletons.push_back(toStruct(os));
-  }
-  return osg;
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
-                               const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const ros::Time& t_src_time,
-                               const std::string& t_src_frame,
-                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  hiros_skeleton_msgs::OrientationSkeletonGroup osg;
-  osg.header.seq = t_seq;
-  osg.header.stamp = t_stamp;
-  osg.header.frame_id = t_frame_id;
-  osg.src_time = t_src_time;
-  osg.src_frame = t_src_frame;
-  osg.orientation_skeletons.reserve(t_osg.orientation_skeletons.size());
-  for (auto& os : t_osg.orientation_skeletons) {
-    osg.orientation_skeletons.push_back(toMsg(osg.header, os));
-  }
-  return osg;
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const ros::Time& t_src_time,
-                               const std::string& t_src_frame,
-                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  return toMsg(0, t_stamp, t_frame_id, t_src_time, t_src_frame, t_osg);
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const unsigned int& t_seq,
-                               const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  return toMsg(t_seq, t_stamp, t_frame_id, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
-                               const ros::Time& t_src_time,
-                               const std::string& t_src_frame,
-                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  return toMsg(t_header.seq, t_header.stamp, t_header.frame_id, t_src_time, t_src_frame, t_osg);
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const ros::Time& t_stamp,
-                               const std::string& t_frame_id,
-                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  return toMsg(0, t_stamp, t_frame_id, t_osg);
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const std_msgs::Header& t_header,
-                               const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  return std::isnan(t_osg.src_time)
-           ? toMsg(t_header, t_header.stamp, t_osg.src_frame, t_osg)
-           : toMsg(t_header, ros::Time(t_osg.src_time), t_osg.src_frame, t_osg);
-}
-
-hiros_skeleton_msgs::OrientationSkeletonGroup
-hiros::skeletons::utils::toMsg(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg)
-{
-  return toMsg(std_msgs::Header(), t_osg);
-}
-
-std::string
-hiros::skeletons::utils::toString(const hiros::skeletons::types::OrientationSkeletonGroup& t_osg,
-                                  int t_pad_lv)
-{
-  std::stringstream ss;
-  ss << padding(t_pad_lv) << "- src_time: ";
-  if (!std::isnan(t_osg.src_time)) {
-    long src_time_sec = static_cast<long>(t_osg.src_time);
-    long src_time_nsec = static_cast<long>((t_osg.src_time - src_time_sec) * 1e9);
+  ss << padding(t_pad_lv) << "- id: " << t_s.id << std::endl
+     << padding(t_pad_lv + 1) << "confidence: " << t_s.confidence << std::endl
+     << padding(t_pad_lv + 1) << "src_time: ";
+  if (!std::isnan(t_s.src_time)) {
+    long src_time_sec = static_cast<long>(t_s.src_time);
+    long src_time_nsec = static_cast<long>((t_s.src_time - src_time_sec) * 1e9);
     ss << std::to_string(src_time_sec) << "." << std::to_string(src_time_nsec);
   }
   else {
     ss << "nan";
   }
   ss << std::endl
-     << padding(t_pad_lv + 1) << "src_frame: " << t_osg.src_frame << std::endl
-     << padding(t_pad_lv + 1) << "orientation_skeletons: ";
-  if (t_osg.orientation_skeletons.empty()) {
+     << padding(t_pad_lv + 1) << "src_frame: " << t_s.src_frame << std::endl
+     << padding(t_pad_lv + 1) << "marker_groups: ";
+  if (t_s.marker_groups.empty()) {
     ss << "[]";
   }
   else {
-    for (auto os : t_osg.orientation_skeletons) {
-      ss << std::endl << toString(os, t_pad_lv + 1);
+    for (auto mg : t_s.marker_groups) {
+      ss << std::endl << toString(mg, t_pad_lv + 1);
+    }
+  }
+  ss << std::endl << padding(t_pad_lv + 1) << "orientation_groups: ";
+  if (t_s.orientation_groups.empty()) {
+    ss << "[]";
+  }
+  else {
+    for (auto og : t_s.orientation_groups) {
+      ss << std::endl << toString(og, t_pad_lv + 1);
+    }
+  }
+  return ss.str();
+}
+
+// SkeletonGroup
+hiros::skeletons::types::SkeletonGroup
+hiros::skeletons::utils::toStruct(const double& t_time,
+                                  const std::string& t_frame,
+                                  const std::vector<hiros::skeletons::types::Skeleton>& t_skeletons)
+{
+  return hiros::skeletons::types::SkeletonGroup(t_time, t_frame, t_skeletons);
+}
+
+hiros::skeletons::types::SkeletonGroup
+hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::SkeletonGroup& t_sg)
+{
+  hiros::skeletons::types::SkeletonGroup sg;
+  sg.time = t_sg.header.stamp.toSec();
+  sg.frame = t_sg.header.frame_id;
+  sg.skeletons.reserve(t_sg.skeletons.size());
+  for (auto& s : t_sg.skeletons) {
+    sg.skeletons.push_back(toStruct(s));
+  }
+  return sg;
+}
+
+hiros_skeleton_msgs::SkeletonGroup
+hiros::skeletons::utils::toMsg(const hiros::skeletons::types::SkeletonGroup& t_sg)
+{
+  hiros_skeleton_msgs::SkeletonGroup sg;
+  sg.header.stamp = ros::Time(t_sg.time);
+  sg.header.frame_id = t_sg.frame;
+  sg.skeletons.reserve(t_sg.skeletons.size());
+  for (auto& s : t_sg.skeletons) {
+    sg.skeletons.push_back(toMsg(sg.header, s));
+  }
+  return sg;
+}
+
+std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::SkeletonGroup& t_sg,
+                                              int t_pad_lv)
+{
+  std::stringstream ss;
+  ss << padding(t_pad_lv) << "- time: ";
+  if (!std::isnan(t_sg.time)) {
+    long src_time_sec = static_cast<long>(t_sg.time);
+    long src_time_nsec = static_cast<long>((t_sg.time - src_time_sec) * 1e9);
+    ss << std::to_string(src_time_sec) << "." << std::to_string(src_time_nsec);
+  }
+  else {
+    ss << "nan";
+  }
+  ss << std::endl
+     << padding(t_pad_lv + 1) << "frame: " << t_sg.frame << std::endl
+     << padding(t_pad_lv + 1) << "skeletons: ";
+  if (t_sg.skeletons.empty()) {
+    ss << "[]";
+  }
+  else {
+    for (auto s : t_sg.skeletons) {
+      ss << std::endl << toString(s, t_pad_lv + 1);
     }
   }
   return ss.str();
