@@ -9,8 +9,6 @@ add_compile_options(-std=c++14)
 find_package(catkin REQUIRED
              COMPONENTS geometry_msgs
                         message_generation
-                        sensor_msgs
-                        std_msgs
                         tf2)
 
 # ##############################################################################
@@ -20,20 +18,15 @@ find_package(catkin REQUIRED
 # Generate messages in the 'msg' folder
 add_message_files(FILES
                   Box.msg
+                  KinematicState.msg
+                  Link.msg
                   Marker.msg
-                  MarkerGroup.msg
-                  MIMU.msg
-                  Orientation.msg
-                  OrientationGroup.msg
-                  Point.msg
                   Skeleton.msg
                   SkeletonGroup.msg)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES
-                  geometry_msgs
-                  sensor_msgs
-                  std_msgs)
+                  geometry_msgs)
 
 # ##############################################################################
 # catkin specific configuration ##
@@ -47,8 +40,6 @@ generate_messages(DEPENDENCIES
 catkin_package(CATKIN_DEPENDS
                geometry_msgs
                message_runtime
-               sensor_msgs
-               std_msgs
                tf2
                LIBRARIES
                ${PROJECT_NAME}_types

@@ -1,5 +1,5 @@
-#ifndef hiros_skeletons_types_h
-#define hiros_skeletons_types_h
+#ifndef hiros_skeleton_msgs_types_h
+#define hiros_skeleton_msgs_types_h
 
 // ROS dependencies
 #include "tf2/LinearMath/Quaternion.h"
@@ -14,57 +14,87 @@ namespace hiros {
   namespace skeletons {
     namespace types {
 
-      // Vector
-      typedef tf2::Vector3 Position;
-      typedef tf2::Vector3 Velocity;
-      typedef tf2::Vector3 Acceleration;
+      // Vector3
+      typedef tf2::Vector3 Vector3;
 
-      std::ostream& operator<<(std::ostream& t_os, const tf2::Vector3& t_v);
+      std::ostream& operator<<(std::ostream& t_os, const Vector3& t_v);
 
       // Point
-      struct Point
-      {
-        Point(const Position& t_position = Position(std::numeric_limits<double>::quiet_NaN(),
-                                                    std::numeric_limits<double>::quiet_NaN(),
-                                                    std::numeric_limits<double>::quiet_NaN()),
-              const Velocity& t_velocity = Velocity(std::numeric_limits<double>::quiet_NaN(),
-                                                    std::numeric_limits<double>::quiet_NaN(),
-                                                    std::numeric_limits<double>::quiet_NaN()),
-              const Acceleration& t_acceleration =
-                Acceleration(std::numeric_limits<double>::quiet_NaN(),
-                             std::numeric_limits<double>::quiet_NaN(),
-                             std::numeric_limits<double>::quiet_NaN()));
-
-        friend std::ostream& operator<<(std::ostream& t_os, const Point& t_p);
-
-        Position position;
-        Velocity velocity;
-        Acceleration acceleration;
-      };
+      typedef Vector3 Point;
 
       // Quaternion
       typedef tf2::Quaternion Quaternion;
 
-      std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_q);
+      std::ostream& operator<<(std::ostream& t_os, const Quaternion& t_q);
+
+      // Pose
+      struct Pose
+      {
+        Pose(
+          const Point& t_position = Point(std::numeric_limits<double>::quiet_NaN(),
+                                          std::numeric_limits<double>::quiet_NaN(),
+                                          std::numeric_limits<double>::quiet_NaN()),
+          const Quaternion& t_orientation = Quaternion(std::numeric_limits<double>::quiet_NaN(),
+                                                       std::numeric_limits<double>::quiet_NaN(),
+                                                       std::numeric_limits<double>::quiet_NaN(),
+                                                       std::numeric_limits<double>::quiet_NaN()));
+        Pose(const Quaternion& t_orientation);
+
+        friend std::ostream& operator<<(std::ostream& t_os, const Pose& t_p);
+
+        Point position;
+        Quaternion orientation;
+      };
+
+      // Velocity
+      struct Velocity
+      {
+        Velocity(const Vector3& t_linear = Vector3(std::numeric_limits<double>::quiet_NaN(),
+                                                   std::numeric_limits<double>::quiet_NaN(),
+                                                   std::numeric_limits<double>::quiet_NaN()),
+                 const Vector3& t_angular = Vector3(std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN()));
+
+        friend std::ostream& operator<<(std::ostream& t_os, const Velocity& t_v);
+
+        Vector3 linear;
+        Vector3 angular;
+      };
+
+      // Acceleration
+      typedef Velocity Acceleration;
+
+      // KinematicState
+      struct KinematicState
+      {
+        KinematicState(const Pose& t_pose = Pose(),
+                       const Velocity& t_velocity = Velocity(),
+                       const Acceleration& t_acceleration = Acceleration());
+        KinematicState(const Point& t_position);
+        KinematicState(const Quaternion& t_orientation);
+
+        friend std::ostream& operator<<(std::ostream& t_os, const KinematicState& t_ks);
+
+        Pose pose;
+        Velocity velocity;
+        Acceleration acceleration;
+      };
 
       // Box
       struct Box
       {
-        Box(const Point& t_center = Point(),
+        Box(const KinematicState& t_center = KinematicState(),
             const double& t_length = std::numeric_limits<double>::quiet_NaN(),
             const double& t_height = std::numeric_limits<double>::quiet_NaN(),
-            const double& t_width = std::numeric_limits<double>::quiet_NaN(),
-            const tf2::Quaternion& t_orientation =
-              tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
-                              std::numeric_limits<double>::quiet_NaN(),
-                              std::numeric_limits<double>::quiet_NaN(),
-                              std::numeric_limits<double>::quiet_NaN()));
+            const double& t_width = std::numeric_limits<double>::quiet_NaN());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Box& t_b);
 
-        Point center;
-        double length, height, width;
-        tf2::Quaternion orientation;
+        KinematicState center;
+        double length;
+        double height;
+        double width;
       };
 
       // Marker
@@ -72,105 +102,31 @@ namespace hiros {
       {
         Marker(const int& t_id = -1,
                const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-               const Point& t_point = Point());
+               const KinematicState& t_center = KinematicState());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Marker& t_m);
 
         int id;
         double confidence;
-        Point point;
+        KinematicState center;
       };
 
-      // MarkerGroup
-      struct MarkerGroup
+      // Link
+      struct Link
       {
-        MarkerGroup(const int& t_id = -1,
-                    const unsigned int& t_max_markers = 0,
-                    const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                    const Box& t_bounding_box = Box(),
-                    const std::vector<Marker>& t_markers = std::vector<Marker>());
+        Link(const int& t_id = -1,
+             const int& t_parent_marker = -1,
+             const int& t_child_marker = -1,
+             const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+             const KinematicState& t_center = KinematicState());
 
-        const Marker& getMarker(const int& t_id) const;
-        Marker& getMarker(const int& t_id);
-        bool hasMarker(const int& t_id) const;
-        bool addMarker(const Marker& t_marker);
-        bool removeMarker(const int& t_id);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg);
+        friend std::ostream& operator<<(std::ostream& t_os, const Link& t_l);
 
         int id;
-        unsigned int max_markers;
+        int parent_marker;
+        int child_marker;
         double confidence;
-        Box bounding_box;
-        std::vector<Marker> markers;
-      };
-
-      // MIMU
-      struct MIMU
-      {
-        MIMU(const std::string& t_frame_id = "",
-             const tf2::Quaternion& t_orientation =
-               tf2::Quaternion(std::numeric_limits<double>::quiet_NaN(),
-                               std::numeric_limits<double>::quiet_NaN(),
-                               std::numeric_limits<double>::quiet_NaN(),
-                               std::numeric_limits<double>::quiet_NaN()),
-             const tf2::Vector3& t_angular_velocity =
-               tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
-                            std::numeric_limits<double>::quiet_NaN(),
-                            std::numeric_limits<double>::quiet_NaN()),
-             const tf2::Vector3& t_linear_acceleration =
-               tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
-                            std::numeric_limits<double>::quiet_NaN(),
-                            std::numeric_limits<double>::quiet_NaN()),
-             const tf2::Vector3& t_magnetic_field =
-               tf2::Vector3(std::numeric_limits<double>::quiet_NaN(),
-                            std::numeric_limits<double>::quiet_NaN(),
-                            std::numeric_limits<double>::quiet_NaN()));
-
-        friend std::ostream& operator<<(std::ostream& t_os, const MIMU& t_m);
-
-        std::string frame_id;
-        tf2::Quaternion orientation;
-        tf2::Vector3 angular_velocity;
-        tf2::Vector3 linear_acceleration;
-        tf2::Vector3 magnetic_field;
-      };
-
-      // Orientation
-      struct Orientation
-      {
-        Orientation(const int& t_id = -1,
-                    const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                    const MIMU& t_mimu = MIMU());
-
-        friend std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o);
-
-        int id;
-        double confidence;
-        MIMU mimu;
-      };
-
-      // OrientationGroup
-      struct OrientationGroup
-      {
-        OrientationGroup(
-          const int& t_id = -1,
-          const unsigned int& t_max_orientations = 0,
-          const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-          const std::vector<Orientation>& t_orientations = std::vector<Orientation>());
-
-        const Orientation& getOrientation(const int& t_id) const;
-        Orientation& getOrientation(const int& t_id);
-        bool hasOrientation(const int& t_id) const;
-        bool addOrientation(const Orientation& t_orientation);
-        bool removeOrientation(const int& t_id);
-
-        friend std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og);
-
-        int id;
-        unsigned int max_orientations;
-        double confidence;
-        std::vector<Orientation> orientations;
+        KinematicState center;
       };
 
       // Skeleton
@@ -179,31 +135,36 @@ namespace hiros {
         Skeleton(const int& t_id = -1,
                  const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
                  const std::string t_src_frame = "",
+                 const unsigned int& t_n_markers = 0,
+                 const unsigned int& t_n_links = 0,
                  const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
-                 const std::vector<MarkerGroup>& t_marker_groups = std::vector<MarkerGroup>(),
-                 const std::vector<OrientationGroup>& t_orientation_groups =
-                   std::vector<OrientationGroup>());
+                 const Box& t_bounding_box = Box(),
+                 const std::vector<Marker>& t_markers = std::vector<Marker>(),
+                 const std::vector<Link>& t_links = std::vector<Link>());
 
-        const MarkerGroup& getMarkerGroup(const int& t_id) const;
-        MarkerGroup& getMarkerGroup(const int& t_id);
-        bool hasMarkerGroup(const int& t_id) const;
-        bool addMarkerGroup(const MarkerGroup& t_marker_group);
-        bool removeMarkerGroup(const int& t_id);
+        const Marker& getMarker(const int& t_id) const;
+        Marker& getMarker(const int& t_id);
+        bool hasMarker(const int& t_id) const;
+        bool addMarker(const Marker& t_marker);
+        bool removeMarker(const int& t_id);
 
-        const OrientationGroup& getOrientationGroup(const int& t_id) const;
-        OrientationGroup& getOrientationGroup(const int& t_id);
-        bool hasOrientationGroup(const int& t_id) const;
-        bool addOrientationGroup(const OrientationGroup& t_orientation_group);
-        bool removeOrientationGroup(const int& t_id);
+        const Link& getLink(const int& t_id) const;
+        Link& getLink(const int& t_id);
+        bool hasLink(const int& t_id) const;
+        bool addLink(const Link& t_link);
+        bool removeLink(const int& t_id);
 
         friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
 
         int id;
         double src_time;
         std::string src_frame;
+        unsigned int n_markers;
+        unsigned int n_links;
         double confidence;
-        std::vector<MarkerGroup> marker_groups;
-        std::vector<OrientationGroup> orientation_groups;
+        Box bounding_box;
+        std::vector<Marker> markers;
+        std::vector<Link> links;
       };
 
       // SkeletonGroup

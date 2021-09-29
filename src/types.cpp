@@ -6,43 +6,82 @@ namespace hiros {
   namespace skeletons {
     namespace types {
 
-      // Vector
-      std::ostream& operator<<(std::ostream& t_os, const tf2::Vector3& t_v)
+      // Vector3
+      std::ostream& operator<<(std::ostream& t_os, const Vector3& t_v)
       {
         return t_os << utils::toString(t_v);
       }
 
-      // Point
-      Point::Point(const Position& t_position,
-                   const Velocity& t_velocity,
-                   const Acceleration& t_acceleration)
-        : position(t_position)
-        , velocity(t_velocity)
-        , acceleration(t_acceleration)
-      {}
-
-      std::ostream& operator<<(std::ostream& t_os, const Point& t_p)
-      {
-        return t_os << utils::toString(t_p);
-      }
-
       // Quaternion
-      std::ostream& operator<<(std::ostream& t_os, const tf2::Quaternion& t_q)
+      std::ostream& operator<<(std::ostream& t_os, const Quaternion& t_q)
       {
         return t_os << utils::toString(t_q);
       }
 
+      // Pose
+      Pose::Pose(const Vector3& t_position, const Quaternion& t_orientation)
+        : position(t_position)
+        , orientation(t_orientation)
+      {}
+
+      Pose::Pose(const Quaternion& t_orientation)
+        : position(Point(std::numeric_limits<double>::quiet_NaN(),
+                         std::numeric_limits<double>::quiet_NaN(),
+                         std::numeric_limits<double>::quiet_NaN()))
+        , orientation(t_orientation)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const Pose& t_p)
+      {
+        return t_os << utils::toString(t_p);
+      }
+
+      // Velocity
+      Velocity::Velocity(const Vector3& t_linear, const Vector3& t_angular)
+        : linear(t_linear)
+        , angular(t_angular)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const Velocity& t_v)
+      {
+        return t_os << utils::toString(t_v);
+      }
+
+      // KinematicState
+      KinematicState::KinematicState(const Pose& t_pose,
+                                     const Velocity& t_velocity,
+                                     const Acceleration& t_acceleration)
+        : pose(t_pose)
+        , velocity(t_velocity)
+        , acceleration(t_acceleration)
+      {}
+
+      KinematicState::KinematicState(const Point& t_position)
+        : pose(Pose(t_position))
+        , velocity(Velocity())
+        , acceleration(Acceleration())
+      {}
+
+      KinematicState::KinematicState(const Quaternion& t_orientation)
+        : pose(Pose(t_orientation))
+        , velocity(Velocity())
+        , acceleration(Acceleration())
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const KinematicState& t_ks)
+      {
+        return t_os << utils::toString(t_ks);
+      }
+
       // Box
-      Box::Box(const Point& t_center,
+      Box::Box(const KinematicState& t_center,
                const double& t_length,
                const double& t_height,
-               const double& t_width,
-               const tf2::Quaternion& t_orientation)
+               const double& t_width)
         : center(t_center)
         , length(t_length)
         , height(t_height)
         , width(t_width)
-        , orientation(t_orientation)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Box& t_b)
@@ -51,10 +90,10 @@ namespace hiros {
       }
 
       // Marker
-      Marker::Marker(const int& t_id, const double& t_confidence, const Point& t_point)
+      Marker::Marker(const int& t_id, const double& t_confidence, const KinematicState& t_center)
         : id(t_id)
         , confidence(t_confidence)
-        , point(t_point)
+        , center(t_center)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Marker& t_m)
@@ -62,44 +101,68 @@ namespace hiros {
         return t_os << utils::toString(t_m);
       }
 
-      // MarkerGroup
-      MarkerGroup::MarkerGroup(const int& t_id,
-                               const unsigned int& t_max_markers,
-                               const double& t_confidence,
-                               const Box& t_bounding_box,
-                               const std::vector<Marker>& t_markers)
+      // Link
+      Link::Link(const int& t_id,
+                 const int& t_parent_marker,
+                 const int& t_child_marker,
+                 const double& t_confidence,
+                 const KinematicState& t_center)
         : id(t_id)
-        , max_markers(t_max_markers)
+        , parent_marker(t_parent_marker)
+        , child_marker(t_child_marker)
+        , confidence(t_confidence)
+        , center(t_center)
+      {}
+
+      std::ostream& operator<<(std::ostream& t_os, const Link& t_l)
+      {
+        return t_os << utils::toString(t_l);
+      }
+
+      // Skeleton
+      Skeleton::Skeleton(const int& t_id,
+                         const double& t_src_time,
+                         const std::string t_src_frame,
+                         const unsigned int& t_n_markers,
+                         const unsigned int& t_n_links,
+                         const double& t_confidence,
+                         const Box& t_bounding_box,
+                         const std::vector<Marker>& t_markers,
+                         const std::vector<Link>& t_links)
+        : id(t_id)
+        , src_time(t_src_time)
+        , src_frame(t_src_frame)
+        , n_markers(t_n_markers)
+        , n_links(t_n_links)
         , confidence(t_confidence)
         , bounding_box(t_bounding_box)
         , markers(t_markers)
-      {
-        markers.reserve(max_markers);
-      }
+        , links(t_links)
+      {}
 
-      const Marker& MarkerGroup::getMarker(const int& t_id) const
+      const Marker& Skeleton::getMarker(const int& t_id) const
       {
         for (const auto& marker : markers) {
           if (marker.id == t_id) {
             return marker;
           }
         }
-        throw std::out_of_range("Marker " + std::to_string(t_id) + " not present in MarkerGroup "
+        throw std::out_of_range("Marker " + std::to_string(t_id) + " not present in Skeleton "
                                 + std::to_string(id));
       }
 
-      Marker& MarkerGroup::getMarker(const int& t_id)
+      Marker& Skeleton::getMarker(const int& t_id)
       {
         for (auto& marker : markers) {
           if (marker.id == t_id) {
             return marker;
           }
         }
-        throw std::out_of_range("Marker " + std::to_string(t_id) + " not present in MarkerGroup "
+        throw std::out_of_range("Marker " + std::to_string(t_id) + " not present in Skeleton "
                                 + std::to_string(id));
       }
 
-      bool MarkerGroup::hasMarker(const int& t_id) const
+      bool Skeleton::hasMarker(const int& t_id) const
       {
         for (const auto& marker : markers) {
           if (marker.id == t_id) {
@@ -109,7 +172,7 @@ namespace hiros {
         return false;
       }
 
-      bool MarkerGroup::addMarker(const Marker& t_marker)
+      bool Skeleton::addMarker(const Marker& t_marker)
       {
         if (hasMarker(t_marker.id)) {
           return false;
@@ -119,7 +182,7 @@ namespace hiros {
         return true;
       }
 
-      bool MarkerGroup::removeMarker(const int& t_id)
+      bool Skeleton::removeMarker(const int& t_id)
       {
         if (!hasMarker(t_id)) {
           return false;
@@ -130,234 +193,56 @@ namespace hiros {
         return true;
       }
 
-      std::ostream& operator<<(std::ostream& t_os, const MarkerGroup& t_mg)
+      const Link& Skeleton::getLink(const int& t_id) const
       {
-        return t_os << utils::toString(t_mg);
-      }
-
-      // MIMU
-      MIMU::MIMU(const std::string& t_frame_id,
-                 const tf2::Quaternion& t_orientation,
-                 const tf2::Vector3& t_angular_velocity,
-                 const tf2::Vector3& t_linear_acceleration,
-                 const tf2::Vector3& t_magnetic_field)
-        : frame_id(t_frame_id)
-        , orientation(t_orientation)
-        , angular_velocity(t_angular_velocity)
-        , linear_acceleration(t_linear_acceleration)
-        , magnetic_field(t_magnetic_field)
-      {}
-
-      std::ostream& operator<<(std::ostream& t_os, const MIMU& t_m)
-      {
-        return t_os << utils::toString(t_m);
-      }
-
-      // Orientation
-      Orientation::Orientation(const int& t_id, const double& t_confidence, const MIMU& t_mimu)
-        : id(t_id)
-        , confidence(t_confidence)
-        , mimu(t_mimu)
-      {}
-
-      std::ostream& operator<<(std::ostream& t_os, const Orientation& t_o)
-      {
-        return t_os << utils::toString(t_o);
-      }
-
-      // OrientationGroup
-      OrientationGroup::OrientationGroup(const int& t_id,
-                                         const unsigned int& t_max_orientations,
-                                         const double& t_confidence,
-                                         const std::vector<Orientation>& t_orientations)
-        : id(t_id)
-        , max_orientations(t_max_orientations)
-        , confidence(t_confidence)
-        , orientations(t_orientations)
-      {
-        orientations.reserve(max_orientations);
-      }
-
-      const Orientation& OrientationGroup::getOrientation(const int& t_id) const
-      {
-        for (const auto& orientation : orientations) {
-          if (orientation.id == t_id) {
-            return orientation;
+        for (const auto& link : links) {
+          if (link.id == t_id) {
+            return link;
           }
         }
-        throw std::out_of_range("Orientation " + std::to_string(t_id)
-                                + " not present in OrientationGroup " + std::to_string(id));
-      }
-
-      Orientation& OrientationGroup::getOrientation(const int& t_id)
-      {
-        for (auto& orientation : orientations) {
-          if (orientation.id == t_id) {
-            return orientation;
-          }
-        }
-        throw std::out_of_range("Orientation " + std::to_string(t_id)
-                                + " not present in OrientationGroup " + std::to_string(id));
-      }
-
-      bool OrientationGroup::hasOrientation(const int& t_id) const
-      {
-        for (const auto& orientation : orientations) {
-          if (orientation.id == t_id) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      bool OrientationGroup::addOrientation(const Orientation& t_orientation)
-      {
-        if (hasOrientation(t_orientation.id)) {
-          return false;
-        }
-
-        orientations.push_back(t_orientation);
-        return true;
-      }
-
-      bool OrientationGroup::removeOrientation(const int& t_id)
-      {
-        if (!hasOrientation(t_id)) {
-          return false;
-        }
-
-        orientations.erase(std::remove_if(orientations.begin(),
-                                          orientations.end(),
-                                          [&](const Orientation& o) { return o.id == t_id; }));
-        return true;
-      }
-
-      std::ostream& operator<<(std::ostream& t_os, const OrientationGroup& t_og)
-      {
-        return t_os << utils::toString(t_og);
-      }
-
-      // Skeleton
-      Skeleton::Skeleton(const int& t_id,
-                         const double& t_src_time,
-                         const std::string t_src_frame,
-                         const double& t_confidence,
-                         const std::vector<MarkerGroup>& t_marker_groups,
-                         const std::vector<OrientationGroup>& t_orientation_groups)
-        : id(t_id)
-        , src_time(t_src_time)
-        , src_frame(t_src_frame)
-        , confidence(t_confidence)
-        , marker_groups(t_marker_groups)
-        , orientation_groups(t_orientation_groups)
-      {}
-
-      const MarkerGroup& Skeleton::getMarkerGroup(const int& t_id) const
-      {
-        for (const auto& marker_group : marker_groups) {
-          if (marker_group.id == t_id) {
-            return marker_group;
-          }
-        }
-        throw std::out_of_range("MarkerGroup " + std::to_string(t_id) + " not present in Skeleton "
+        throw std::out_of_range("Link " + std::to_string(t_id) + " not present in Skeleton "
                                 + std::to_string(id));
       }
 
-      MarkerGroup& Skeleton::getMarkerGroup(const int& t_id)
+      Link& Skeleton::getLink(const int& t_id)
       {
-        for (auto& marker_group : marker_groups) {
-          if (marker_group.id == t_id) {
-            return marker_group;
+        for (auto& link : links) {
+          if (link.id == t_id) {
+            return link;
           }
         }
-        throw std::out_of_range("MarkerGroup " + std::to_string(t_id) + " not present in Skeleton "
+        throw std::out_of_range("Link " + std::to_string(t_id) + " not present in Skeleton "
                                 + std::to_string(id));
       }
 
-      bool Skeleton::hasMarkerGroup(const int& t_id) const
+      bool Skeleton::hasLink(const int& t_id) const
       {
-        for (const auto& marker_group : marker_groups) {
-          if (marker_group.id == t_id) {
+        for (const auto& link : links) {
+          if (link.id == t_id) {
             return true;
           }
         }
         return false;
       }
 
-      bool Skeleton::addMarkerGroup(const MarkerGroup& t_marker_group)
+      bool Skeleton::addLink(const Link& t_link)
       {
-        if (hasMarkerGroup(t_marker_group.id)) {
+        if (hasLink(t_link.id)) {
           return false;
         }
 
-        marker_groups.push_back(t_marker_group);
+        links.push_back(t_link);
         return true;
       }
 
-      bool Skeleton::removeMarkerGroup(const int& t_id)
+      bool Skeleton::removeLink(const int& t_id)
       {
-        if (!hasMarkerGroup(t_id)) {
+        if (!hasLink(t_id)) {
           return false;
         }
 
-        marker_groups.erase(std::remove_if(marker_groups.begin(),
-                                           marker_groups.end(),
-                                           [&](const MarkerGroup& mg) { return mg.id == t_id; }));
-        return true;
-      }
-
-      const OrientationGroup& Skeleton::getOrientationGroup(const int& t_id) const
-      {
-        for (const auto& orientation_group : orientation_groups) {
-          if (orientation_group.id == t_id) {
-            return orientation_group;
-          }
-        }
-        throw std::out_of_range("OrientationGroup " + std::to_string(t_id)
-                                + " not present in Skeleton " + std::to_string(id));
-      }
-
-      OrientationGroup& Skeleton::getOrientationGroup(const int& t_id)
-      {
-        for (auto& orientation_group : orientation_groups) {
-          if (orientation_group.id == t_id) {
-            return orientation_group;
-          }
-        }
-        throw std::out_of_range("OrientationGroup " + std::to_string(t_id)
-                                + " not present in Skeleton " + std::to_string(id));
-      }
-
-      bool Skeleton::hasOrientationGroup(const int& t_id) const
-      {
-        for (const auto& orientation_group : orientation_groups) {
-          if (orientation_group.id == t_id) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      bool Skeleton::addOrientationGroup(const OrientationGroup& t_orientation_group)
-      {
-        if (hasOrientationGroup(t_orientation_group.id)) {
-          return false;
-        }
-
-        orientation_groups.push_back(t_orientation_group);
-        return true;
-      }
-
-      bool Skeleton::removeOrientationGroup(const int& t_id)
-      {
-        if (!hasOrientationGroup(t_id)) {
-          return false;
-        }
-
-        orientation_groups.erase(std::remove_if(
-          orientation_groups.begin(), orientation_groups.end(), [&](const OrientationGroup& og) {
-            return og.id == t_id;
-          }));
+        links.erase(
+          std::remove_if(links.begin(), links.end(), [&](const Link& l) { return l.id == t_id; }));
         return true;
       }
 

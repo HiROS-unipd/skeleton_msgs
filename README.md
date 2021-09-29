@@ -12,51 +12,33 @@ SkeletonGroup
     └── int32 id
     └── time src_time (timestamp of the input data)
     └── string src_frame (frame_id of the input data)
+    └── uint32 n_markers
+    └── uint32 n_links
     └── float64 confidence
     │
-    └── MarkerGroup[] marker_groups
+    └── Box bounding_box
+    │   │
+    │   └── KinematicState center
+    │   │   │
+    │   │   └── geometry_msgs/Pose pose
+    │   │   └── geometry_msgs/Twist velocity
+    │   │   └── geometry_msgs/Accel acceleration
+    │   │
+    │   └── float64 length
+    │   └── float64 height
+    │   └── float64 width
+    │
+    └── Marker[] markers
     │   │
     │   └── int32 id
-    │   └── uint32 max_markers
     │   └── float64 confidence
-    │   │
-    │   └── Box bounding_box
-    │   │   │
-    │   │   └── Point center
-    │   │   │   │
-    │   │   │   └── geometry_msgs/Point position
-    │   │   │   └── geometry_msgs/Vector3 velocity
-    │   │   │   └── geometry_msgs/Vector3 acceleration
-    │   │   │
-    │   │   └── float64 length
-    │   │   └── float64 height
-    │   │   └── float64 width
-    │   │   └── geometry_msgs/Quaternion orientation
-    │   │
-    │   └── Marker[] markers
-    │       │
-    │       └── int32 id
-    │       └── float64 confidence
-    │       │
-    │       └── Point point
-    │           │
-    │           └── geometry_msgs/Point position
-    │           └── geometry_msgs/Vector3 velocity
-    │           └── geometry_msgs/Vector3 acceleration
+    │   └── KinematicState center
     │
-    └── OrientationGroup[] orientation_groups
+    └── Link[] links
         │
         └── int32 id
-        └── uint32 max_orientations
+        └── int32 parent_marker
+        └── int32 child_marker
         └── float64 confidence
-        │
-        └── Orientation[] orientations
-            │
-            └── int32 id
-            └── float64 confidence
-            │
-            └── MIMU mimu
-                │
-                └── sensor_msgs/Imu imu
-                └── sensor_msgs/MagneticField mag
+        └── KinematicState center
 ```

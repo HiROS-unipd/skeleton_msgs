@@ -1,5 +1,5 @@
-Point center
+KinematicState center
+
 float64 length
 float64 height
 float64 width
-geometry_msgs/Quaternion orientation
