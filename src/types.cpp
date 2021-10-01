@@ -75,12 +75,12 @@ namespace hiros {
 
       // Box
       Box::Box(const KinematicState& t_center,
-               const double& t_length,
                const double& t_height,
+               const double& t_length,
                const double& t_width)
         : center(t_center)
-        , length(t_length)
         , height(t_height)
+        , length(t_length)
         , width(t_width)
       {}
 

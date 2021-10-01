@@ -85,15 +85,15 @@ namespace hiros {
       struct Box
       {
         Box(const KinematicState& t_center = KinematicState(),
-            const double& t_length = std::numeric_limits<double>::quiet_NaN(),
             const double& t_height = std::numeric_limits<double>::quiet_NaN(),
+            const double& t_length = std::numeric_limits<double>::quiet_NaN(),
             const double& t_width = std::numeric_limits<double>::quiet_NaN());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Box& t_b);
 
         KinematicState center;
-        double length;
         double height;
+        double length;
         double width;
       };
 

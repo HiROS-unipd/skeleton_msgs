@@ -120,8 +120,8 @@ namespace hiros {
       // Box
       hiros::skeletons::types::Box
       toStruct(const hiros::skeletons::types::KinematicState& t_center,
-               const double& t_length,
                const double& t_height,
+               const double& t_length,
                const double& t_width = std::numeric_limits<double>::quiet_NaN());
 
       hiros::skeletons::types::Box toStruct(const hiros_skeleton_msgs::Box& t_b);

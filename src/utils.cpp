@@ -293,24 +293,24 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Kin
 // Box
 hiros::skeletons::types::Box
 hiros::skeletons::utils::toStruct(const hiros::skeletons::types::KinematicState& t_center,
-                                  const double& t_length,
                                   const double& t_height,
+                                  const double& t_length,
                                   const double& t_width)
 {
-  return hiros::skeletons::types::Box(t_center, t_length, t_height, t_width);
+  return hiros::skeletons::types::Box(t_center, t_height, t_length, t_width);
 }
 
 hiros::skeletons::types::Box hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Box& t_b)
 {
-  return hiros::skeletons::types::Box(toStruct(t_b.center), t_b.length, t_b.height, t_b.width);
+  return hiros::skeletons::types::Box(toStruct(t_b.center), t_b.height, t_b.length, t_b.width);
 }
 
 hiros_skeleton_msgs::Box hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Box& t_b)
 {
   hiros_skeleton_msgs::Box b;
   b.center = toMsg(t_b.center);
-  b.length = t_b.length;
   b.height = t_b.height;
+  b.length = t_b.length;
   b.width = t_b.width;
   return b;
 }
@@ -320,8 +320,8 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Box
   std::stringstream ss;
   ss << padding(t_pad_lv) << "- center:" << std::endl
      << toString(t_b.center, t_pad_lv + 1) << std::endl
-     << padding(t_pad_lv) << "  length: " << t_b.length << std::endl
      << padding(t_pad_lv) << "  height: " << t_b.height << std::endl
+     << padding(t_pad_lv) << "  length: " << t_b.length << std::endl
      << padding(t_pad_lv) << "  width: " << t_b.width;
   return ss.str();
 }
