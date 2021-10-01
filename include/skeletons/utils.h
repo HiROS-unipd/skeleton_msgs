@@ -33,6 +33,8 @@ namespace hiros {
 
       geometry_msgs::Vector3 toVector3Msg(const hiros::skeletons::types::Vector3& t_v);
 
+      bool isNaN(const hiros::skeletons::types::Vector3& t_v);
+
       double magnitude(const hiros::skeletons::types::Vector3& t_v);
 
       std::string toString(const hiros::skeletons::types::Vector3& t_v, int t_pad_lv = 0);
@@ -52,6 +54,8 @@ namespace hiros {
       hiros::skeletons::types::Quaternion toStruct(const geometry_msgs::Quaternion& t_q);
 
       geometry_msgs::Quaternion toMsg(const hiros::skeletons::types::Quaternion& t_q);
+
+      bool isNaN(const hiros::skeletons::types::Quaternion& t_q);
 
       double distance(const hiros::skeletons::types::Quaternion& t_q1,
                       const hiros::skeletons::types::Quaternion& t_q2);
@@ -73,6 +77,8 @@ namespace hiros {
 
       geometry_msgs::Pose toMsg(const hiros::skeletons::types::Pose& t_p);
 
+      bool isNaN(const hiros::skeletons::types::Pose& t_p);
+
       std::string toString(const hiros::skeletons::types::Pose& t_p, int t_pad_lv = 0);
 
       // Velocity
@@ -86,6 +92,8 @@ namespace hiros {
       hiros::skeletons::types::Velocity toStruct(const geometry_msgs::Twist& t_v);
 
       geometry_msgs::Twist toTwistMsg(const hiros::skeletons::types::Velocity& t_v);
+
+      bool isNaN(const hiros::skeletons::types::Velocity& t_v);
 
       std::string toString(const hiros::skeletons::types::Velocity& t_v, int t_pad_lv = 0);
 

@@ -35,6 +35,11 @@ hiros::skeletons::utils::toVector3Msg(const hiros::skeletons::types::Vector3& t_
   return v;
 }
 
+bool hiros::skeletons::utils::isNaN(const hiros::skeletons::types::Vector3& t_v)
+{
+  return (std::isnan(t_v.x()) || std::isnan(t_v.y()) || std::isnan(t_v.z()));
+}
+
 double hiros::skeletons::utils::magnitude(const hiros::skeletons::types::Vector3& t_v)
 {
   return t_v.length();
@@ -100,6 +105,11 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Quaternion& t_q)
   return q;
 }
 
+bool hiros::skeletons::utils::isNaN(const hiros::skeletons::types::Quaternion& t_q)
+{
+  return (std::isnan(t_q.x()) || std::isnan(t_q.y()) || std::isnan(t_q.z()) || std::isnan(t_q.w()));
+}
+
 double hiros::skeletons::utils::distance(const hiros::skeletons::types::Quaternion& t_q1,
                                          const hiros::skeletons::types::Quaternion& t_q2)
 {
@@ -148,11 +158,16 @@ geometry_msgs::Pose hiros::skeletons::utils::toMsg(const hiros::skeletons::types
   return p;
 }
 
+bool hiros::skeletons::utils::isNaN(const hiros::skeletons::types::Pose& t_p)
+{
+  return (isNaN(t_p.position) && isNaN(t_p.orientation));
+}
+
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Pose& t_p,
                                               int t_pad_lv)
 {
-  bool print_position = !std::isnan(t_p.position.x()) || std::isnan(t_p.orientation.x());
-  bool print_orientation = !std::isnan(t_p.orientation.x()) || std::isnan(t_p.position.x());
+  bool print_position = !isNaN(t_p.position) || isNaN(t_p.orientation);
+  bool print_orientation = !isNaN(t_p.orientation) || isNaN(t_p.position);
 
   std::stringstream ss;
   ss << padding(t_pad_lv) << "- ";
@@ -190,11 +205,16 @@ hiros::skeletons::utils::toTwistMsg(const hiros::skeletons::types::Velocity& t_v
   return t;
 }
 
+bool hiros::skeletons::utils::isNaN(const hiros::skeletons::types::Velocity& t_v)
+{
+  return (isNaN(t_v.linear) && isNaN(t_v.angular));
+}
+
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Velocity& t_v,
                                               int t_pad_lv)
 {
-  bool print_linear = !std::isnan(t_v.linear.x()) || std::isnan(t_v.angular.x());
-  bool print_angular = !std::isnan(t_v.angular.x()) || std::isnan(t_v.linear.x());
+  bool print_linear = !isNaN(t_v.linear) || isNaN(t_v.angular);
+  bool print_angular = !isNaN(t_v.angular) || isNaN(t_v.linear);
 
   std::stringstream ss;
   ss << padding(t_pad_lv) << "- ";
@@ -257,12 +277,12 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Kin
 {
   std::stringstream ss;
   ss << padding(t_pad_lv) << "- pose:" << std::endl << toString(t_ks.pose, t_pad_lv + 1);
-  if (!std::isnan(t_ks.velocity.linear.x()) || !std::isnan(t_ks.velocity.angular.x())) {
+  if (!isNaN(t_ks.velocity)) {
     ss << std::endl
        << padding(t_pad_lv) << "  velocity:" << std::endl
        << toString(t_ks.velocity, t_pad_lv + 1);
   }
-  if (!std::isnan(t_ks.acceleration.linear.x()) || !std::isnan(t_ks.acceleration.angular.x())) {
+  if (!isNaN(t_ks.acceleration)) {
     ss << std::endl
        << padding(t_pad_lv) << "  acceleration:" << std::endl
        << toString(t_ks.acceleration, t_pad_lv + 1);
@@ -468,7 +488,7 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Ske
      << padding(t_pad_lv) << "  n_links: " << t_s.n_links << std::endl
      << padding(t_pad_lv) << "  confidence: " << t_s.confidence << std::endl
      << padding(t_pad_lv) << "  bounding_box:";
-  if (std::isnan(t_s.bounding_box.center.pose.position.x())) {
+  if (isNaN(t_s.bounding_box.center.pose)) {
     ss << " []";
   }
   else {
