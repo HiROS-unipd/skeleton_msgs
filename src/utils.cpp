@@ -1,3 +1,7 @@
+// Eigen dependencies
+#include "eigen3/Eigen/Geometry"
+#include "eigen3/Eigen/SVD"
+
 // Internal dependencies
 #include "skeletons/utils.h"
 
@@ -467,6 +471,59 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Skeleton& t_s)
     s.links.push_back(toMsg(l));
   }
   return s;
+}
+
+hiros::skeletons::types::Box
+hiros::skeletons::utils::computeBoundingBox(const hiros::skeletons::types::Skeleton& t_s)
+{
+  if (t_s.markers.empty()) {
+    return types::Box();
+  }
+
+  auto n_markers = t_s.markers.size();
+
+  Eigen::MatrixXd data(n_markers, 3);
+  unsigned int i = 0;
+  for (const auto& mk : t_s.markers) {
+    data.row(i++) << mk.center.pose.position.x(), mk.center.pose.position.y(),
+      mk.center.pose.position.z();
+  }
+  // Replace NaNs with zeros
+  data = (!data.array().isNaN()).select(data, 0);
+
+  Eigen::MatrixXd centered = data.rowwise() - data.colwise().mean();
+  Eigen::MatrixXd covariance =
+    (centered.adjoint() * centered) / static_cast<double>((n_markers - 1));
+
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd(covariance, Eigen::ComputeThinU);
+  Eigen::Matrix3d svd_u = svd.matrixU();
+  if (svd_u.determinant() < 0.0) {
+    // Trick to force U to be a rotation matrix
+    svd_u.col(0) = -svd_u.col(0);
+  }
+
+  Eigen::Quaterniond orientation_q(svd_u);
+
+  Eigen::MatrixXd svd_data = data * svd_u;
+  auto svd_min_point = svd_data.colwise().minCoeff();
+  auto svd_max_point = svd_data.colwise().maxCoeff();
+  auto svd_center_point = (svd_min_point + svd_max_point) / 2.0;
+
+  auto center_point = svd_u * svd_center_point.transpose();
+
+  return hiros::skeletons::types::Box(
+    {{{center_point(0), center_point(1), center_point(2)},
+      {orientation_q.x(), orientation_q.y(), orientation_q.z(), orientation_q.w()}}},
+    svd_max_point(0) - svd_min_point(0),
+    svd_max_point(1) - svd_min_point(1),
+    svd_max_point(2) - svd_min_point(2));
+}
+
+hiros::skeletons::types::KinematicState
+hiros::skeletons::utils::centroid(const hiros::skeletons::types::Skeleton& t_s)
+{
+  return isNaN(t_s.bounding_box.center.pose) ? computeBoundingBox(t_s).center
+                                             : t_s.bounding_box.center;
 }
 
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Skeleton& t_s,

@@ -174,6 +174,11 @@ namespace hiros {
 
       hiros_skeleton_msgs::Skeleton toMsg(const hiros::skeletons::types::Skeleton& t_s);
 
+      hiros::skeletons::types::Box computeBoundingBox(const hiros::skeletons::types::Skeleton& t_s);
+
+      hiros::skeletons::types::KinematicState
+      centroid(const hiros::skeletons::types::Skeleton& t_s);
+
       std::string toString(const hiros::skeletons::types::Skeleton& t_s, int t_pad_lv = 0);
 
       // SkeletonGroup
