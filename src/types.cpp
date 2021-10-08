@@ -25,10 +25,10 @@ namespace hiros {
       {}
 
       Pose::Pose(const Quaternion& t_orientation)
-        : position(Point(std::numeric_limits<double>::quiet_NaN(),
-                         std::numeric_limits<double>::quiet_NaN(),
-                         std::numeric_limits<double>::quiet_NaN()))
-        , orientation(t_orientation)
+        : Pose(Point(std::numeric_limits<double>::quiet_NaN(),
+                     std::numeric_limits<double>::quiet_NaN(),
+                     std::numeric_limits<double>::quiet_NaN()),
+               t_orientation)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Pose& t_p)
@@ -57,15 +57,11 @@ namespace hiros {
       {}
 
       KinematicState::KinematicState(const Point& t_position)
-        : pose(Pose(t_position))
-        , velocity(Velocity())
-        , acceleration(Acceleration())
+        : KinematicState(Pose(t_position))
       {}
 
       KinematicState::KinematicState(const Quaternion& t_orientation)
-        : pose(Pose(t_orientation))
-        , velocity(Velocity())
-        , acceleration(Acceleration())
+        : KinematicState(Pose(t_orientation))
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const KinematicState& t_ks)
