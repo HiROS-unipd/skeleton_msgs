@@ -361,9 +361,11 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Mar
                                               int t_pad_lv)
 {
   std::stringstream ss;
-  ss << padding(t_pad_lv) << "- id: " << t_m.id << std::endl
-     << padding(t_pad_lv) << "  name: " << t_m.name << std::endl
-     << padding(t_pad_lv) << "  confidence: " << t_m.confidence << std::endl
+  ss << padding(t_pad_lv) << "- id: " << t_m.id << std::endl;
+  if (!t_m.name.empty()) {
+    ss << padding(t_pad_lv) << "  name: " << t_m.name << std::endl;
+  }
+  ss << padding(t_pad_lv) << "  confidence: " << t_m.confidence << std::endl
      << padding(t_pad_lv) << "  center:" << std::endl
      << toString(t_m.center, t_pad_lv + 1);
   return ss.str();
@@ -405,9 +407,11 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Lin
                                               int t_pad_lv)
 {
   std::stringstream ss;
-  ss << padding(t_pad_lv) << "- id: " << t_l.id << std::endl
-     << padding(t_pad_lv) << "  name: " << t_l.name << std::endl
-     << padding(t_pad_lv) << "  parent_marker: " << t_l.parent_marker << std::endl
+  ss << padding(t_pad_lv) << "- id: " << t_l.id << std::endl;
+  if (!t_l.name.empty()) {
+    ss << padding(t_pad_lv) << "  name: " << t_l.name << std::endl;
+  }
+  ss << padding(t_pad_lv) << "  parent_marker: " << t_l.parent_marker << std::endl
      << padding(t_pad_lv) << "  child_marker: " << t_l.child_marker << std::endl
      << padding(t_pad_lv) << "  confidence: " << t_l.confidence << std::endl
      << padding(t_pad_lv) << "  center:" << std::endl
