@@ -101,12 +101,17 @@ namespace hiros {
       struct Marker
       {
         Marker(const int& t_id = -1,
+               const std::string& t_name = "",
+               const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+               const KinematicState& t_center = KinematicState());
+        Marker(const int& t_id,
                const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                const KinematicState& t_center = KinematicState());
 
         friend std::ostream& operator<<(std::ostream& t_os, const Marker& t_m);
 
         int id;
+        std::string name;
         double confidence;
         KinematicState center;
       };
@@ -115,6 +120,12 @@ namespace hiros {
       struct Link
       {
         Link(const int& t_id = -1,
+             const std::string& t_name = "",
+             const int& t_parent_marker = -1,
+             const int& t_child_marker = -1,
+             const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+             const KinematicState& t_center = KinematicState());
+        Link(const int& t_id,
              const int& t_parent_marker = -1,
              const int& t_child_marker = -1,
              const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
@@ -123,6 +134,7 @@ namespace hiros {
         friend std::ostream& operator<<(std::ostream& t_os, const Link& t_l);
 
         int id;
+        std::string name;
         int parent_marker;
         int child_marker;
         double confidence;

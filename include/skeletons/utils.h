@@ -133,6 +133,7 @@ namespace hiros {
       // Marker
       hiros::skeletons::types::Marker
       toStruct(const int& t_id,
+               const std::string& t_name,
                const double& t_confidence,
                const hiros::skeletons::types::KinematicState& t_center);
 
@@ -145,6 +146,7 @@ namespace hiros {
       // Link
       hiros::skeletons::types::Link
       toStruct(const int& t_id,
+               const std::string& t_name,
                const int& t_parent_marker,
                const int& t_child_marker,
                const double& t_confidence,

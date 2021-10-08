@@ -90,10 +90,18 @@ namespace hiros {
       }
 
       // Marker
-      Marker::Marker(const int& t_id, const double& t_confidence, const KinematicState& t_center)
+      Marker::Marker(const int& t_id,
+                     const std::string& t_name,
+                     const double& t_confidence,
+                     const KinematicState& t_center)
         : id(t_id)
+        , name(t_name)
         , confidence(t_confidence)
         , center(t_center)
+      {}
+
+      Marker::Marker(const int& t_id, const double& t_confidence, const KinematicState& t_center)
+        : Marker(t_id, "", t_confidence, t_center)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Marker& t_m)
@@ -103,15 +111,25 @@ namespace hiros {
 
       // Link
       Link::Link(const int& t_id,
+                 const std::string& t_name,
                  const int& t_parent_marker,
                  const int& t_child_marker,
                  const double& t_confidence,
                  const KinematicState& t_center)
         : id(t_id)
+        , name(t_name)
         , parent_marker(t_parent_marker)
         , child_marker(t_child_marker)
         , confidence(t_confidence)
         , center(t_center)
+      {}
+
+      Link::Link(const int& t_id,
+                 const int& t_parent_marker,
+                 const int& t_child_marker,
+                 const double& t_confidence,
+                 const KinematicState& t_center)
+        : Link(t_id, "", t_parent_marker, t_child_marker, t_confidence, t_center)
       {}
 
       std::ostream& operator<<(std::ostream& t_os, const Link& t_l)

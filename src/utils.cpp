@@ -333,16 +333,17 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Box
 // Marker
 hiros::skeletons::types::Marker
 hiros::skeletons::utils::toStruct(const int& t_id,
+                                  const std::string& t_name,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::KinematicState& t_center)
 {
-  return hiros::skeletons::types::Marker(t_id, t_confidence, t_center);
+  return hiros::skeletons::types::Marker(t_id, t_name, t_confidence, t_center);
 }
 
 hiros::skeletons::types::Marker
 hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Marker& t_m)
 {
-  return hiros::skeletons::types::Marker(t_m.id, t_m.confidence, toStruct(t_m.center));
+  return hiros::skeletons::types::Marker(t_m.id, t_m.name, t_m.confidence, toStruct(t_m.center));
 }
 
 hiros_skeleton_msgs::Marker
@@ -350,6 +351,7 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Marker& t_m)
 {
   hiros_skeleton_msgs::Marker m;
   m.id = t_m.id;
+  m.name = t_m.name;
   m.confidence = t_m.confidence;
   m.center = toMsg(t_m.center);
   return m;
@@ -360,6 +362,7 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Mar
 {
   std::stringstream ss;
   ss << padding(t_pad_lv) << "- id: " << t_m.id << std::endl
+     << padding(t_pad_lv) << "  name: " << t_m.name << std::endl
      << padding(t_pad_lv) << "  confidence: " << t_m.confidence << std::endl
      << padding(t_pad_lv) << "  center:" << std::endl
      << toString(t_m.center, t_pad_lv + 1);
@@ -369,26 +372,28 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Mar
 // Link
 hiros::skeletons::types::Link
 hiros::skeletons::utils::toStruct(const int& t_id,
+                                  const std::string& t_name,
                                   const int& t_parent_marker,
                                   const int& t_child_marker,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::KinematicState& t_center)
 {
   return hiros::skeletons::types::Link(
-    t_id, t_parent_marker, t_child_marker, t_confidence, t_center);
+    t_id, t_name, t_parent_marker, t_child_marker, t_confidence, t_center);
 }
 
 hiros::skeletons::types::Link
 hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Link& t_l)
 {
   return hiros::skeletons::types::Link(
-    t_l.id, t_l.parent_marker, t_l.child_marker, t_l.confidence, toStruct(t_l.center));
+    t_l.id, t_l.name, t_l.parent_marker, t_l.child_marker, t_l.confidence, toStruct(t_l.center));
 }
 
 hiros_skeleton_msgs::Link hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Link& t_l)
 {
   hiros_skeleton_msgs::Link l;
   l.id = t_l.id;
+  l.name = t_l.name;
   l.parent_marker = t_l.parent_marker;
   l.child_marker = t_l.child_marker;
   l.confidence = t_l.confidence;
@@ -401,6 +406,7 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Lin
 {
   std::stringstream ss;
   ss << padding(t_pad_lv) << "- id: " << t_l.id << std::endl
+     << padding(t_pad_lv) << "  name: " << t_l.name << std::endl
      << padding(t_pad_lv) << "  parent_marker: " << t_l.parent_marker << std::endl
      << padding(t_pad_lv) << "  child_marker: " << t_l.child_marker << std::endl
      << padding(t_pad_lv) << "  confidence: " << t_l.confidence << std::endl
