@@ -1,8 +1,8 @@
 int32 id
 time src_time
 string src_frame
-uint32 n_markers
-uint32 n_links
+uint32 max_markers
+uint32 max_links
 float64 confidence
 
 Box bounding_box

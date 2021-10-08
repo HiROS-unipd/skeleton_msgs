@@ -420,8 +420,8 @@ hiros::skeletons::types::Skeleton
 hiros::skeletons::utils::toStruct(const int& t_id,
                                   const double& t_src_time,
                                   const std::string& t_src_frame,
-                                  const unsigned int& t_n_markers,
-                                  const unsigned int& t_n_links,
+                                  const unsigned int& t_max_markers,
+                                  const unsigned int& t_max_links,
                                   const double& t_confidence,
                                   const hiros::skeletons::types::Box& t_bounding_box,
                                   const std::vector<hiros::skeletons::types::Marker>& t_markers,
@@ -430,8 +430,8 @@ hiros::skeletons::utils::toStruct(const int& t_id,
   return hiros::skeletons::types::Skeleton(t_id,
                                            t_src_time,
                                            t_src_frame,
-                                           t_n_markers,
-                                           t_n_links,
+                                           t_max_markers,
+                                           t_max_links,
                                            t_confidence,
                                            t_bounding_box,
                                            t_markers,
@@ -444,8 +444,8 @@ hiros::skeletons::utils::toStruct(const hiros_skeleton_msgs::Skeleton& t_s)
   hiros::skeletons::types::Skeleton s(t_s.id,
                                       t_s.src_time.toSec(),
                                       t_s.src_frame,
-                                      t_s.n_markers,
-                                      t_s.n_links,
+                                      t_s.max_markers,
+                                      t_s.max_links,
                                       t_s.confidence,
                                       toStruct(t_s.bounding_box));
   for (auto& m : t_s.markers) {
@@ -464,8 +464,8 @@ hiros::skeletons::utils::toMsg(const hiros::skeletons::types::Skeleton& t_s)
   s.id = t_s.id;
   s.src_time = ros::Time(t_s.src_time);
   s.src_frame = t_s.src_frame;
-  s.n_markers = t_s.n_markers;
-  s.n_links = t_s.n_links;
+  s.max_markers = t_s.max_markers;
+  s.max_links = t_s.max_links;
   s.confidence = t_s.confidence;
   s.bounding_box = toMsg(t_s.bounding_box);
   s.markers.reserve(t_s.markers.size());
@@ -486,9 +486,9 @@ hiros::skeletons::utils::computeBoundingBox(const hiros::skeletons::types::Skele
     return types::Box();
   }
 
-  auto n_markers = t_s.markers.size();
+  auto max_markers = t_s.markers.size();
 
-  Eigen::MatrixXd data(n_markers, 3);
+  Eigen::MatrixXd data(max_markers, 3);
   unsigned int i = 0;
   for (const auto& mk : t_s.markers) {
     data.row(i++) << mk.center.pose.position.x(), mk.center.pose.position.y(),
@@ -499,7 +499,7 @@ hiros::skeletons::utils::computeBoundingBox(const hiros::skeletons::types::Skele
 
   Eigen::MatrixXd centered = data.rowwise() - data.colwise().mean();
   Eigen::MatrixXd covariance =
-    (centered.adjoint() * centered) / static_cast<double>((n_markers - 1));
+    (centered.adjoint() * centered) / static_cast<double>((max_markers - 1));
 
   Eigen::JacobiSVD<Eigen::MatrixXd> svd(covariance, Eigen::ComputeThinU);
   Eigen::Matrix3d svd_u = svd.matrixU();
@@ -547,8 +547,8 @@ std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Ske
   }
   ss << std::endl
      << padding(t_pad_lv) << "  src_frame: " << t_s.src_frame << std::endl
-     << padding(t_pad_lv) << "  n_markers: " << t_s.n_markers << std::endl
-     << padding(t_pad_lv) << "  n_links: " << t_s.n_links << std::endl
+     << padding(t_pad_lv) << "  max_markers: " << t_s.max_markers << std::endl
+     << padding(t_pad_lv) << "  max_links: " << t_s.max_links << std::endl
      << padding(t_pad_lv) << "  confidence: " << t_s.confidence << std::endl
      << padding(t_pad_lv) << "  bounding_box:";
   if (isNaN(t_s.bounding_box.center.pose)) {

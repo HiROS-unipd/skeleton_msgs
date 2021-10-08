@@ -147,8 +147,8 @@ namespace hiros {
         Skeleton(const int& t_id = -1,
                  const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
                  const std::string t_src_frame = "",
-                 const unsigned int& t_n_markers = 0,
-                 const unsigned int& t_n_links = 0,
+                 const unsigned int& t_max_markers = 0,
+                 const unsigned int& t_max_links = 0,
                  const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                  const Box& t_bounding_box = Box(),
                  const std::vector<Marker>& t_markers = std::vector<Marker>(),
@@ -171,8 +171,8 @@ namespace hiros {
         int id;
         double src_time;
         std::string src_frame;
-        unsigned int n_markers;
-        unsigned int n_links;
+        unsigned int max_markers;
+        unsigned int max_links;
         double confidence;
         Box bounding_box;
         std::vector<Marker> markers;

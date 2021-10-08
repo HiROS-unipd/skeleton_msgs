@@ -163,8 +163,8 @@ namespace hiros {
       toStruct(const int& t_id,
                const double& t_src_time,
                const std::string& t_src_frame,
-               const unsigned int& t_n_markers = 0,
-               const unsigned int& t_n_links = 0,
+               const unsigned int& t_max_markers = 0,
+               const unsigned int& t_max_links = 0,
                const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
                const hiros::skeletons::types::Box& t_bounding_box = hiros::skeletons::types::Box(),
                const std::vector<hiros::skeletons::types::Marker>& t_markers =

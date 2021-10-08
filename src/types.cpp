@@ -137,8 +137,8 @@ namespace hiros {
       Skeleton::Skeleton(const int& t_id,
                          const double& t_src_time,
                          const std::string t_src_frame,
-                         const unsigned int& t_n_markers,
-                         const unsigned int& t_n_links,
+                         const unsigned int& t_max_markers,
+                         const unsigned int& t_max_links,
                          const double& t_confidence,
                          const Box& t_bounding_box,
                          const std::vector<Marker>& t_markers,
@@ -146,8 +146,8 @@ namespace hiros {
         : id(t_id)
         , src_time(t_src_time)
         , src_frame(t_src_frame)
-        , n_markers(t_n_markers)
-        , n_links(t_n_links)
+        , max_markers(t_max_markers)
+        , max_links(t_max_links)
         , confidence(t_confidence)
         , bounding_box(t_bounding_box)
         , markers(t_markers)
