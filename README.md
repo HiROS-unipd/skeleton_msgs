@@ -12,8 +12,8 @@ SkeletonGroup
     └── int32 id
     └── time src_time (timestamp of the input data)
     └── string src_frame (frame_id of the input data)
-    └── uint32 n_markers
-    └── uint32 n_links
+    └── uint32 max_markers
+    └── uint32 max_links
     └── float64 confidence
     │
     └── Box bounding_box
