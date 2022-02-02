@@ -156,6 +156,8 @@ namespace hiros {
 
       hiros_skeleton_msgs::Link toMsg(const hiros::skeletons::types::Link& t_l);
 
+      double linkLength(const hiros::skeletons::types::Skeleton& t_skeleton, const int& t_link_id);
+
       std::string toString(const hiros::skeletons::types::Link& t_l, int t_pad_lv = 0);
 
       // Skeleton

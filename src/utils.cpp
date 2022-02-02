@@ -403,6 +403,23 @@ hiros_skeleton_msgs::Link hiros::skeletons::utils::toMsg(const hiros::skeletons:
   return l;
 }
 
+double hiros::skeletons::utils::linkLength(const hiros::skeletons::types::Skeleton& t_skeleton,
+                                           const int& t_link_id)
+{
+  if (!t_skeleton.hasLink(t_link_id)) {
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+
+  auto& link = t_skeleton.getLink(t_link_id);
+
+  if (!t_skeleton.hasMarker(link.parent_marker) || !t_skeleton.hasMarker(link.child_marker)) {
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+
+  return distance(t_skeleton.getMarker(link.parent_marker).center.pose.position,
+                  t_skeleton.getMarker(link.child_marker).center.pose.position);
+}
+
 std::string hiros::skeletons::utils::toString(const hiros::skeletons::types::Link& t_l,
                                               int t_pad_lv)
 {
