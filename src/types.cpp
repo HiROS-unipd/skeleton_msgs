@@ -196,6 +196,17 @@ namespace hiros {
         return true;
       }
 
+      bool Skeleton::updMarker(const Marker& t_marker)
+      {
+        if (!hasMarker(t_marker.id)) {
+          addMarker(t_marker);
+          return false;
+        }
+
+        getMarker(t_marker.id) = t_marker;
+        return true;
+      }
+
       bool Skeleton::removeMarker(const int& t_id)
       {
         if (!hasMarker(t_id)) {
@@ -246,6 +257,17 @@ namespace hiros {
         }
 
         links.push_back(t_link);
+        return true;
+      }
+
+      bool Skeleton::updLink(const Link& t_link)
+      {
+        if (!hasLink(t_link.id)) {
+          addLink(t_link);
+          return false;
+        }
+
+        getLink(t_link.id) = t_link;
         return true;
       }
 
@@ -313,6 +335,17 @@ namespace hiros {
         }
 
         skeletons.push_back(t_skeleton);
+        return true;
+      }
+
+      bool SkeletonGroup::updSkeleton(const Skeleton& t_skeleton)
+      {
+        if (!hasSkeleton(t_skeleton.id)) {
+          addSkeleton(t_skeleton);
+          return false;
+        }
+
+        getSkeleton(t_skeleton.id) = t_skeleton;
         return true;
       }
 

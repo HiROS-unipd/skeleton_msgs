@@ -158,12 +158,14 @@ namespace hiros {
         Marker& getMarker(const int& t_id);
         bool hasMarker(const int& t_id) const;
         bool addMarker(const Marker& t_marker);
+        bool updMarker(const Marker& t_marker);
         bool removeMarker(const int& t_id);
 
         const Link& getLink(const int& t_id) const;
         Link& getLink(const int& t_id);
         bool hasLink(const int& t_id) const;
         bool addLink(const Link& t_link);
+        bool updLink(const Link& t_link);
         bool removeLink(const int& t_id);
 
         friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
@@ -190,6 +192,7 @@ namespace hiros {
         Skeleton& getSkeleton(const int& t_id);
         bool hasSkeleton(const int& t_id) const;
         bool addSkeleton(const Skeleton& t_skeleton);
+        bool updSkeleton(const Skeleton& t_skeleton);
         bool removeSkeleton(const int& t_id);
 
         friend std::ostream& operator<<(std::ostream& t_os, const SkeletonGroup& t_sg);
