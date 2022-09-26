@@ -1,5 +1,5 @@
 int32 id
-time src_time
+builtin_interfaces/Time src_time
 string src_frame
 uint32 max_markers
 uint32 max_links

@@ -1,82 +1,81 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(hiros_skeleton_msgs)
 
-# Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14)
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 
-# Find catkin macros and libraries if COMPONENTS list like find_package(catkin
-# REQUIRED COMPONENTS xyz) is used, also find other catkin packages
-find_package(catkin REQUIRED
-             COMPONENTS geometry_msgs
-                        message_generation
-                        tf2)
 
-# ##############################################################################
-# Declare ROS messages, services and actions ##
-# ##############################################################################
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2 REQUIRED)
 
-# Generate messages in the 'msg' folder
-add_message_files(FILES
-                  Box.msg
-                  KinematicState.msg
-                  Link.msg
-                  Marker.msg
-                  Skeleton.msg
-                  SkeletonGroup.msg)
+include_directories(include)
 
-# Generate added messages and services with any dependencies listed here
-generate_messages(DEPENDENCIES
-                  geometry_msgs)
+set(msg_files
+    "msg/Box.msg"
+    "msg/KinematicState.msg"
+    "msg/Link.msg"
+    "msg/Marker.msg"
+    "msg/Skeleton.msg"
+    "msg/SkeletonGroup.msg"
+)
 
-# ##############################################################################
-# catkin specific configuration ##
-# ##############################################################################
-# The catkin_package macro generates cmake config files for your package Declare
-# things to be passed to dependent projects INCLUDE_DIRS: uncomment this if your
-# package contains header files LIBRARIES: libraries you create in this project
-# that dependent projects also need CATKIN_DEPENDS: catkin_packages dependent
-# projects also need DEPENDS: system dependencies of this project that dependent
-# projects also need
-catkin_package(CATKIN_DEPENDS
-               geometry_msgs
-               message_runtime
-               tf2
-               LIBRARIES
-               ${PROJECT_NAME}_types
-               INCLUDE_DIRS
-               include)
+set(HEADER_FILES
+    include/skeletons/types.h
+    include/skeletons/utils.h
+)
 
-# ##############################################################################
-# Build ##
-# ##############################################################################
-set(${PROJECT_NAME}_SOURCES src/types.cpp src/utils.cpp)
+set(SOURCE_FILES
+    src/types.cpp
+    src/utils.cpp
+)
 
-add_library(${PROJECT_NAME}_types SHARED ${${PROJECT_NAME}_SOURCES})
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  DEPENDENCIES builtin_interfaces std_msgs geometry_msgs
+)
 
-# Specify additional locations of header files
-target_include_directories(${PROJECT_NAME}_types
-                           PUBLIC include ${catkin_INCLUDE_DIRS})
+ament_export_dependencies(rosidl_default_runtime)
 
-add_dependencies(${PROJECT_NAME}_types ${PROJECT_NAME}_generate_messages_cpp)
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  # the following line skips the linter which checks for copyrights
+  # uncomment the line when a copyright and license is not present in all source files
+  #set(ament_cmake_copyright_FOUND TRUE)
+  # the following line skips cpplint (only works in a git repo)
+  # uncomment the line when this package is not in a git repo
+  #set(ament_cmake_cpplint_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
-# ##############################################################################
-# Create fake target for common ROS file extensions
-# ##############################################################################
+add_library(skeletons ${SOURCE_FILES} ${HEADER_FILES})
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(skeletons "${cpp_typesupport_target}")
+target_include_directories(skeletons PRIVATE include)
+ament_target_dependencies(skeletons rclcpp std_msgs geometry_msgs tf2)
+ament_export_targets(skeletons HAS_LIBRARY_TARGET)
+ament_export_libraries(skeletons)
+ament_export_include_directories(include)
+ament_export_dependencies(ament_cmake builtin_interfaces std_msgs geometry_msgs tf2)
 
-file(GLOB_RECURSE
-     FILES_LIST
-     "*.msg"
-     "*.srv"
-     "*.xml")
+install(
+  DIRECTORY include/skeletons
+  DESTINATION include
+)
 
-add_custom_target(additional_files_${PROJECT_NAME} SOURCES ${FILES_LIST})
+install(
+  TARGETS skeletons
+  EXPORT skeletons
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
 
-# ##############################################################################
-# Install ##
-# ##############################################################################
-install(TARGETS ${PROJECT_NAME}_types
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-install(DIRECTORY include/skeletons/
-        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+ament_package()
