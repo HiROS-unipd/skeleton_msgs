@@ -432,10 +432,10 @@ hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
                                       t_s.max_links,
                                       t_s.confidence,
                                       toStruct(t_s.bounding_box)};
-  for (auto &m : t_s.markers) {
+  for (const auto &m : t_s.markers) {
     s.addMarker(toStruct(m));
   }
-  for (auto &l : t_s.links) {
+  for (const auto &l : t_s.links) {
     s.addLink(toStruct(l));
   }
   return s;
@@ -453,10 +453,10 @@ hiros_skeleton_msgs::msg::Skeleton hiros::skeletons::utils::toMsg(
   s.bounding_box = toMsg(t_s.bounding_box);
   s.markers.reserve(t_s.markers.size());
   s.links.reserve(t_s.links.size());
-  for (auto &m : t_s.markers) {
+  for (const auto &m : t_s.markers) {
     s.markers.push_back(toMsg(m));
   }
-  for (auto &l : t_s.links) {
+  for (const auto &l : t_s.links) {
     s.links.push_back(toMsg(l));
   }
   return s;
@@ -569,7 +569,7 @@ hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
   sg.time = rclcpp::Time(t_sg.header.stamp).seconds();
   sg.frame = t_sg.header.frame_id;
   sg.skeletons.reserve(t_sg.skeletons.size());
-  for (auto &s : t_sg.skeletons) {
+  for (const auto &s : t_sg.skeletons) {
     sg.skeletons.push_back(toStruct(s));
   }
   return sg;
@@ -581,7 +581,7 @@ hiros_skeleton_msgs::msg::SkeletonGroup hiros::skeletons::utils::toMsg(
   sg.header.stamp = rclcpp::Time(static_cast<long>(1e9 * t_sg.time));
   sg.header.frame_id = t_sg.frame;
   sg.skeletons.reserve(t_sg.skeletons.size());
-  for (auto &s : t_sg.skeletons) {
+  for (const auto &s : t_sg.skeletons) {
     sg.skeletons.push_back(toMsg(s));
   }
   return sg;
