@@ -8,7 +8,7 @@
 const std::string PAD = "  ";
 
 const std::string hiros::skeletons::utils::padding(int t_n_pads) {
-  std::string ret_str;
+  std::string ret_str{};
   while (--t_n_pads >= 0) {
     ret_str += PAD;
   }
@@ -28,7 +28,7 @@ hiros::skeletons::types::Vector3 hiros::skeletons::utils::toStruct(
 
 geometry_msgs::msg::Vector3 hiros::skeletons::utils::toVector3Msg(
     const hiros::skeletons::types::Vector3 &t_v) {
-  geometry_msgs::msg::Vector3 v;
+  geometry_msgs::msg::Vector3 v{};
   v.x = t_v.x();
   v.y = t_v.y();
   v.z = t_v.z();
@@ -47,7 +47,7 @@ double hiros::skeletons::utils::magnitude(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Vector3 &t_v, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- x: " << t_v.x() << std::endl
      << padding(t_pad_lv) << "  y: " << t_v.y() << std::endl
      << padding(t_pad_lv) << "  z: " << t_v.z();
@@ -62,7 +62,7 @@ hiros::skeletons::types::Point hiros::skeletons::utils::toStruct(
 
 geometry_msgs::msg::Point hiros::skeletons::utils::toPointMsg(
     const hiros::skeletons::types::Point &t_p) {
-  geometry_msgs::msg::Point p;
+  geometry_msgs::msg::Point p{};
   p.x = t_p.x();
   p.y = t_p.y();
   p.z = t_p.z();
@@ -92,7 +92,7 @@ hiros::skeletons::types::Quaternion hiros::skeletons::utils::toStruct(
 
 geometry_msgs::msg::Quaternion hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Quaternion &t_q) {
-  geometry_msgs::msg::Quaternion q;
+  geometry_msgs::msg::Quaternion q{};
   q.x = t_q.x();
   q.y = t_q.y();
   q.z = t_q.z();
@@ -114,7 +114,7 @@ double hiros::skeletons::utils::distance(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Quaternion &t_q, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- x: " << t_q.x() << std::endl
      << padding(t_pad_lv) << "  y: " << t_q.y() << std::endl
      << padding(t_pad_lv) << "  z: " << t_q.z() << std::endl
@@ -146,7 +146,7 @@ hiros::skeletons::types::Pose hiros::skeletons::utils::toStruct(
 
 geometry_msgs::msg::Pose hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Pose &t_p) {
-  geometry_msgs::msg::Pose p;
+  geometry_msgs::msg::Pose p{};
   p.position = toPointMsg(t_p.position);
   p.orientation = toMsg(t_p.orientation);
   return p;
@@ -158,10 +158,10 @@ bool hiros::skeletons::utils::isNaN(const hiros::skeletons::types::Pose &t_p) {
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Pose &t_p, int t_pad_lv) {
-  bool print_position = !isNaN(t_p.position) || isNaN(t_p.orientation);
-  bool print_orientation = !isNaN(t_p.orientation) || isNaN(t_p.position);
+  bool print_position{!isNaN(t_p.position) || isNaN(t_p.orientation)};
+  bool print_orientation{!isNaN(t_p.orientation) || isNaN(t_p.position)};
 
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- ";
   if (print_position) {
     ss << "position:" << std::endl << toString(t_p.position, t_pad_lv + 1);
@@ -191,7 +191,7 @@ hiros::skeletons::types::Velocity hiros::skeletons::utils::toStruct(
 
 geometry_msgs::msg::Twist hiros::skeletons::utils::toTwistMsg(
     const hiros::skeletons::types::Velocity &t_v) {
-  geometry_msgs::msg::Twist t;
+  geometry_msgs::msg::Twist t{};
   t.linear = toVector3Msg(t_v.linear);
   t.angular = toVector3Msg(t_v.angular);
   return t;
@@ -204,10 +204,10 @@ bool hiros::skeletons::utils::isNaN(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Velocity &t_v, int t_pad_lv) {
-  bool print_linear = !isNaN(t_v.linear) || isNaN(t_v.angular);
-  bool print_angular = !isNaN(t_v.angular) || isNaN(t_v.linear);
+  bool print_linear{!isNaN(t_v.linear) || isNaN(t_v.angular)};
+  bool print_angular{!isNaN(t_v.angular) || isNaN(t_v.linear)};
 
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- ";
   if (print_linear) {
     ss << "linear:" << std::endl << toString(t_v.linear, t_pad_lv + 1);
@@ -230,7 +230,7 @@ hiros::skeletons::types::Acceleration hiros::skeletons::utils::toStruct(
 
 geometry_msgs::msg::Accel hiros::skeletons::utils::toAccelMsg(
     const hiros::skeletons::types::Acceleration &t_a) {
-  geometry_msgs::msg::Accel a;
+  geometry_msgs::msg::Accel a{};
   a.linear = toVector3Msg(t_a.linear);
   a.angular = toVector3Msg(t_a.angular);
   return a;
@@ -254,7 +254,7 @@ hiros::skeletons::types::KinematicState hiros::skeletons::utils::toStruct(
 
 hiros_skeleton_msgs::msg::KinematicState hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::KinematicState &t_ks) {
-  hiros_skeleton_msgs::msg::KinematicState ks;
+  hiros_skeleton_msgs::msg::KinematicState ks{};
   ks.pose = toMsg(t_ks.pose);
   ks.velocity = toTwistMsg(t_ks.velocity);
   ks.acceleration = toAccelMsg(t_ks.acceleration);
@@ -263,7 +263,7 @@ hiros_skeleton_msgs::msg::KinematicState hiros::skeletons::utils::toMsg(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::KinematicState &t_ks, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- pose:" << std::endl
      << toString(t_ks.pose, t_pad_lv + 1);
   if (!isNaN(t_ks.velocity)) {
@@ -294,7 +294,7 @@ hiros::skeletons::types::Box hiros::skeletons::utils::toStruct(
 
 hiros_skeleton_msgs::msg::Box hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Box &t_b) {
-  hiros_skeleton_msgs::msg::Box b;
+  hiros_skeleton_msgs::msg::Box b{};
   b.center = toMsg(t_b.center);
   b.height = t_b.height;
   b.length = t_b.length;
@@ -304,7 +304,7 @@ hiros_skeleton_msgs::msg::Box hiros::skeletons::utils::toMsg(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Box &t_b, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- center:" << std::endl
      << toString(t_b.center, t_pad_lv + 1) << std::endl
      << padding(t_pad_lv) << "  height: " << t_b.height << std::endl
@@ -328,7 +328,7 @@ hiros::skeletons::types::Marker hiros::skeletons::utils::toStruct(
 
 hiros_skeleton_msgs::msg::Marker hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Marker &t_m) {
-  hiros_skeleton_msgs::msg::Marker m;
+  hiros_skeleton_msgs::msg::Marker m{};
   m.id = t_m.id;
   m.name = t_m.name;
   m.confidence = t_m.confidence;
@@ -338,7 +338,7 @@ hiros_skeleton_msgs::msg::Marker hiros::skeletons::utils::toMsg(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Marker &t_m, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- id: " << t_m.id << std::endl;
   if (!t_m.name.empty()) {
     ss << padding(t_pad_lv) << "  name: " << t_m.name << std::endl;
@@ -367,7 +367,7 @@ hiros::skeletons::types::Link hiros::skeletons::utils::toStruct(
 
 hiros_skeleton_msgs::msg::Link hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Link &t_l) {
-  hiros_skeleton_msgs::msg::Link l;
+  hiros_skeleton_msgs::msg::Link l{};
   l.id = t_l.id;
   l.name = t_l.name;
   l.parent_marker = t_l.parent_marker;
@@ -383,7 +383,7 @@ double hiros::skeletons::utils::linkLength(
     return std::numeric_limits<double>::quiet_NaN();
   }
 
-  auto &link = t_skeleton.getLink(t_link_id);
+  auto &link{t_skeleton.getLink(t_link_id)};
 
   if (!t_skeleton.hasMarker(link.parent_marker) ||
       !t_skeleton.hasMarker(link.child_marker)) {
@@ -396,7 +396,7 @@ double hiros::skeletons::utils::linkLength(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Link &t_l, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- id: " << t_l.id << std::endl;
   if (!t_l.name.empty()) {
     ss << padding(t_pad_lv) << "  name: " << t_l.name << std::endl;
@@ -425,10 +425,13 @@ hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
 
 hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
     const hiros_skeleton_msgs::msg::Skeleton &t_s) {
-  hiros::skeletons::types::Skeleton s(
-      t_s.id, rclcpp::Time(t_s.src_time).seconds(), t_s.src_frame,
-      t_s.max_markers, t_s.max_links, t_s.confidence,
-      toStruct(t_s.bounding_box));
+  hiros::skeletons::types::Skeleton s{t_s.id,
+                                      rclcpp::Time(t_s.src_time).seconds(),
+                                      t_s.src_frame,
+                                      t_s.max_markers,
+                                      t_s.max_links,
+                                      t_s.confidence,
+                                      toStruct(t_s.bounding_box)};
   for (auto &m : t_s.markers) {
     s.addMarker(toStruct(m));
   }
@@ -440,10 +443,9 @@ hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
 
 hiros_skeleton_msgs::msg::Skeleton hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Skeleton &t_s) {
-  hiros_skeleton_msgs::msg::Skeleton s;
+  hiros_skeleton_msgs::msg::Skeleton s{};
   s.id = t_s.id;
-  s.src_time = builtin_interfaces::msg::Time(
-      rclcpp::Time(static_cast<long>(1e9 * t_s.src_time)));
+  s.src_time = rclcpp::Time(static_cast<long>(1e9 * t_s.src_time));
   s.src_frame = t_s.src_frame;
   s.max_markers = t_s.max_markers;
   s.max_links = t_s.max_links;
@@ -466,10 +468,10 @@ hiros::skeletons::types::Box hiros::skeletons::utils::computeBoundingBox(
     return types::Box();
   }
 
-  auto max_markers = t_s.markers.size();
+  auto max_markers{t_s.markers.size()};
 
-  Eigen::MatrixXd data(max_markers, 3);
-  unsigned int i = 0;
+  Eigen::MatrixXd data{max_markers, 3};
+  unsigned int i{0};
   for (const auto &mk : t_s.markers) {
     data.row(i++) << mk.center.pose.position.x(), mk.center.pose.position.y(),
         mk.center.pose.position.z();
@@ -477,32 +479,33 @@ hiros::skeletons::types::Box hiros::skeletons::utils::computeBoundingBox(
   // Replace NaNs with zeros
   data = (!data.array().isNaN()).select(data, 0);
 
-  Eigen::MatrixXd centered = data.rowwise() - data.colwise().mean();
-  Eigen::MatrixXd covariance =
-      (centered.adjoint() * centered) / static_cast<double>((max_markers - 1));
+  Eigen::MatrixXd centered{data.rowwise() - data.colwise().mean()};
+  Eigen::MatrixXd covariance{(centered.adjoint() * centered) /
+                             (max_markers - 1.)};
 
-  Eigen::JacobiSVD<Eigen::MatrixXd> svd(covariance, Eigen::ComputeThinU);
-  Eigen::Matrix3d svd_u = svd.matrixU();
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd{covariance, Eigen::ComputeThinU};
+  Eigen::Matrix3d svd_u{svd.matrixU()};
   if (svd_u.determinant() < 0.0) {
     // Trick to force U to be a rotation matrix
     svd_u.col(0) = -svd_u.col(0);
   }
 
-  Eigen::Quaterniond orientation_q(svd_u);
+  Eigen::Quaterniond orientation_q{svd_u};
 
-  Eigen::MatrixXd svd_data = data * svd_u;
-  auto svd_min_point = svd_data.colwise().minCoeff();
-  auto svd_max_point = svd_data.colwise().maxCoeff();
-  auto svd_center_point = (svd_min_point + svd_max_point) / 2.0;
+  Eigen::MatrixXd svd_data{data * svd_u};
+  auto svd_min_point{svd_data.colwise().minCoeff()};
+  auto svd_max_point{svd_data.colwise().maxCoeff()};
+  auto svd_center_point{(svd_min_point + svd_max_point) / 2.};
 
-  auto center_point = svd_u * svd_center_point.transpose();
+  auto center_point{svd_u * svd_center_point.transpose()};
 
-  return hiros::skeletons::types::Box(
+  return hiros::skeletons::types::Box{
       {{{center_point(0), center_point(1), center_point(2)},
         {orientation_q.x(), orientation_q.y(), orientation_q.z(),
          orientation_q.w()}}},
-      svd_max_point(0) - svd_min_point(0), svd_max_point(1) - svd_min_point(1),
-      svd_max_point(2) - svd_min_point(2));
+      svd_max_point(0) - svd_min_point(0),
+      svd_max_point(1) - svd_min_point(1),
+      svd_max_point(2) - svd_min_point(2)};
 }
 
 hiros::skeletons::types::KinematicState hiros::skeletons::utils::centroid(
@@ -513,12 +516,12 @@ hiros::skeletons::types::KinematicState hiros::skeletons::utils::centroid(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::Skeleton &t_s, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- id: " << t_s.id << std::endl
      << padding(t_pad_lv) << "  src_time: ";
   if (!std::isnan(t_s.src_time)) {
-    long src_time_sec = static_cast<long>(t_s.src_time);
-    long src_time_nsec = static_cast<long>((t_s.src_time - src_time_sec) * 1e9);
+    auto src_time_sec{static_cast<long>(t_s.src_time)};
+    auto src_time_nsec{static_cast<long>((t_s.src_time - src_time_sec) * 1e9)};
     ss << std::to_string(src_time_sec) << "." << std::to_string(src_time_nsec);
   } else {
     ss << "nan";
@@ -562,7 +565,7 @@ hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
 
 hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
     const hiros_skeleton_msgs::msg::SkeletonGroup &t_sg) {
-  hiros::skeletons::types::SkeletonGroup sg;
+  hiros::skeletons::types::SkeletonGroup sg{};
   sg.time = rclcpp::Time(t_sg.header.stamp).seconds();
   sg.frame = t_sg.header.frame_id;
   sg.skeletons.reserve(t_sg.skeletons.size());
@@ -574,9 +577,8 @@ hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
 
 hiros_skeleton_msgs::msg::SkeletonGroup hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::SkeletonGroup &t_sg) {
-  hiros_skeleton_msgs::msg::SkeletonGroup sg;
-  sg.header.stamp = builtin_interfaces::msg::Time(
-      rclcpp::Time(static_cast<long>(1e9 * t_sg.time)));
+  hiros_skeleton_msgs::msg::SkeletonGroup sg{};
+  sg.header.stamp = rclcpp::Time(static_cast<long>(1e9 * t_sg.time));
   sg.header.frame_id = t_sg.frame;
   sg.skeletons.reserve(t_sg.skeletons.size());
   for (auto &s : t_sg.skeletons) {
@@ -587,11 +589,11 @@ hiros_skeleton_msgs::msg::SkeletonGroup hiros::skeletons::utils::toMsg(
 
 std::string hiros::skeletons::utils::toString(
     const hiros::skeletons::types::SkeletonGroup &t_sg, int t_pad_lv) {
-  std::stringstream ss;
+  std::stringstream ss{};
   ss << padding(t_pad_lv) << "- time: ";
   if (!std::isnan(t_sg.time)) {
-    long src_time_sec = static_cast<long>(t_sg.time);
-    long src_time_nsec = static_cast<long>((t_sg.time - src_time_sec) * 1e9);
+    auto src_time_sec{static_cast<long>(t_sg.time)};
+    auto src_time_nsec{static_cast<long>((t_sg.time - src_time_sec) * 1e9)};
     ss << std::to_string(src_time_sec) << "." << std::to_string(src_time_nsec);
   } else {
     ss << "nan";
