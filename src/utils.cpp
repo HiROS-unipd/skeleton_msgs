@@ -426,7 +426,7 @@ hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
 hiros::skeletons::types::Skeleton hiros::skeletons::utils::toStruct(
     const hiros_skeleton_msgs::msg::Skeleton &t_s) {
   hiros::skeletons::types::Skeleton s{t_s.id,
-                                      rclcpp::Time(t_s.src_time).seconds(),
+                                      rclcpp::Time{t_s.src_time}.seconds(),
                                       t_s.src_frame,
                                       t_s.max_markers,
                                       t_s.max_links,
@@ -445,7 +445,7 @@ hiros_skeleton_msgs::msg::Skeleton hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::Skeleton &t_s) {
   hiros_skeleton_msgs::msg::Skeleton s{};
   s.id = t_s.id;
-  s.src_time = rclcpp::Time(static_cast<long>(1e9 * t_s.src_time));
+  s.src_time = rclcpp::Time{static_cast<long>(1e9 * t_s.src_time)};
   s.src_frame = t_s.src_frame;
   s.max_markers = t_s.max_markers;
   s.max_links = t_s.max_links;
@@ -566,7 +566,7 @@ hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
 hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
     const hiros_skeleton_msgs::msg::SkeletonGroup &t_sg) {
   hiros::skeletons::types::SkeletonGroup sg{};
-  sg.time = rclcpp::Time(t_sg.header.stamp).seconds();
+  sg.time = rclcpp::Time{t_sg.header.stamp}.seconds();
   sg.frame = t_sg.header.frame_id;
   sg.skeletons.reserve(t_sg.skeletons.size());
   for (const auto &s : t_sg.skeletons) {
@@ -578,7 +578,7 @@ hiros::skeletons::types::SkeletonGroup hiros::skeletons::utils::toStruct(
 hiros_skeleton_msgs::msg::SkeletonGroup hiros::skeletons::utils::toMsg(
     const hiros::skeletons::types::SkeletonGroup &t_sg) {
   hiros_skeleton_msgs::msg::SkeletonGroup sg{};
-  sg.header.stamp = rclcpp::Time(static_cast<long>(1e9 * t_sg.time));
+  sg.header.stamp = rclcpp::Time{static_cast<long>(1e9 * t_sg.time)};
   sg.header.frame_id = t_sg.frame;
   sg.skeletons.reserve(t_sg.skeletons.size());
   for (const auto &s : t_sg.skeletons) {
