@@ -14,6 +14,7 @@
 #include "hiros_skeleton_msgs/msg/marker.hpp"
 #include "hiros_skeleton_msgs/msg/skeleton.hpp"
 #include "hiros_skeleton_msgs/msg/skeleton_group.hpp"
+#include "hiros_skeleton_msgs/msg/stamped_skeleton.hpp"
 
 // Internal dependencies
 #include "skeletons/types.h"
@@ -180,6 +181,17 @@ std::string toString(const hiros::skeletons::types::Link &t_l,
 
 // Skeleton
 hiros::skeletons::types::Skeleton toStruct(
+    const double &t_time, const std::string &t_frame, const int &t_id,
+    const double &t_src_time, const std::string &t_src_frame,
+    const unsigned int &t_max_markers = 0, const unsigned int &t_max_links = 0,
+    const double &t_confidence = std::numeric_limits<double>::quiet_NaN(),
+    const hiros::skeletons::types::Box &t_bounding_box =
+        hiros::skeletons::types::Box(),
+    const std::vector<hiros::skeletons::types::Marker> &t_markers =
+        std::vector<hiros::skeletons::types::Marker>(),
+    const std::vector<hiros::skeletons::types::Link> &t_links =
+        std::vector<hiros::skeletons::types::Link>());
+hiros::skeletons::types::Skeleton toStruct(
     const int &t_id, const double &t_src_time, const std::string &t_src_frame,
     const unsigned int &t_max_markers = 0, const unsigned int &t_max_links = 0,
     const double &t_confidence = std::numeric_limits<double>::quiet_NaN(),
@@ -192,8 +204,12 @@ hiros::skeletons::types::Skeleton toStruct(
 
 hiros::skeletons::types::Skeleton toStruct(
     const hiros_skeleton_msgs::msg::Skeleton &t_s);
+hiros::skeletons::types::Skeleton toStruct(
+    const hiros_skeleton_msgs::msg::StampedSkeleton &t_s);
 
 hiros_skeleton_msgs::msg::Skeleton toMsg(
+    const hiros::skeletons::types::Skeleton &t_s);
+hiros_skeleton_msgs::msg::StampedSkeleton toStampedMsg(
     const hiros::skeletons::types::Skeleton &t_s);
 
 hiros::skeletons::types::Box computeBoundingBox(

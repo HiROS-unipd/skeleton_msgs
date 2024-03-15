@@ -24,6 +24,7 @@ set(msg_files
     "msg/Marker.msg"
     "msg/Skeleton.msg"
     "msg/SkeletonGroup.msg"
+    "msg/StampedSkeleton.msg"
 )
 
 set(HEADER_FILES

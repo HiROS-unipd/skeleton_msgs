@@ -138,6 +138,15 @@ struct Link {
 // Skeleton
 struct Skeleton {
   Skeleton(
+      const double& t_time, const std::string& t_frame, const int& t_id = -1,
+      const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
+      const std::string t_src_frame = "", const unsigned int& t_max_markers = 0,
+      const unsigned int& t_max_links = 0,
+      const double& t_confidence = std::numeric_limits<double>::quiet_NaN(),
+      const Box& t_bounding_box = Box(),
+      const std::vector<Marker>& t_markers = std::vector<Marker>(),
+      const std::vector<Link>& t_links = std::vector<Link>());
+  Skeleton(
       const int& t_id = -1,
       const double& t_src_time = std::numeric_limits<double>::quiet_NaN(),
       const std::string t_src_frame = "", const unsigned int& t_max_markers = 0,
@@ -162,6 +171,9 @@ struct Skeleton {
   bool removeLink(const int& t_id);
 
   friend std::ostream& operator<<(std::ostream& t_os, const Skeleton& t_s);
+
+  double time;
+  std::string frame;
 
   int id;
   double src_time;

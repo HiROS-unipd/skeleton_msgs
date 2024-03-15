@@ -97,14 +97,17 @@ std::ostream &operator<<(std::ostream &t_os, const Link &t_l) {
 }
 
 // Skeleton
-Skeleton::Skeleton(const int &t_id, const double &t_src_time,
+Skeleton::Skeleton(const double &t_time, const std::string &t_frame,
+                   const int &t_id, const double &t_src_time,
                    const std::string t_src_frame,
                    const unsigned int &t_max_markers,
                    const unsigned int &t_max_links, const double &t_confidence,
                    const Box &t_bounding_box,
                    const std::vector<Marker> &t_markers,
                    const std::vector<Link> &t_links)
-    : id(t_id),
+    : time(t_time),
+      frame(t_frame),
+      id(t_id),
       src_time(t_src_time),
       src_frame(t_src_frame),
       max_markers(t_max_markers),
@@ -113,6 +116,16 @@ Skeleton::Skeleton(const int &t_id, const double &t_src_time,
       bounding_box(t_bounding_box),
       markers(t_markers),
       links(t_links) {}
+Skeleton::Skeleton(const int &t_id, const double &t_src_time,
+                   const std::string t_src_frame,
+                   const unsigned int &t_max_markers,
+                   const unsigned int &t_max_links, const double &t_confidence,
+                   const Box &t_bounding_box,
+                   const std::vector<Marker> &t_markers,
+                   const std::vector<Link> &t_links)
+    : Skeleton(std::numeric_limits<double>::quiet_NaN(), "", t_id, t_src_time,
+               t_src_frame, t_max_markers, t_max_links, t_confidence,
+               t_bounding_box, t_markers, t_links) {}
 
 const Marker &Skeleton::getMarker(const int &t_id) const {
   for (const auto &marker : markers) {
